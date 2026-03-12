@@ -1013,6 +1013,491 @@
       scrollbar-width: none;
     }
 
+    #testScreen::-webkit-scrollbar {
+      display: none;
+    }
+
+    #testScreen {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* ── TAB NAV ── */
+    .tab-nav {
+      display: flex;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.45);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 100px;
+      padding: 5px;
+      margin: 0 auto 20px;
+    }
+
+    .tab-btn {
+      padding: 8px 24px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.25s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--orange), var(--accent));
+      color: white;
+      box-shadow: 0 4px 14px rgba(232, 132, 90, 0.35);
+    }
+
+    /* ── TEST SCREEN ── */
+    #testScreen {
+      padding: 0;
+      overflow-y: auto;
+      align-items: center;
+      background: transparent;
+    }
+
+    .test-header {
+      width: 100%;
+      padding: 48px 28px 16px;
+      text-align: center;
+    }
+
+    .test-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(26px, 7vw, 38px);
+      font-weight: 300;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .test-subtitle {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* Unit selector */
+    .test-unit-selector {
+      width: 100%;
+      max-width: 680px;
+      padding: 0 20px 16px;
+      margin: 0 auto;
+    }
+
+    .test-unit-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      padding-left: 4px;
+    }
+
+    .test-unit-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .test-unit-pill {
+      padding: 7px 16px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1.5px solid rgba(200, 150, 130, 0.3);
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .test-unit-pill.active {
+      background: linear-gradient(135deg, var(--orange), var(--accent));
+      border-color: transparent;
+      color: white;
+      box-shadow: 0 4px 12px rgba(232, 132, 90, 0.3);
+    }
+
+    .test-start-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, var(--orange), var(--accent));
+      color: white;
+      border: none;
+      font-size: 15px;
+      font-weight: 500;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(232, 132, 90, 0.3);
+      transition: transform 0.2s ease;
+    }
+
+    .test-start-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Quiz area */
+    .quiz-wrap {
+      width: 100%;
+      max-width: 680px;
+      padding: 0 20px 32px;
+      margin: 0 auto;
+    }
+
+    .quiz-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding: 0 2px;
+    }
+
+    .quiz-counter {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .quiz-score-badge {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--accent);
+      background: rgba(232, 132, 90, 0.1);
+      padding: 4px 12px;
+      border-radius: 100px;
+    }
+
+    .quiz-progress-track {
+      height: 4px;
+      background: rgba(200, 150, 130, 0.2);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 22px;
+    }
+
+    .quiz-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--pink), var(--orange));
+      border-radius: 4px;
+      transition: width 0.4s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .quiz-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-radius: var(--radius);
+      padding: 28px 24px 24px;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+      animation: fade-in 0.35s ease;
+    }
+
+    .quiz-card::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 130px;
+      height: 130px;
+      background: radial-gradient(circle, rgba(255, 210, 180, 0.4) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .quiz-q-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .quiz-question {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(20px, 5.5vw, 28px);
+      font-weight: 300;
+      color: var(--text-primary);
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+
+    .quiz-phonetic {
+      font-size: 13px;
+      color: var(--accent);
+      font-style: italic;
+      margin-bottom: 4px;
+    }
+
+    .quiz-type-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 100px;
+      background: rgba(247, 178, 103, 0.2);
+      color: #b87333;
+      margin-top: 6px;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .quiz-option {
+      padding: 14px 18px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.6);
+      border: 1.5px solid rgba(200, 150, 130, 0.2);
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--text-primary);
+      font-family: 'DM Sans', sans-serif;
+      text-align: left;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quiz-option:active {
+      transform: scale(0.99);
+    }
+
+    .quiz-option.correct {
+      background: rgba(80, 200, 120, 0.15);
+      border-color: rgba(80, 200, 120, 0.6);
+      color: #2a7a4a;
+    }
+
+    .quiz-option.wrong {
+      background: rgba(240, 80, 80, 0.1);
+      border-color: rgba(240, 80, 80, 0.4);
+      color: #c03030;
+    }
+
+    .quiz-option.reveal {
+      background: rgba(80, 200, 120, 0.1);
+      border-color: rgba(80, 200, 120, 0.4);
+      color: #2a7a4a;
+    }
+
+    .quiz-option.disabled {
+      pointer-events: none;
+    }
+
+    .option-letter {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: rgba(200, 150, 130, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+    }
+
+    .quiz-option.correct .option-letter {
+      background: #50c878;
+      color: white;
+    }
+
+    .quiz-option.wrong .option-letter {
+      background: #f05050;
+      color: white;
+    }
+
+    .quiz-option.reveal .option-letter {
+      background: #50c878;
+      color: white;
+    }
+
+    .quiz-explain {
+      margin-top: 14px;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      border-left: 3px solid var(--orange);
+      animation: fade-in 0.3s ease;
+      display: none;
+    }
+
+    .quiz-next-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, var(--orange), var(--accent));
+      color: white;
+      border: none;
+      font-size: 15px;
+      font-weight: 500;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(232, 132, 90, 0.3);
+      transition: transform 0.2s ease;
+      display: none;
+      animation: fade-in 0.3s ease;
+    }
+
+    .quiz-next-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Result screen */
+    .quiz-result {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px 20px 40px;
+      text-align: center;
+      animation: fade-in 0.4s ease;
+    }
+
+    .result-emoji {
+      font-size: 60px;
+      margin-bottom: 16px;
+      animation: bounce 1s ease infinite;
+    }
+
+    .result-title {
+      font-family: 'Fraunces', serif;
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .result-score {
+      font-size: 48px;
+      font-weight: 300;
+      color: var(--accent);
+      font-family: 'Fraunces', serif;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .result-sub {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 28px;
+    }
+
+    .result-stats {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+
+    .result-stat {
+      flex: 1;
+      max-width: 120px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(20px);
+      border-radius: var(--radius-sm);
+      padding: 14px 10px;
+      text-align: center;
+    }
+
+    .result-stat-num {
+      font-family: 'Fraunces', serif;
+      font-size: 26px;
+      font-weight: 400;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .result-stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .result-btns {
+      display: flex;
+      gap: 10px;
+    }
+
+    .result-btn {
+      flex: 1;
+      padding: 13px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      border: none;
+      transition: transform 0.2s ease;
+    }
+
+    .result-btn:active {
+      transform: scale(0.97);
+    }
+
+    .result-btn-primary {
+      background: linear-gradient(135deg, var(--orange), var(--accent));
+      color: white;
+      box-shadow: 0 6px 20px rgba(232, 132, 90, 0.3);
+    }
+
+    .result-btn-secondary {
+      background: rgba(200, 150, 130, 0.15);
+      color: var(--text-secondary);
+    }
+
+    /* Grammar topic buttons */
+    .grammar-topic-btn {
+      width: 100%;
+      padding: 13px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: left;
+      border: 1.5px solid rgba(200, 150, 130, 0.3);
+      background: rgba(255, 255, 255, 0.5);
+      color: var(--text-secondary);
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.2s ease;
+    }
+
+    .grammar-topic-btn.active {
+      background: linear-gradient(135deg, rgba(247, 178, 103, 0.2), rgba(232, 132, 90, 0.15));
+      border-color: var(--accent);
+      color: var(--text-primary);
+    }
+
+    .grammar-topic-btn:active {
+      transform: scale(0.99);
+    }
+
     /* Tablet / Desktop */
     @media (min-width: 600px) {
       .card-scene {
@@ -1045,12 +1530,166 @@
     <div class="home-header">
       <div class="app-badge">📚 English 6 · Book 2</div>
       <h1 class="app-title">Flashcards</h1>
-      <p class="app-subtitle">Units 7 – 12 · Chọn bài để bắt đầu</p>
+      <p class="app-subtitle">Units 7 – 12</p>
     </div>
-    <div class="unit-grid" id="unitGrid"></div>
-    <div
-      style="width:100%;text-align:center;padding:8px 0 28px;font-size:11px;color:var(--text-muted);letter-spacing:0.5px;font-family:'DM Sans',sans-serif;">
-      Coded &amp; Designed by <span style="color:var(--accent);font-weight:500;">DuGiaVăn</span>
+
+    <!-- Tab Nav -->
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tabFlash" onclick="switchTab('flash')">📖 Học</button>
+      <button class="tab-btn" id="tabTest" onclick="switchTab('test')">✏️ Test</button>
+      <button class="tab-btn" id="tabGrammar" onclick="switchTab('grammar')">📝 Grammar</button>
+    </div>
+
+    <!-- Tab: Flash -->
+    <div id="tabContentFlash" style="width:100%;display:flex;flex-direction:column;align-items:center;">
+      <div class="unit-grid" id="unitGrid"></div>
+      <div
+        style="width:100%;text-align:center;padding:8px 0 28px;font-size:11px;color:var(--text-muted);letter-spacing:0.5px;font-family:'DM Sans',sans-serif;">
+        Coded &amp; Designed by <span style="color:var(--accent);font-weight:500;">DuGiaVăn</span>
+      </div>
+    </div>
+
+    <!-- Tab: Test -->
+    <div id="tabContentTest" style="width:100%;display:none;flex-direction:column;align-items:center;">
+      <!-- Setup panel -->
+      <div id="testSetup" style="width:100%;max-width:680px;padding:0 20px 32px;">
+        <div class="test-unit-label">Chọn Unit để kiểm tra</div>
+        <div class="test-unit-pills" id="testUnitPills"></div>
+        <div class="test-unit-label" style="margin-top:16px;">Số câu hỏi</div>
+        <div style="display:flex;gap:8px;margin-bottom:20px;" id="testCountPills">
+          <button class="test-unit-pill" data-count="10">10 câu</button>
+          <button class="test-unit-pill active" data-count="20">20 câu</button>
+          <button class="test-unit-pill" data-count="30">30 câu</button>
+        </div>
+        <button class="test-start-btn" id="testStartBtn">Bắt đầu kiểm tra →</button>
+      </div>
+
+      <!-- Quiz area -->
+      <div id="testQuiz" style="width:100%;display:none;">
+        <div class="quiz-wrap">
+          <div class="quiz-topbar">
+            <span class="quiz-counter" id="quizCounter">Câu 1 / 20</span>
+            <span class="quiz-score-badge" id="quizScoreBadge">✓ 0</span>
+          </div>
+          <div class="quiz-progress-track">
+            <div class="quiz-progress-fill" id="quizProgressFill"></div>
+          </div>
+          <div class="quiz-card" id="quizCard">
+            <div class="quiz-q-label">Từ vựng tiếng Anh</div>
+            <div class="quiz-question" id="quizQuestion"></div>
+            <div class="quiz-phonetic" id="quizPhonetic"></div>
+            <span class="quiz-type-badge" id="quizTypeBadge"></span>
+          </div>
+          <div class="quiz-options" id="quizOptions"></div>
+          <div class="quiz-explain" id="quizExplain"></div>
+          <button class="quiz-next-btn" id="quizNextBtn">Câu tiếp theo →</button>
+        </div>
+      </div>
+
+      <!-- Result area -->
+      <div id="testResult" style="width:100%;display:none;">
+        <div class="quiz-result">
+          <div class="result-emoji" id="resultEmoji">🎉</div>
+          <div class="result-title" id="resultTitle">Kết quả</div>
+          <div class="result-score" id="resultScore">0/0</div>
+          <div class="result-sub" id="resultSub"></div>
+          <div class="result-stats">
+            <div class="result-stat">
+              <div class="result-stat-num" id="statCorrect" style="color:#50c878;">0</div>
+              <div class="result-stat-label">Đúng</div>
+            </div>
+            <div class="result-stat">
+              <div class="result-stat-num" id="statWrong" style="color:#f05050;">0</div>
+              <div class="result-stat-label">Sai</div>
+            </div>
+            <div class="result-stat">
+              <div class="result-stat-num" id="statPct">0%</div>
+              <div class="result-stat-label">Điểm</div>
+            </div>
+          </div>
+          <div class="result-btns">
+            <button class="result-btn result-btn-secondary" id="resultBackBtn">← Về</button>
+            <button class="result-btn result-btn-primary" id="resultRetryBtn">Làm lại 🔁</button>
+          </div>
+        </div>
+      </div>
+
+      <div
+        style="width:100%;text-align:center;padding:8px 0 28px;font-size:11px;color:var(--text-muted);letter-spacing:0.5px;font-family:'DM Sans',sans-serif;">
+        Coded &amp; Designed by <span style="color:var(--accent);font-weight:500;">DuGiaVăn</span>
+      </div>
+    </div>
+
+    <!-- Tab: Grammar -->
+    <div id="tabContentGrammar" style="width:100%;display:none;flex-direction:column;align-items:center;">
+
+      <!-- Grammar Setup -->
+      <div id="grammarSetup" style="width:100%;max-width:680px;padding:0 20px 32px;">
+        <div class="test-unit-label">Chọn chủ điểm ngữ pháp</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;" id="grammarTopicPills">
+          <button class="grammar-topic-btn active" data-topic="all">⭐ Tất cả (Hiện tại đơn + Tiếp diễn + Quá khứ
+            đơn)</button>
+          <button class="grammar-topic-btn" data-topic="present_simple">🟢 Hiện tại đơn (Present Simple)</button>
+          <button class="grammar-topic-btn" data-topic="present_continuous">🔵 Hiện tại tiếp diễn (Present
+            Continuous)</button>
+          <button class="grammar-topic-btn" data-topic="past_simple">🟠 Quá khứ đơn (Past Simple)</button>
+        </div>
+        <button class="test-start-btn" id="grammarStartBtn">Bắt đầu luyện tập →</button>
+      </div>
+
+      <!-- Grammar Quiz -->
+      <div id="grammarQuiz" style="width:100%;display:none;">
+        <div class="quiz-wrap">
+          <div class="quiz-topbar">
+            <span class="quiz-counter" id="gQuizCounter">Câu 1 / 10</span>
+            <span class="quiz-score-badge" id="gQuizScore">✓ 0</span>
+          </div>
+          <div class="quiz-progress-track">
+            <div class="quiz-progress-fill" id="gQuizProgress"></div>
+          </div>
+          <div class="quiz-card" id="gQuizCard">
+            <div class="quiz-q-label" id="gQuizLabel">Ngữ pháp</div>
+            <div class="quiz-question" id="gQuizQuestion"></div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:6px;" id="gQuizHint"></div>
+          </div>
+          <div class="quiz-options" id="gQuizOptions"></div>
+          <div class="quiz-explain" id="gQuizExplain"></div>
+          <button class="quiz-next-btn" id="gQuizNextBtn">Câu tiếp theo →</button>
+        </div>
+      </div>
+
+      <!-- Grammar Result -->
+      <div id="grammarResult" style="width:100%;display:none;">
+        <div class="quiz-result">
+          <div class="result-emoji" id="gResultEmoji">🎉</div>
+          <div class="result-title" id="gResultTitle">Kết quả</div>
+          <div class="result-score" id="gResultScore">0/10</div>
+          <div class="result-sub" id="gResultSub"></div>
+          <div class="result-stats">
+            <div class="result-stat">
+              <div class="result-stat-num" id="gStatCorrect" style="color:#50c878;">0</div>
+              <div class="result-stat-label">Đúng</div>
+            </div>
+            <div class="result-stat">
+              <div class="result-stat-num" id="gStatWrong" style="color:#f05050;">0</div>
+              <div class="result-stat-label">Sai</div>
+            </div>
+            <div class="result-stat">
+              <div class="result-stat-num" id="gStatPct">0%</div>
+              <div class="result-stat-label">Điểm</div>
+            </div>
+          </div>
+          <div class="result-btns">
+            <button class="result-btn result-btn-secondary" id="gResultBackBtn">← Về</button>
+            <button class="result-btn result-btn-primary" id="gResultRetryBtn">Làm lại 🔁</button>
+          </div>
+        </div>
+      </div>
+
+      <div
+        style="width:100%;text-align:center;padding:8px 0 28px;font-size:11px;color:var(--text-muted);letter-spacing:0.5px;font-family:'DM Sans',sans-serif;">
+        Coded &amp; Designed by <span style="color:var(--accent);font-weight:500;">DuGiaVăn</span>
+      </div>
     </div>
   </div>
 
@@ -1770,98 +2409,513 @@
           // Mức độ 3: Nâng cao (Trong câu ghép phức tạp)
           { english: "Venice is your city and Jakarta is ours.", vietnamese: "Venice là thành phố của bạn còn Jakarta là của chúng tôi.", type: "example" },
 
-          // --- 3. CÂU CẢM THÁN VỚI WHAT (EXCLAMATIONS) ---
-          { english: "Exclamations with What", phonetic: "", vietnamese: "Câu cảm thán với What (Thể hiện cảm xúc)", type: "grammar" },
-          // Mức độ 1: Dễ (Danh từ số ít có a/an)
+          // === CÂU CẢM THÁN VỚI WHAT (EXCLAMATORY SENTENCES) - 50 CÂU THEO CẤU TRÚC ===
+
+          // CẤP ĐỘ 1: DANH TỪ ĐẾM ĐƯỢC SỐ ÍT (What + a/an + Adj + Noun!)
           { english: "What a nice city!", vietnamese: "Thật là một thành phố đẹp!", type: "example" },
           { english: "What a big tower!", vietnamese: "Thật là một tòa tháp lớn!", type: "example" },
-          // Mức độ 2: Trung bình (Thời tiết/Danh từ không đếm được)
-          { english: "What a clear sky!", vietnamese: "Bầu trời thật trong xanh!", type: "example" },
-          { english: "What delicious street food!", vietnamese: "Đồ ăn đường phố thật là ngon!", type: "example" },
-          // Mức độ 3: Nâng cao (Danh từ số nhiều - không dùng a/an)
+          { english: "What a great idea!", vietnamese: "Thật là một ý tưởng tuyệt vời!", type: "example" },
+          { english: "What a smart robot!", vietnamese: "Thật là một con robot thông minh!", type: "example" },
+          { english: "What a beautiful house!", vietnamese: "Thật là một ngôi nhà đẹp!", type: "example" },
+          { english: "What a long bridge!", vietnamese: "Thật là một cây cầu dài!", type: "example" },
+          { english: "What a cute dog!", vietnamese: "Thật là một chú chó đáng yêu!", type: "example" },
+          { english: "What an expensive car!", vietnamese: "Thật là một chiếc xe đắt tiền!", type: "example" },
+          { english: "What an amazing view!", vietnamese: "Thật là một tầm nhìn tuyệt diệu!", type: "example" },
+          { english: "What an old building!", vietnamese: "Thật là một tòa nhà cổ kính!", type: "example" },
+          { english: "What an interesting film!", vietnamese: "Thật là một bộ phim thú vị!", type: "example" },
+          { english: "What a messy room!", vietnamese: "Thật là một căn phòng bừa bộn!", type: "example" },
+          { english: "What a quiet street!", vietnamese: "Thật là một con phố yên tĩnh!", type: "example" },
+          { english: "What a brave boy!", vietnamese: "Thật là một cậu bé dũng cảm!", type: "example" },
+          { english: "What a boring game!", vietnamese: "Thật là một trò chơi nhàm chán!", type: "example" },
+
+          // CẤP ĐỘ 2: DANH TỪ SỐ NHIỀU (What + Adj + Nouns!) - KHÔNG DÙNG a/an
           { english: "What tall buildings!", vietnamese: "Những tòa nhà thật cao lớn!", type: "example" },
-          { english: "What friendly people they are!", vietnamese: "Họ thật là những người thân thiện!", type: "example" }
+          { english: "What friendly people!", vietnamese: "Những con người thật thân thiện!", type: "example" },
+          { english: "What beautiful flowers!", vietnamese: "Những bông hoa thật đẹp!", type: "example" },
+          { english: "What delicious cakes!", vietnamese: "Những chiếc bánh thật ngon!", type: "example" },
+          { english: "What cheap toys!", vietnamese: "Những món đồ chơi thật rẻ!", type: "example" },
+          { english: "What colorful pictures!", vietnamese: "Những bức tranh thật rực rỡ!", type: "example" },
+          { english: "What smart students!", vietnamese: "Những học sinh thật thông minh!", type: "example" },
+          { english: "What heavy bags!", vietnamese: "Những chiếc túi thật nặng!", type: "example" },
+          { english: "What dirty shoes!", vietnamese: "Những chiếc giày thật bẩn!", type: "example" },
+          { english: "What expensive phones!", vietnamese: "Những chiếc điện thoại thật đắt!", type: "example" },
+          { english: "What fast cars!", vietnamese: "Những chiếc xe thật nhanh!", type: "example" },
+          { english: "What small robots!", vietnamese: "Những con robot thật nhỏ!", type: "example" },
+          { english: "What noisy neighbors!", vietnamese: "Những người hàng xóm thật ồn ào!", type: "example" },
+          { english: "What kind teachers!", vietnamese: "Những giáo viên thật tử tế!", type: "example" },
+          { english: "What sweet apples!", vietnamese: "Những quả táo thật ngọt!", type: "example" },
+
+          // CẤP ĐỘ 3: DANH TỪ KHÔNG ĐẾM ĐƯỢC (What + Adj + Uncountable Noun!)
+          { english: "What delicious food!", vietnamese: "Thức ăn thật là ngon!", type: "example" },
+          { english: "What cold water!", vietnamese: "Nước thật là lạnh!", type: "example" },
+          { english: "What bad weather!", vietnamese: "Thời tiết thật là tệ!", type: "example" },
+          { english: "What beautiful music!", vietnamese: "Bản nhạc thật là hay!", type: "example" },
+          { english: "What fresh air!", vietnamese: "Không khí thật trong lành!", type: "example" },
+          { english: "What hot coffee!", vietnamese: "Cà phê thật là nóng!", type: "example" },
+          { english: "What clear water!", vietnamese: "Nước thật trong xanh!", type: "example" },
+          { english: "What expensive furniture!", vietnamese: "Đồ nội thất thật đắt tiền!", type: "example" },
+          { english: "What helpful advice!", vietnamese: "Thật là một lời khuyên hữu ích!", type: "example" },
+          { english: "What heavy rain!", vietnamese: "Thật là một trận mưa lớn!", type: "example" },
+
+          // CẤP ĐỘ 4: CẤU TRÚC ĐẦY ĐỦ (What + a/an + Adj + N + S + V!) - KHÓ VỪA
+          { english: "What a nice city it is!", vietnamese: "Thành phố này thật đẹp làm sao!", type: "example" },
+          { english: "What a big tower they built!", vietnamese: "Họ đã xây một tòa tháp thật lớn!", type: "example" },
+          { english: "What friendly people they are!", vietnamese: "Họ thật là những người thân thiện!", type: "example" },
+          { english: "What a smart robot you have!", vietnamese: "Bạn có một con robot thật thông minh!", type: "example" },
+          { english: "What delicious food she cooked!", vietnamese: "Cô ấy đã nấu món ăn thật ngon!", type: "example" },
+          { english: "What a beautiful dress you are wearing!", vietnamese: "Bạn đang mặc chiếc váy thật đẹp!", type: "example" },
+          { english: "What difficult homework we had!", vietnamese: "Chúng ta đã có bài tập về nhà thật khó!", type: "example" },
+          { english: "What a funny story he told!", vietnamese: "Anh ấy đã kể một câu chuyện thật buồn cười!", type: "example" },
+          { english: "What a brave man he is!", vietnamese: "Anh ấy thật là một người đàn ông dũng cảm!", type: "example" },
+          { english: "What a wonderful day we had today!", vietnamese: "Chúng ta đã có một ngày thật tuyệt vời hôm nay!", type: "example" }
         ]
       },
       {
         id: 10, name: "Our Houses in the Future", emoji: "🏠",
         grammar: "Future Simple (will), Might for possibility",
         words: [
-          { english: "solar panel", phonetic: "/ˈsoʊlər ˈpænl/", vietnamese: "tấm pin năng lượng mặt trời", type: "vocabulary" },
-          { english: "Our house will have solar panels on the roof.", phonetic: "", vietnamese: "Ngôi nhà của chúng tôi sẽ có tấm pin năng lượng mặt trời trên mái.", type: "example" },
-          { english: "Solar panels can save electricity.", phonetic: "", vietnamese: "Tấm pin năng lượng mặt trời có thể tiết kiệm điện.", type: "example" },
-          { english: "smart home", phonetic: "/smɑːrt hoʊm/", vietnamese: "nhà thông minh", type: "vocabulary" },
-          { english: "I will live in a smart home one day.", phonetic: "", vietnamese: "Một ngày nào đó tôi sẽ sống trong một ngôi nhà thông minh.", type: "example" },
-          { english: "Smart homes can control lights automatically.", phonetic: "", vietnamese: "Nhà thông minh có thể tự động điều khiển đèn.", type: "example" },
+          // === TỪ VỰNG (VOCABULARY) ===
+
+          // 1. Appliance
           { english: "appliance", phonetic: "/əˈplaɪəns/", vietnamese: "thiết bị điện gia dụng", type: "vocabulary" },
-          { english: "We have many appliances in our kitchen.", phonetic: "", vietnamese: "Chúng tôi có nhiều thiết bị điện trong bếp.", type: "example" },
-          { english: "Future appliances will be more energy-efficient.", phonetic: "", vietnamese: "Các thiết bị trong tương lai sẽ tiết kiệm năng lượng hơn.", type: "example" },
-          { english: "underground", phonetic: "/ˌʌndərˈɡraʊnd/", vietnamese: "dưới lòng đất", type: "vocabulary" },
-          { english: "Houses might be built underground in the future.", phonetic: "", vietnamese: "Nhà ở có thể được xây dựng dưới lòng đất trong tương lai.", type: "example" },
-          { english: "There are underground cities in some science fiction stories.", phonetic: "", vietnamese: "Có những thành phố dưới lòng đất trong một số truyện khoa học viễn tưởng.", type: "example" },
-          { english: "recycle", phonetic: "/ˌriːˈsaɪkl/", vietnamese: "tái chế", type: "vocabulary" },
-          { english: "Future houses will recycle water and waste.", phonetic: "", vietnamese: "Những ngôi nhà trong tương lai sẽ tái chế nước và rác.", type: "example" },
-          { english: "We should recycle paper and plastic.", phonetic: "", vietnamese: "Chúng ta nên tái chế giấy và nhựa.", type: "example" },
-          { english: "technology", phonetic: "/tekˈnɒlədʒi/", vietnamese: "công nghệ", type: "vocabulary" },
-          { english: "Technology will make our homes smarter.", phonetic: "", vietnamese: "Công nghệ sẽ làm cho ngôi nhà của chúng ta thông minh hơn.", type: "example" },
-          { english: "New technology might change the way we live.", phonetic: "", vietnamese: "Công nghệ mới có thể thay đổi cách chúng ta sống.", type: "example" },
+          { english: "We will have many smart appliances in our future kitchen.", vietnamese: "Chúng ta sẽ có nhiều thiết bị thông minh trong nhà bếp tương lai.", type: "example" },
+          { english: "Future appliances will be more energy-efficient.", vietnamese: "Các thiết bị trong tương lai sẽ tiết kiệm năng lượng hơn.", type: "example" },
+          { english: "Robots will help us with household appliances.", vietnamese: "Robot sẽ giúp chúng ta sử dụng các thiết bị gia dụng.", type: "example" },
+          { english: "A fridge is a common household appliance.", vietnamese: "Tủ lạnh là một thiết bị gia dụng phổ biến.", type: "example" },
+
+          // 2. Smart TV / Wireless TV
+          { english: "wireless TV", phonetic: "/ˈwaɪərləs ˌtiːˈviː/", vietnamese: "tivi không dây", type: "vocabulary" },
+          { english: "My future house will have a wireless TV.", vietnamese: "Ngôi nhà tương lai của tôi sẽ có một chiếc tivi không dây.", type: "example" },
+          { english: "Wireless TVs can connect to the internet easily.", vietnamese: "Tivi không dây có thể kết nối internet dễ dàng.", type: "example" },
+          { english: "We will watch films on a smart, wireless TV.", vietnamese: "Chúng ta sẽ xem phim trên một chiếc tivi thông minh, không dây.", type: "example" },
+          { english: "Smart TVs will recognize our voices.", vietnamese: "Tivi thông minh sẽ nhận diện được giọng nói của chúng ta.", type: "example" },
+
+          // 3. Hi-tech
+          { english: "hi-tech", phonetic: "/ˌhaɪ ˈtek/", vietnamese: "công nghệ cao", type: "vocabulary" },
+          { english: "I will live in a hi-tech house on the Moon.", vietnamese: "Tôi sẽ sống trong một ngôi nhà công nghệ cao trên Mặt Trăng.", type: "example" },
+          { english: "The new robot is very hi-tech.", vietnamese: "Con robot mới này rất hiện đại (công nghệ cao).", type: "example" },
+          { english: "Hi-tech robots will do all the housework.", vietnamese: "Robot công nghệ cao sẽ làm toàn bộ việc nhà.", type: "example" },
+          { english: "Our future life will be more comfortable with hi-tech devices.", vietnamese: "Cuộc sống tương lai sẽ thoải mái hơn với các thiết bị công nghệ cao.", type: "example" },
+
+          // 4. Solar energy
+          { english: "solar energy", phonetic: "/ˈsoʊlər ˈenərdʒi/", vietnamese: "năng lượng mặt trời", type: "vocabulary" },
+          { english: "Our house will use solar energy.", vietnamese: "Ngôi nhà của chúng tôi sẽ sử dụng năng lượng mặt trời.", type: "example" },
+          { english: "Solar energy is clean and free.", vietnamese: "Năng lượng mặt trời thì sạch và miễn phí.", type: "example" },
+          { english: "Solar panels on the roof will catch solar energy.", vietnamese: "Các tấm pin trên mái nhà sẽ thu năng lượng mặt trời.", type: "example" },
+          { english: "Many people might use solar energy in the future.", vietnamese: "Nhiều người có thể sẽ sử dụng năng lượng mặt trời trong tương lai.", type: "example" },
+
+          // 5. Look after
+          { english: "look after", phonetic: "/lʊk ˈæftər/", vietnamese: "trông nom, chăm sóc", type: "vocabulary" },
+          { english: "A robot will look after my children.", vietnamese: "Một con robot sẽ chăm sóc con cái của tôi.", type: "example" },
+          { english: "Who will look after your house when you go away?", vietnamese: "Ai sẽ trông nom nhà cửa khi bạn đi vắng?", type: "example" },
+          { english: "Smart technology will look after our garden.", vietnamese: "Công nghệ thông minh sẽ chăm sóc khu vườn của chúng ta.", type: "example" },
+          { english: "The robot can look after the cat and the dog.", vietnamese: "Con robot có thể chăm sóc mèo và chó.", type: "example" },
+
+          // 6. Housework
+          { english: "housework", phonetic: "/ˈhaʊswɜːrk/", vietnamese: "việc nhà", type: "vocabulary" },
+          { english: "I won't do the housework in the future.", vietnamese: "Tôi sẽ không làm việc nhà trong tương lai.", type: "example" },
+          { english: "Robots will do all the housework for us.", vietnamese: "Robot sẽ làm toàn bộ việc nhà cho chúng ta.", type: "example" },
+          { english: "Do you like doing housework?", vietnamese: "Bạn có thích làm việc nhà không?", type: "example" },
+          { english: "Smart machines will make housework easier.", vietnamese: "Máy móc thông minh sẽ làm việc nhà trở nên dễ dàng hơn.", type: "example" },
+
+          // 7. Space
+          { english: "space", phonetic: "/speɪs/", vietnamese: "không gian vũ trụ", type: "vocabulary" },
+          { english: "We might travel into space by UFO.", vietnamese: "Chúng ta có thể sẽ du hành vào vũ trụ bằng đĩa bay.", type: "example" },
+          { english: "Is there life in outer space?", vietnamese: "Có sự sống ở ngoài vũ trụ không?", type: "example" },
+          { english: "Some houses might be built in space.", vietnamese: "Một vài ngôi nhà có thể được xây dựng trong vũ trụ.", type: "example" },
+          { english: "I want to explore space in the future.", vietnamese: "Tôi muốn khám phá vũ trụ trong tương lai.", type: "example" },
+
+          // 8. Location
+          { english: "location", phonetic: "/loʊˈkeɪʃn/", vietnamese: "địa điểm, vị trí", type: "vocabulary" },
+          { english: "What is the location of your future house?", vietnamese: "Vị trí ngôi nhà tương lai của bạn là ở đâu?", type: "example" },
+          { english: "The location of the house is on an island.", vietnamese: "Vị trí của ngôi nhà là ở trên một hòn đảo.", type: "example" },
+          { english: "Mountains are a great location for a cottage.", vietnamese: "Miền núi là một địa điểm tuyệt vời cho một ngôi nhà tranh.", type: "example" },
+          { english: "I like the location of this smart home.", vietnamese: "Tôi thích vị trí của ngôi nhà thông minh này.", type: "example" },
+
+          // 9. Eco-friendly
           { english: "eco-friendly", phonetic: "/ˌiːkoʊ ˈfrendli/", vietnamese: "thân thiện với môi trường", type: "vocabulary" },
-          { english: "Our future house will be eco-friendly.", phonetic: "", vietnamese: "Ngôi nhà tương lai của chúng tôi sẽ thân thiện với môi trường.", type: "example" },
-          { english: "Eco-friendly homes use less energy.", phonetic: "", vietnamese: "Những ngôi nhà thân thiện với môi trường sử dụng ít năng lượng hơn.", type: "example" },
+          { english: "Our future house will be eco-friendly.", vietnamese: "Ngôi nhà tương lai của chúng tôi sẽ thân thiện với môi trường.", type: "example" },
+          { english: "Eco-friendly homes use less energy.", vietnamese: "Những ngôi nhà thân thiện với môi trường sử dụng ít năng lượng hơn.", type: "example" },
+          { english: "We should use eco-friendly appliances.", vietnamese: "Chúng ta nên sử dụng các thiết bị thân thiện với môi trường.", type: "example" },
+          { english: "Is your car eco-friendly?", vietnamese: "Xe của bạn có thân thiện với môi trường không?", type: "example" },
+
+          // 10. UFO
+          { english: "UFO", phonetic: "/ˌjuː ef ˈoʊ/", vietnamese: "đĩa bay / vật thể bay không xác định", type: "vocabulary" },
+          { english: "We might live in a UFO in the future.", vietnamese: "Chúng ta có thể sẽ sống trong một chiếc đĩa bay trong tương lai.", type: "example" },
+          { english: "Did you see a UFO in the sky?", vietnamese: "Bạn có thấy một chiếc đĩa bay trên bầu trời không?", type: "example" },
+          { english: "The UFO is very hi-tech and fast.", vietnamese: "Chiếc đĩa bay này rất hiện đại và nhanh.", type: "example" },
+          { english: "The UFO can fly into space.", vietnamese: "Chiếc đĩa bay có thể bay vào vũ trụ.", type: "example" },
+
+          // === NGỮ PHÁP (GRAMMAR) ===
+
+          // === THÌ TƯƠNG LAI ĐƠN (FUTURE SIMPLE) - 50 CÂU TỪ DỄ ĐẾN KHÓ VỪA ===
+
+          // CẤP ĐỘ 1: KHẲNG ĐỊNH CƠ BẢN (S + will + V)
+          { english: "I will go.", vietnamese: "Tôi sẽ đi.", type: "example" },
+          { english: "You will help.", vietnamese: "Bạn sẽ giúp đỡ.", type: "example" },
+          { english: "He will win.", vietnamese: "Anh ấy sẽ thắng.", type: "example" },
+          { english: "She will cook.", vietnamese: "Cô ấy sẽ nấu ăn.", type: "example" },
+          { english: "It will rain.", vietnamese: "Trời sẽ mưa.", type: "example" },
+          { english: "We will fly.", vietnamese: "Chúng ta sẽ bay.", type: "example" },
+          { english: "They will arrive.", vietnamese: "Họ sẽ đến.", type: "example" },
+          { english: "I will buy a robot.", vietnamese: "Tôi sẽ mua một con robot.", type: "example" },
+          { english: "We will live in space.", vietnamese: "Chúng ta sẽ sống trong không gian.", type: "example" },
+          { english: "Robots will do the dishes.", vietnamese: "Robot sẽ rửa bát đĩa.", type: "example" },
+
+          // CẤP ĐỘ 2: CÁCH VIẾT TẮT ('ll) VÀ TÂN NGỮ ĐI KÈM
+          { english: "I'll be there.", vietnamese: "Tôi sẽ ở đó.", type: "example" },
+          { english: "You'll love this house.", vietnamese: "Bạn sẽ thích ngôi nhà này.", type: "example" },
+          { english: "He'll repair the machine.", vietnamese: "Anh ấy sẽ sửa chiếc máy.", type: "example" },
+          { english: "She'll water the flowers.", vietnamese: "Cô ấy sẽ tưới hoa.", type: "example" },
+          { english: "We'll use solar energy.", vietnamese: "Chúng ta sẽ dùng năng lượng mặt trời.", type: "example" },
+          { english: "They'll build a palace.", vietnamese: "Họ sẽ xây dựng một cung điện.", type: "example" },
+          { english: "It'll be a sunny day.", vietnamese: "Nó sẽ là một ngày nắng.", type: "example" },
+          { english: "I'll send you a postcard.", vietnamese: "Tôi sẽ gửi cho bạn một tấm bưu thiếp.", type: "example" },
+          { english: "We'll clean the beach.", vietnamese: "Chúng ta sẽ làm sạch bãi biển.", type: "example" },
+          { english: "Life'll be better soon.", vietnamese: "Cuộc sống sẽ sớm tốt đẹp hơn.", type: "example" },
+
+          // CẤP ĐỘ 3: CÂU PHỦ ĐỊNH (Won't / Will not)
+          { english: "I won't go out.", vietnamese: "Tôi sẽ không đi ra ngoài.", type: "example" },
+          { english: "You won't believe it.", vietnamese: "Bạn sẽ không tin đâu.", type: "example" },
+          { english: "He won't fail the test.", vietnamese: "Anh ấy sẽ không trượt bài kiểm tra.", type: "example" },
+          { english: "She won't buy that car.", vietnamese: "Cô ấy sẽ không mua chiếc xe đó.", type: "example" },
+          { english: "It won't be cold tomorrow.", vietnamese: "Ngày mai trời sẽ không lạnh.", type: "example" },
+          { english: "We won't use fossil fuels.", vietnamese: "Chúng ta sẽ không dùng nhiên liệu hóa thạch.", type: "example" },
+          { english: "They won't live in a city.", vietnamese: "Họ sẽ không sống ở thành phố.", type: "example" },
+          { english: "Robots won't feel tired.", vietnamese: "Robot sẽ không thấy mệt mỏi.", type: "example" },
+          { english: "I won't do the housework.", vietnamese: "Tôi sẽ không làm việc nhà.", type: "example" },
+          { english: "The sky won't be cloudy.", vietnamese: "Bầu trời sẽ không có mây.", type: "example" },
+
+          // CẤP ĐỘ 4: CÂU NGHI VẤN (Will + S + V?) VÀ TRẢ LỜI NGẮN
+          { english: "Will you go to the party?", vietnamese: "Bạn sẽ đi dự tiệc chứ?", type: "example" },
+          { english: "Will it be hot today? - Yes, it will.", vietnamese: "Hôm nay trời sẽ nóng chứ? - Vâng, đúng vậy.", type: "example" },
+          { english: "Will robots talk to us?", vietnamese: "Robot sẽ trò chuyện với chúng ta chứ?", type: "example" },
+          { english: "Will she be a doctor?", vietnamese: "Cô ấy sẽ trở thành bác sĩ chứ?", type: "example" },
+          { english: "Will they win the game? - No, they won't.", vietnamese: "Họ sẽ thắng trận đấu chứ? - Không, họ sẽ không.", type: "example" },
+          { english: "Will we live on the Moon?", vietnamese: "Chúng ta sẽ sống trên Mặt trăng chứ?", type: "example" },
+          { english: "Will your house be hi-tech?", vietnamese: "Nhà của bạn sẽ có công nghệ cao chứ?", type: "example" },
+          { english: "Will he help us with the chores?", vietnamese: "Anh ấy sẽ giúp chúng ta việc nhà chứ?", type: "example" },
+          { english: "Will the weather be nice?", vietnamese: "Thời tiết sẽ đẹp chứ?", type: "example" },
+          { english: "Will you use a wireless TV?", vietnamese: "Bạn sẽ dùng tivi không dây chứ?", type: "example" },
+
+          // CẤP ĐỘ 5: KHÓ VỪA (Dự đoán chi tiết + Trạng ngữ thời gian / Cảm nghĩ)
+          { english: "I think robots will look after the children.", vietnamese: "Tôi nghĩ robot sẽ chăm sóc trẻ em.", type: "example" },
+          { english: "I believe we'll have a smart fridge in the kitchen.", vietnamese: "Tôi tin rằng chúng ta sẽ có tủ lạnh thông minh trong bếp.", type: "example" },
+          { english: "Maybe they'll travel to the Moon in a super car.", vietnamese: "Có lẽ họ sẽ du hành lên Mặt trăng bằng siêu xe.", type: "example" },
+          { english: "Technology will make our homes more comfortable.", vietnamese: "Công nghệ sẽ làm cho ngôi nhà của chúng ta thoải mái hơn.", type: "example" },
+          { english: "In the future, we'll recycle all our waste.", vietnamese: "Trong tương lai, chúng ta sẽ tái chế tất cả rác thải.", type: "example" },
+          { english: "I hope people won't cut down more trees.", vietnamese: "Tôi hy vọng mọi người sẽ không chặt thêm cây nữa.", type: "example" },
+          { english: "The population of the world will increase in 2050.", vietnamese: "Dân số thế giới sẽ tăng vào năm 2050.", type: "example" },
+          { english: "Smart homes will control the lights automatically.", vietnamese: "Nhà thông minh sẽ tự động điều khiển ánh sáng.", type: "example" },
+          { english: "We'll probably go on holiday to an island.", vietnamese: "Chúng ta có lẽ sẽ đi nghỉ mát ở một hòn đảo.", type: "example" },
+          { english: "Computers will be smarter than humans one day.", vietnamese: "Máy tính sẽ thông minh hơn con người vào một ngày nào đó.", type: "example" },
+          // === CẤU TRÚC MIGHT (KHẢ NĂNG KHÔNG CHẮC CHẮN) - 50 CÂU TỪ DỄ ĐẾN KHÓ VỪA ===
+
+          // CẤP ĐỘ 1: KHẲNG ĐỊNH CƠ BẢN (S + might + V) - CỰC DỄ
+          { english: "I might go.", vietnamese: "Tôi có thể sẽ đi.", type: "example" },
+          { english: "It might rain.", vietnamese: "Trời có thể sẽ mưa.", type: "example" },
+          { english: "He might help.", vietnamese: "Anh ấy có thể sẽ giúp.", type: "example" },
+          { english: "She might come.", vietnamese: "Cô ấy có thể sẽ đến.", type: "example" },
+          { english: "We might win.", vietnamese: "Chúng ta có thể sẽ thắng.", type: "example" },
+          { english: "They might stay.", vietnamese: "Họ có thể sẽ ở lại.", type: "example" },
+          { english: "It might be hot.", vietnamese: "Trời có thể sẽ nóng.", type: "example" },
+          { english: "You might like it.", vietnamese: "Bạn có thể sẽ thích nó.", type: "example" },
+          { english: "Lunch might be ready.", vietnamese: "Bữa trưa có thể đã sẵn sàng.", type: "example" },
+          { english: "The robot might talk.", vietnamese: "Con robot có thể sẽ nói chuyện.", type: "example" },
+
+          // CẤP ĐỘ 2: PHỦ ĐỊNH CƠ BẢN (S + might not + V) - DỄ
+          { english: "I might not go.", vietnamese: "Tôi có thể sẽ không đi.", type: "example" },
+          { english: "It might not rain.", vietnamese: "Trời có thể sẽ không mưa.", type: "example" },
+          { english: "He might not win.", vietnamese: "Anh ấy có thể sẽ không thắng.", type: "example" },
+          { english: "She might not like tea.", vietnamese: "Cô ấy có thể sẽ không thích trà.", type: "example" },
+          { english: "We might not be late.", vietnamese: "Chúng ta có thể sẽ không bị muộn.", type: "example" },
+          { english: "They might not see us.", vietnamese: "Họ có thể sẽ không nhìn thấy chúng ta.", type: "example" },
+          { english: "It might not be true.", vietnamese: "Điều đó có thể không đúng.", type: "example" },
+          { english: "You might not need this.", vietnamese: "Bạn có thể sẽ không cần cái này.", type: "example" },
+          { english: "The car might not start.", vietnamese: "Chiếc xe có thể sẽ không khởi động được.", type: "example" },
+          { english: "I might not have time.", vietnamese: "Tôi có thể sẽ không có thời gian.", type: "example" },
+
+          // CẤP ĐỘ 3: MỞ RỘNG VỚI CÁC CHỦ ĐỀ UNIT 10-12 (TRUNG BÌNH)
+          { english: "We might live in a UFO.", vietnamese: "Chúng ta có thể sẽ sống trong một chiếc đĩa bay.", type: "example" },
+          { english: "She might have a smart fridge.", vietnamese: "Cô ấy có thể sẽ có một chiếc tủ lạnh thông minh.", type: "example" },
+          { english: "Robots might do the gardening.", vietnamese: "Robot có thể sẽ làm việc làm vườn.", type: "example" },
+          { english: "We might have solar panels.", vietnamese: "Chúng ta có thể sẽ có những tấm pin năng lượng mặt trời.", type: "example" },
+          { english: "They might build houses under the sea.", vietnamese: "Họ có thể sẽ xây nhà dưới đáy biển.", type: "example" },
+          { english: "The robot might understand my mood.", vietnamese: "Con robot có thể sẽ hiểu được tâm trạng của tôi.", type: "example" },
+          { english: "We might recycle more plastic.", vietnamese: "Chúng ta có thể sẽ tái chế nhiều nhựa hơn.", type: "example" },
+          { english: "Computers might think like humans.", vietnamese: "Máy tính có thể sẽ suy nghĩ như con người.", type: "example" },
+          { english: "We might travel by flying cars.", vietnamese: "Chúng ta có thể sẽ di chuyển bằng ô tô bay.", type: "example" },
+          { english: "The future might be very green.", vietnamese: "Tương lai có thể sẽ rất xanh.", type: "example" },
+
+          // CẤP ĐỘ 4: PHỦ ĐỊNH TRONG CÁC TÌNH HUỐNG TƯƠNG LAI (KHÁ)
+          { english: "They might not travel in cars.", vietnamese: "Họ có thể sẽ không di chuyển bằng ô tô nữa.", type: "example" },
+          { english: "We might not go to school in the future.", vietnamese: "Chúng ta có thể sẽ không đến trường trong tương lai.", type: "example" },
+          { english: "Robots might not replace teachers.", vietnamese: "Robot có thể sẽ không thay thế giáo viên.", type: "example" },
+          { english: "It might not be easy to live on Mars.", vietnamese: "Sống trên sao Hỏa có thể sẽ không dễ dàng.", type: "example" },
+          { english: "We might not use paper money anymore.", vietnamese: "Chúng ta có thể sẽ không dùng tiền giấy nữa.", type: "example" },
+          { english: "The robot might not repair the TV.", vietnamese: "Con robot có thể không sửa được cái tivi.", type: "example" },
+          { english: "I might not buy that hi-tech robot.", vietnamese: "Tôi có thể sẽ không mua con robot công nghệ cao đó.", type: "example" },
+          { english: "Children might not play outside much.", vietnamese: "Trẻ em có thể sẽ không chơi đùa bên ngoài nhiều.", type: "example" },
+          { english: "We might not see many skyscrapers here.", vietnamese: "Chúng ta có thể sẽ không thấy nhiều tòa nhà chọc trời ở đây.", type: "example" },
+          { english: "The price might not be cheap.", vietnamese: "Giá cả có thể sẽ không rẻ đâu.", type: "example" },
+
+          // CẤP ĐỘ 5: KẾT HỢP, SO SÁNH VÀ LÝ DO (KHÓ VỪA)
+          { english: "I'm not sure, but we might go to the Moon.", vietnamese: "Tôi không chắc, nhưng chúng ta có thể sẽ lên Mặt Trăng.", type: "example" },
+          { english: "We might live in a smart home, or we might live in a cottage.", vietnamese: "Chúng ta có thể sống trong nhà thông minh, hoặc có thể sống trong nhà tranh.", type: "example" },
+          { english: "I might buy a solar panel, but it is very expensive.", vietnamese: "Tôi có thể sẽ mua một tấm pin năng lượng mặt trời, nhưng nó rất đắt.", type: "example" },
+          { english: "We might go on holiday to the Moon, but we might come home soon.", vietnamese: "Chúng ta có thể sẽ đi nghỉ trên Mặt Trăng, nhưng có lẽ sẽ về sớm thôi.", type: "example" },
+          { english: "If we have money, we might buy a robot helper.", vietnamese: "Nếu có tiền, chúng ta có thể sẽ mua một robot giúp việc.", type: "example" },
+          { english: "It's cloudy, so it might rain this afternoon.", vietnamese: "Trời nhiều mây, nên có thể chiều nay sẽ mưa.", type: "example" },
+          { english: "She's tired, so she might not join the competition.", vietnamese: "Cô ấy mệt, nên có thể cô ấy sẽ không tham gia cuộc thi.", type: "example" },
+          { english: "The robot is broken, so it might not work.", vietnamese: "Con robot bị hỏng, nên có thể nó sẽ không hoạt động.", type: "example" },
+          { english: "We might use wind power because it is eco-friendly.", vietnamese: "Chúng ta có thể sẽ dùng năng lượng gió vì nó thân thiện với môi trường.", type: "example" },
+          { english: "I might not visit London because the tickets are expensive.", vietnamese: "Tôi có thể không đi thăm Luân Đôn vì vé rất đắt.", type: "example" }
         ]
       },
       {
         id: 11, name: "Our Greener World", emoji: "🌱",
         grammar: "Articles (a, an, the), First Conditional",
         words: [
-          { english: "pollution", phonetic: "/pəˈluːʃn/", vietnamese: "ô nhiễm", type: "vocabulary" },
-          { english: "Air pollution is a serious problem in big cities.", phonetic: "", vietnamese: "Ô nhiễm không khí là vấn đề nghiêm trọng ở các thành phố lớn.", type: "example" },
-          { english: "If we reduce pollution, the air will be cleaner.", phonetic: "", vietnamese: "Nếu chúng ta giảm ô nhiễm, không khí sẽ trong sạch hơn.", type: "example" },
-          { english: "deforestation", phonetic: "/dɪˌfɒrɪˈsteɪʃn/", vietnamese: "nạn phá rừng", type: "vocabulary" },
-          { english: "Deforestation destroys the homes of many animals.", phonetic: "", vietnamese: "Nạn phá rừng phá hủy nơi sinh sống của nhiều loài động vật.", type: "example" },
-          { english: "If we stop deforestation, forests will grow back.", phonetic: "", vietnamese: "Nếu chúng ta ngừng phá rừng, các khu rừng sẽ phục hồi.", type: "example" },
-          { english: "renewable energy", phonetic: "/rɪˈnjuːəbl ˈenədʒi/", vietnamese: "năng lượng tái tạo", type: "vocabulary" },
-          { english: "Solar power is a type of renewable energy.", phonetic: "", vietnamese: "Năng lượng mặt trời là một loại năng lượng tái tạo.", type: "example" },
-          { english: "If we use renewable energy, we will reduce pollution.", phonetic: "", vietnamese: "Nếu chúng ta dùng năng lượng tái tạo, chúng ta sẽ giảm ô nhiễm.", type: "example" },
+          // === TỪ VỰNG (VOCABULARY) ===
+
+          // 1. Reduce
           { english: "reduce", phonetic: "/rɪˈdjuːs/", vietnamese: "giảm thiểu", type: "vocabulary" },
-          { english: "We should reduce the amount of plastic we use.", phonetic: "", vietnamese: "Chúng ta nên giảm lượng nhựa mình sử dụng.", type: "example" },
-          { english: "If you reduce waste, the environment will be cleaner.", phonetic: "", vietnamese: "Nếu bạn giảm rác thải, môi trường sẽ sạch hơn.", type: "example" },
+          { english: "We should reduce the amount of plastic we use.", vietnamese: "Chúng ta nên giảm lượng nhựa mình sử dụng.", type: "example" },
+          { english: "If we reduce waste, the environment will be cleaner.", vietnamese: "Nếu chúng ta giảm rác thải, môi trường sẽ sạch hơn.", type: "example" },
+          { english: "Turn off the lights to reduce electricity.", vietnamese: "Hãy tắt đèn để giảm bớt điện năng.", type: "example" },
+          { english: "How can we reduce air pollution?", vietnamese: "Chúng ta có thể giảm ô nhiễm không khí bằng cách nào?", type: "example" },
+
+          // 2. Reuse
           { english: "reuse", phonetic: "/ˌriːˈjuːz/", vietnamese: "tái sử dụng", type: "vocabulary" },
-          { english: "We can reuse shopping bags many times.", phonetic: "", vietnamese: "Chúng ta có thể tái sử dụng túi mua hàng nhiều lần.", type: "example" },
-          { english: "Reuse bottles instead of throwing them away.", phonetic: "", vietnamese: "Hãy tái sử dụng chai lọ thay vì vứt chúng đi.", type: "example" },
+          { english: "We can reuse shopping bags many times.", vietnamese: "Chúng ta có thể tái sử dụng túi mua hàng nhiều lần.", type: "example" },
+          { english: "Reuse bottles instead of throwing them away.", vietnamese: "Hãy tái sử dụng chai lọ thay vì vứt chúng đi.", type: "example" },
+          { english: "I reuse old envelopes for scrap paper.", vietnamese: "Tôi tái sử dụng phong bì cũ để làm giấy nháp.", type: "example" },
+          { english: "Try to reuse everything before you recycle it.", vietnamese: "Hãy cố gắng tái sử dụng mọi thứ trước khi bạn đem đi tái chế.", type: "example" },
+
+          // 3. Recycle
+          { english: "recycle", phonetic: "/ˌriːˈsaɪkl/", vietnamese: "tái chế", type: "vocabulary" },
+          { english: "We should recycle paper, glass and metal.", vietnamese: "Chúng ta nên tái chế giấy, thủy tinh và kim loại.", type: "example" },
+          { english: "Is this plastic bottle recyclable?", vietnamese: "Cái chai nhựa này có thể tái chế được không?", type: "example" },
+          { english: "Recycling saves natural resources.", vietnamese: "Tái chế giúp tiết kiệm tài nguyên thiên nhiên.", type: "example" },
+          { english: "The school has a new recycling program.", vietnamese: "Trường học có một chương trình tái chế mới.", type: "example" },
+
+          // 4. Environment
+          { english: "environment", phonetic: "/ɪnˈvaɪrənmənt/", vietnamese: "môi trường", type: "vocabulary" },
+          { english: "We must protect the environment.", vietnamese: "Chúng ta phải bảo vệ môi trường.", type: "example" },
+          { english: "Plastic is harmful to the environment.", vietnamese: "Nhựa có hại cho môi trường.", type: "example" },
+          { english: "We want to live in a clean environment.", vietnamese: "Chúng tôi muốn sống trong một môi trường sạch sẽ.", type: "example" },
+          { english: "Our goal is to create a greener environment.", vietnamese: "Mục tiêu của chúng tôi là tạo ra một môi trường xanh hơn.", type: "example" },
+
+          // 5. Deforestation
+          { english: "deforestation", phonetic: "/dɪˌfɒrɪˈsteɪʃn/", vietnamese: "nạn phá rừng", type: "vocabulary" },
+          { english: "Deforestation destroys the homes of many animals.", vietnamese: "Nạn phá rừng phá hủy nơi sinh sống của nhiều loài động vật.", type: "example" },
+          { english: "If we stop deforestation, forests will grow back.", vietnamese: "Nếu chúng ta ngừng phá rừng, các khu rừng sẽ phục hồi.", type: "example" },
+          { english: "Deforestation is a major cause of climate change.", vietnamese: "Phá rừng là nguyên nhân chính gây ra biến đổi khí hậu.", type: "example" },
+          { english: "We need to plant more trees to fight deforestation.", vietnamese: "Chúng ta cần trồng thêm cây để chống lại nạn phá rừng.", type: "example" },
+
+          // 6. Endangered species
           { english: "endangered species", phonetic: "/ɪnˈdeɪndʒərd ˈspiːʃiːz/", vietnamese: "loài có nguy cơ tuyệt chủng", type: "vocabulary" },
-          { english: "The tiger is an endangered species.", phonetic: "", vietnamese: "Hổ là một loài có nguy cơ tuyệt chủng.", type: "example" },
-          { english: "If we protect nature, endangered species will survive.", phonetic: "", vietnamese: "Nếu chúng ta bảo vệ thiên nhiên, các loài có nguy cơ tuyệt chủng sẽ tồn tại.", type: "example" },
+          { english: "The tiger is an endangered species.", vietnamese: "Hổ là một loài có nguy cơ tuyệt chủng.", type: "example" },
+          { english: "If we protect nature, endangered species will survive.", vietnamese: "Nếu chúng ta bảo vệ thiên nhiên, các loài có nguy cơ tuyệt chủng sẽ tồn tại.", type: "example" },
+          { english: "Hunting endangered species is illegal.", vietnamese: "Săn bắn các loài có nguy cơ tuyệt chủng là phạm pháp.", type: "example" },
+          { english: "We should donate to save endangered species.", vietnamese: "Chúng ta nên quyên góp để cứu các loài có nguy cơ tuyệt chủng.", type: "example" },
+
+          // 7. Greenhouse effect
           { english: "greenhouse effect", phonetic: "/ˈɡriːnhaʊs ɪˈfekt/", vietnamese: "hiệu ứng nhà kính", type: "vocabulary" },
-          { english: "The greenhouse effect causes global warming.", phonetic: "", vietnamese: "Hiệu ứng nhà kính gây ra sự nóng lên toàn cầu.", type: "example" },
-          { english: "If we use less fossil fuel, the greenhouse effect will decrease.", phonetic: "", vietnamese: "Nếu chúng ta dùng ít nhiên liệu hóa thạch hơn, hiệu ứng nhà kính sẽ giảm.", type: "example" },
+          { english: "The greenhouse effect causes global warming.", vietnamese: "Hiệu ứng nhà kính gây ra sự nóng lên toàn cầu.", type: "example" },
+          { english: "If we use less fossil fuel, the greenhouse effect will decrease.", vietnamese: "Nếu chúng ta dùng ít nhiên liệu hóa thạch hơn, hiệu ứng nhà kính sẽ giảm.", type: "example" },
+          { english: "Trees help to reduce the greenhouse effect.", vietnamese: "Cây xanh giúp giảm bớt hiệu ứng nhà kính.", type: "example" },
+          { english: "Scientists are worried about the greenhouse effect.", vietnamese: "Các nhà khoa học đang lo lắng về hiệu ứng nhà kính.", type: "example" },
+
+          // 8. Reusable
+          { english: "reusable", phonetic: "/ˌriːˈjuːzəbl/", vietnamese: "có thể dùng lại", type: "vocabulary" },
+          { english: "I use a reusable water bottle every day.", vietnamese: "Tôi sử dụng bình nước có thể dùng lại mỗi ngày.", type: "example" },
+          { english: "Reusable bags are better than plastic bags.", vietnamese: "Túi dùng lại được tốt hơn túi nilon.", type: "example" },
+          { english: "Always bring your reusable cup to the coffee shop.", vietnamese: "Luôn mang theo cốc dùng lại được của bạn đến quán cà phê.", type: "example" },
+          { english: "The school fair sells reusable products.", vietnamese: "Hội chợ trường học bán các sản phẩm có thể dùng lại được.", type: "example" },
+
+          // 9. Charity
+          { english: "charity", phonetic: "/ˈtʃærəti/", vietnamese: "từ thiện", type: "vocabulary" },
+          { english: "We give our old clothes to charity.", vietnamese: "Chúng tôi đem quần áo cũ đi làm từ thiện.", type: "example" },
+          { english: "She works for a charity that helps animals.", vietnamese: "Cô ấy làm việc cho một tổ chức từ thiện giúp đỡ động vật.", type: "example" },
+          { english: "The charity event was a big success.", vietnamese: "Sự kiện từ thiện đã thành công rực rỡ.", type: "example" },
+          { english: "People in need will receive help from the charity.", vietnamese: "Những người khó khăn sẽ nhận được sự giúp đỡ từ hội từ thiện.", type: "example" },
+
+          // 10. Rubbish
+          { english: "rubbish", phonetic: "/ˈrʌbɪʃ/", vietnamese: "rác thải", type: "vocabulary" },
+          { english: "Don't throw rubbish on the street.", vietnamese: "Đừng vứt rác ra đường.", type: "example" },
+          { english: "Pick up the rubbish and put it in the bin.", vietnamese: "Hãy nhặt rác và bỏ vào thùng.", type: "example" },
+          { english: "There is too much rubbish in the ocean.", vietnamese: "Có quá nhiều rác thải ở đại dương.", type: "example" },
+          { english: "We should sort our rubbish at home.", vietnamese: "Chúng ta nên phân loại rác tại nhà.", type: "example" },
+
+          // === TỪ VỰNG BỔ SUNG UNIT 11 (EXPANDED VOCABULARY) ===
+
+          // 11. Pollution
+          { english: "pollution", phonetic: "/pəˈluːʃn/", vietnamese: "sự ô nhiễm", type: "vocabulary" },
+          { english: "Air pollution is a big problem in this city.", vietnamese: "Ô nhiễm không khí là một vấn đề lớn ở thành phố này.", type: "example" },
+          { english: "Water pollution kills many fish.", vietnamese: "Ô nhiễm nước làm chết nhiều loài cá.", type: "example" },
+          { english: "We should find ways to reduce noise pollution.", vietnamese: "Chúng ta nên tìm cách giảm thiểu ô nhiễm tiếng ồn.", type: "example" },
+
+          // 12. Wildlife
+          { english: "wildlife", phonetic: "/ˈwaɪldlaɪf/", vietnamese: "động vật hoang dã", type: "vocabulary" },
+          { english: "We should protect the wildlife in this forest.", vietnamese: "Chúng ta nên bảo vệ động vật hoang dã trong khu rừng này.", type: "example" },
+          { english: "Pollution is dangerous for wildlife.", vietnamese: "Ô nhiễm rất nguy hiểm đối với động vật hoang dã.", type: "example" },
+          { english: "Photographers love taking photos of wildlife.", vietnamese: "Các nhiếp ảnh gia rất thích chụp ảnh động vật hoang dã.", type: "example" },
+
+          // 13. Natural resources
+          { english: "natural resources", phonetic: "/ˌnætʃrəl rɪˈsɔːrsɪz/", vietnamese: "tài nguyên thiên nhiên", type: "vocabulary" },
+          { english: "Water and forests are important natural resources.", vietnamese: "Nước và rừng là những tài nguyên thiên nhiên quan trọng.", type: "example" },
+          { english: "We are using up our natural resources too fast.", vietnamese: "Chúng ta đang sử dụng tài nguyên thiên nhiên quá nhanh.", type: "example" },
+          { english: "Recycling helps save natural resources.", vietnamese: "Tái chế giúp tiết kiệm tài nguyên thiên nhiên.", type: "example" },
+
+          // 14. Global warming
+          { english: "global warming", phonetic: "/ˌɡloʊbl ˈwɔːrmɪŋ/", vietnamese: "sự nóng lên toàn cầu", type: "vocabulary" },
+          { english: "Global warming causes ice to melt.", vietnamese: "Sự nóng lên toàn cầu làm cho băng tan.", type: "example" },
+          { english: "How can we stop global warming?", vietnamese: "Chúng ta có thể ngăn chặn sự nóng lên toàn cầu bằng cách nào?", type: "example" },
+          { english: "Global warming is a serious threat to the Earth.", vietnamese: "Nóng lên toàn cầu là một mối đe dọa nghiêm trọng đối với Trái Đất.", type: "example" },
+
+          // 15. Container
+          { english: "container", phonetic: "/kənˈteɪnər/", vietnamese: "đồ đựng / hộp đựng", type: "vocabulary" },
+          { english: "Put your food in a reusable container.", vietnamese: "Hãy để thức ăn của bạn vào một hộp đựng có thể dùng lại.", type: "example" },
+          { english: "We should not use plastic containers.", vietnamese: "Chúng ta không nên sử dụng các hộp đựng bằng nhựa.", type: "example" },
+          { english: "This container is made of recycled glass.", vietnamese: "Cái hộp này được làm từ thủy tinh tái chế.", type: "example" },
+
+          // 16. Exchange
+          { english: "exchange", phonetic: "/ɪksˈtʃeɪndʒ/", vietnamese: "trao đổi", type: "vocabulary" },
+          { english: "We can exchange old books for new ones.", vietnamese: "Chúng ta có thể đổi sách cũ lấy sách mới.", type: "example" },
+          { english: "They exchange their plastic bottles for plants.", vietnamese: "Họ đổi chai nhựa lấy cây xanh.", type: "example" },
+          { english: "Is there an exchange market in your school?", vietnamese: "Trường bạn có hội chợ trao đổi đồ cũ không?", type: "example" },
+
+          // 17. Pick up
+          { english: "pick up", phonetic: "/pɪk ʌp/", vietnamese: "nhặt lên / thu gom", type: "vocabulary" },
+          { english: "Please pick up your rubbish after the picnic.", vietnamese: "Làm ơn hãy nhặt rác của bạn sau buổi dã ngoại.", type: "example" },
+          { english: "We went to the beach to pick up trash.", vietnamese: "Chúng tôi đã ra bãi biển để nhặt rác.", type: "example" },
+          { english: "Pick up those papers on the floor.", vietnamese: "Hãy nhặt những tờ giấy trên sàn nhà kia lên.", type: "example" },
+
+          // 18. Wrap
+          { english: "wrap", phonetic: "/ræp/", vietnamese: "gói / bọc", type: "vocabulary" },
+          { english: "Don't wrap your gifts in plastic paper.", vietnamese: "Đừng gói quà bằng giấy nilon.", type: "example" },
+          { english: "I wrap my lunch in a banana leaf.", vietnamese: "Tôi gói bữa trưa trong một chiếc lá chuối.", type: "example" },
+          { english: "She wraps the sandwiches carefully.", vietnamese: "Cô ấy bọc những chiếc bánh sandwich rất cẩn thận.", type: "example" },
+
+          // 19. President
+          { english: "president", phonetic: "/ˈprezɪdənt/", vietnamese: "chủ tịch / người đứng đầu", type: "vocabulary" },
+          { english: "He is the president of the 3Rs club.", vietnamese: "Cậu ấy là chủ tịch câu lạc bộ 3Rs.", type: "example" },
+          { english: "The president gave a speech about the environment.", vietnamese: "Chủ tịch đã có một bài phát biểu về môi trường.", type: "example" },
+          { english: "We are voting for a new club president.", vietnamese: "Chúng tôi đang bầu chọn một chủ tịch câu lạc bộ mới.", type: "example" },
+
+          // 20. Tip
+          { english: "tip", phonetic: "/tɪp/", vietnamese: "mẹo / lời khuyên", type: "vocabulary" },
+          { english: "Here is a tip to save water.", vietnamese: "Đây là một mẹo để tiết kiệm nước.", type: "example" },
+          { english: "She gave me some green living tips.", vietnamese: "Cô ấy đã cho tôi vài lời khuyên về lối sống xanh.", type: "example" },
+          { english: "What is your best tip for recycling?", vietnamese: "Mẹo hay nhất của bạn để tái chế là gì?", type: "example" },
+
+          // === NGỮ PHÁP (GRAMMAR) ===
+
+          // --- 1. MẠO TỪ (ARTICLES: A, AN, THE) ---
+          { english: "Articles", phonetic: "", vietnamese: "Mạo từ (A, An, The)", type: "grammar" },
+          // Mức độ 1: A / An (Nhắc đến lần đầu/Chung chung)
+          { english: "I have a reusable bag.", vietnamese: "Tôi có một chiếc túi dùng lại được.", type: "example" },
+          { english: "She is eating an apple.", vietnamese: "Cô ấy đang ăn một quả táo.", type: "example" },
+          // Mức độ 2: The (Đã biết rõ/Đã nhắc tới)
+          { english: "I have a bag. The bag is green.", vietnamese: "Tôi có một chiếc túi. Chiếc túi đó màu xanh.", type: "example" },
+          { english: "Close the door, please.", vietnamese: "Làm ơn hãy đóng cửa vào.", type: "example" },
+          // Mức độ 3: The (Vật duy nhất)
+          { english: "The Earth goes around the Sun.", vietnamese: "Trái đất quay quanh Mặt trời.", type: "example" },
+          { english: "The Moon looks beautiful tonight.", vietnamese: "Mặt trăng tối nay trông thật đẹp.", type: "example" },
+
+          // --- 2. CÂU ĐIỀU KIỆN LOẠI 1 (FIRST CONDITIONAL) ---
+          { english: "First Conditional", phonetic: "", vietnamese: "Câu điều kiện loại 1 (Có thể xảy ra)", type: "grammar" },
+          // Mức độ 1: Khẳng định đơn giản (If + Hiện tại đơn, Will + V)
+          { english: "If we plant trees, the air will be cleaner.", vietnamese: "Nếu chúng ta trồng cây, không khí sẽ sạch hơn.", type: "example" },
+          { english: "If you study hard, you will pass the exam.", vietnamese: "Nếu bạn học hành chăm chỉ, bạn sẽ đỗ kỳ thi.", type: "example" },
+          // Mức độ 2: Phủ định (Won't)
+          { english: "If we don't save water, we won't have enough to drink.", vietnamese: "Nếu chúng ta không tiết kiệm nước, chúng ta sẽ không có đủ để uống.", type: "example" },
+          { english: "If he doesn't hurry, he will be late.", vietnamese: "Nếu cậu ấy không khẩn trương, cậu ấy sẽ bị muộn.", type: "example" },
+          // Mức độ 3: Nâng cao (Thay đổi vị trí mệnh đề If)
+          { english: "The environment will be cleaner if we reduce waste.", vietnamese: "Môi trường sẽ sạch hơn nếu chúng ta giảm thiểu rác thải.", type: "example" },
+          { english: "What will you do if it rains tomorrow?", vietnamese: "Bạn sẽ làm gì nếu ngày mai trời mưa?", type: "example" },
+          { english: "If you use less paper, you will save a lot of trees.", vietnamese: "Nếu bạn sử dụng ít giấy hơn, bạn sẽ cứu được rất nhiều cây.", type: "example" }
         ]
       },
       {
         id: 12, name: "Robots", emoji: "🤖",
-        grammar: "Superlative adjectives",
+        grammar: "Superlative adjectives (Short & Long), Can/Can't for ability",
         words: [
-          { english: "artificial intelligence", phonetic: "/ˌɑːrtɪˈfɪʃl ɪnˈtelɪdʒəns/", vietnamese: "trí tuệ nhân tạo", type: "vocabulary" },
-          { english: "Artificial intelligence helps robots learn and think.", phonetic: "", vietnamese: "Trí tuệ nhân tạo giúp robot học và suy nghĩ.", type: "example" },
-          { english: "The most advanced robots use artificial intelligence.", phonetic: "", vietnamese: "Những robot tiên tiến nhất sử dụng trí tuệ nhân tạo.", type: "example" },
+          // === TỪ VỰNG (VOCABULARY) ===
+
+          // 1. Household chores
           { english: "household chores", phonetic: "/ˈhaʊshəʊld tʃɔːrz/", vietnamese: "việc nhà", type: "vocabulary" },
-          { english: "Some robots can do household chores.", phonetic: "", vietnamese: "Một số robot có thể làm việc nhà.", type: "example" },
-          { english: "The most helpful robot does all the household chores.", phonetic: "", vietnamese: "Robot hữu ích nhất làm tất cả việc nhà.", type: "example" },
-          { english: "factory", phonetic: "/ˈfæktri/", vietnamese: "nhà máy", type: "vocabulary" },
-          { english: "Robots work in factories to make products.", phonetic: "", vietnamese: "Robot làm việc trong các nhà máy để sản xuất hàng hóa.", type: "example" },
-          { english: "This is the largest robot factory in the world.", phonetic: "", vietnamese: "Đây là nhà máy robot lớn nhất thế giới.", type: "example" },
+          { english: "Some robots can do household chores.", vietnamese: "Một số robot có thể làm việc nhà.", type: "example" },
+          { english: "The most helpful robot does all the household chores.", vietnamese: "Robot hữu ích nhất làm tất cả việc nhà.", type: "example" },
+          { english: "I hate doing household chores like washing dishes.", vietnamese: "Tôi ghét làm việc nhà như rửa bát đĩa.", type: "example" },
+
+          // 2. Artificial Intelligence (AI)
+          { english: "artificial intelligence", phonetic: "/ˌɑːrtɪˈfɪʃl ɪnˈtelɪdʒəns/", vietnamese: "trí tuệ nhân tạo", type: "vocabulary" },
+          { english: "AI helps robots learn and think.", vietnamese: "AI giúp robot học và suy nghĩ.", type: "example" },
+          { english: "The most advanced robots use artificial intelligence.", vietnamese: "Những robot tiên tiến nhất sử dụng trí tuệ nhân tạo.", type: "example" },
+          { english: "Is artificial intelligence dangerous to humans?", vietnamese: "Trí tuệ nhân tạo có nguy hiểm cho con người không?", type: "example" },
+
+          // 3. Advanced
           { english: "advanced", phonetic: "/ədˈvɑːnst/", vietnamese: "tiên tiến / nâng cao", type: "vocabulary" },
-          { english: "Japan has the most advanced robots.", phonetic: "", vietnamese: "Nhật Bản có những robot tiên tiến nhất.", type: "example" },
-          { english: "The most advanced technology can be found in robots.", phonetic: "", vietnamese: "Công nghệ tiên tiến nhất có thể được tìm thấy trong robot.", type: "example" },
-          { english: "programme", phonetic: "/ˈproʊɡræm/", vietnamese: "lập trình / chương trình", type: "vocabulary" },
-          { english: "Scientists programme robots to do many tasks.", phonetic: "", vietnamese: "Các nhà khoa học lập trình robot để thực hiện nhiều nhiệm vụ.", type: "example" },
-          { english: "Which robot has the most complex programme?", phonetic: "", vietnamese: "Robot nào có chương trình phức tạp nhất?", type: "example" },
-          { english: "emotion", phonetic: "/ɪˈmoʊʃn/", vietnamese: "cảm xúc", type: "vocabulary" },
-          { english: "Some scientists want robots to understand human emotions.", phonetic: "", vietnamese: "Một số nhà khoa học muốn robot hiểu cảm xúc của con người.", type: "example" },
-          { english: "The most human-like robot can show basic emotions.", phonetic: "", vietnamese: "Robot giống người nhất có thể thể hiện các cảm xúc cơ bản.", type: "example" },
+          { english: "Japan has the most advanced robots.", vietnamese: "Nhật Bản có những robot tiên tiến nhất.", type: "example" },
+          { english: "This robot uses advanced technology to repair cars.", vietnamese: "Robot này dùng công nghệ tiên tiến để sửa xe hơi.", type: "example" },
+          { english: "He is studying an advanced course in robotics.", vietnamese: "Anh ấy đang học một khóa học nâng cao về robot.", type: "example" },
+
+          // 4. Explore
           { english: "explore", phonetic: "/ɪkˈsplɔːr/", vietnamese: "khám phá", type: "vocabulary" },
-          { english: "Robots can explore dangerous places that humans cannot.", phonetic: "", vietnamese: "Robot có thể khám phá những nơi nguy hiểm mà con người không thể.", type: "example" },
-          { english: "The fastest robot can explore the ocean floor.", phonetic: "", vietnamese: "Robot nhanh nhất có thể khám phá đáy đại dương.", type: "example" },
+          { english: "Robots can explore dangerous places.", vietnamese: "Robot có thể khám phá những nơi nguy hiểm.", type: "example" },
+          { english: "The fastest robot can explore the ocean floor.", vietnamese: "Robot nhanh nhất có thể khám phá đáy đại dương.", type: "example" },
+          { english: "We use robots to explore other planets like Mars.", vietnamese: "Chúng ta dùng robot để khám phá các hành tinh khác như sao Hỏa.", type: "example" },
+
+          // 5. Understand feelings
+          { english: "understand feelings", phonetic: "/ˌʌndərˈstænd ˈfiːlɪŋz/", vietnamese: "hiểu cảm xúc", type: "vocabulary" },
+          { english: "Can robots understand human feelings?", vietnamese: "Robot có thể hiểu được cảm xúc con người không?", type: "example" },
+          { english: "The smartest robot can understand how we feel.", vietnamese: "Robot thông minh nhất có thể hiểu chúng ta cảm thấy thế nào.", type: "example" },
+          { english: "Future robots might understand our moods.", vietnamese: "Robot tương lai có thể hiểu được tâm trạng của chúng ta.", type: "example" },
+
+          // 6. Repair
+          { english: "repair", phonetic: "/rɪˈper/", vietnamese: "sửa chữa", type: "vocabulary" },
+          { english: "This robot can repair broken machines.", vietnamese: "Robot này có thể sửa chữa những máy móc bị hỏng.", type: "example" },
+          { english: "He works as a repair robot in a factory.", vietnamese: "Nó làm việc như một robot sửa chữa trong nhà máy.", type: "example" },
+          { english: "Can you repair this smart clock?", vietnamese: "Bạn có thể sửa chiếc đồng hồ thông minh này không?", type: "example" },
+
+          // 7. Guard
+          { english: "guard", phonetic: "/ɡɑːrd/", vietnamese: "bảo vệ / canh gác", type: "vocabulary" },
+          { english: "Robots can work as guards at night.", vietnamese: "Robot có thể làm bảo vệ vào ban đêm.", type: "example" },
+          { english: "The robot dog is the best guard for my house.", vietnamese: "Chú chó robot là người bảo vệ tốt nhất cho nhà tôi.", type: "example" },
+          { english: "It stands at the gate to guard the building.", vietnamese: "Nó đứng ở cổng để canh gác tòa nhà.", type: "example" },
+
+          // 8. Space station
+          { english: "space station", phonetic: "/ˈspeɪs ˌsteɪʃn/", vietnamese: "trạm vũ trụ", type: "vocabulary" },
+          { english: "Robots help astronauts on the space station.", vietnamese: "Robot giúp đỡ các phi hành gia trên trạm vũ trụ.", type: "example" },
+          { english: "Living on a space station is very exciting.", vietnamese: "Sống trên trạm vũ trụ rất thú vị.", type: "example" },
+          { english: "The most expensive robot is on the space station.", vietnamese: "Robot đắt nhất đang ở trên trạm vũ trụ.", type: "example" },
+
+          // === NGỮ PHÁP (GRAMMAR) ===
+
+          // --- 1. SO SÁNH NHẤT TÍNH TỪ NGẮN (SHORT ADJECTIVES) ---
+          { english: "Superlatives (Short)", phonetic: "", vietnamese: "So sánh nhất (Tính từ ngắn)", type: "grammar" },
+          // Mức độ 1: Đặc điểm cơ bản (The + Adj-est)
+          { english: "Tom is the tallest in his class.", vietnamese: "Tom là người cao nhất lớp.", type: "example" },
+          { english: "This is the biggest robot factory.", vietnamese: "Đây là nhà máy robot lớn nhất.", type: "example" },
+          // Mức độ 2: Quy tắc đặc biệt (Big -> Biggest, Heavy -> Heaviest)
+          { english: "Robot H9 is the heaviest (45 kg).", vietnamese: "Robot H9 là robot nặng nhất (45 kg).", type: "example" },
+          { english: "This is the nicest robot I have ever seen.", vietnamese: "Đây là con robot đẹp nhất tôi từng thấy.", type: "example" },
+
+          // --- 2. SO SÁNH NHẤT TÍNH TỪ DÀI & ĐẶC BIỆT ---
+          { english: "Superlatives (Long & Irregular)", phonetic: "", vietnamese: "So sánh nhất (Tính từ dài & Đặc biệt)", type: "grammar" },
+          // Mức độ 1: Tính từ dài (The most + Adj)
+          { english: "M10 is the most expensive robot ($1,800).", vietnamese: "M10 là robot đắt nhất ($1,800).", type: "example" },
+          { english: "Household robots are the most useful.", vietnamese: "Robot gia đình là hữu ích nhất.", type: "example" },
+          // Mức độ 2: Tính từ đặc biệt (Good -> The best, Bad -> The worst)
+          { english: "This is the best robot in the world.", vietnamese: "Đây là con robot tốt nhất thế giới.", type: "example" },
+          { english: "That was the worst film about robots.", vietnamese: "Đó là bộ phim tệ nhất về robot.", type: "example" },
+
+          // --- 3. KHẢ NĂNG VỚI CAN / CAN'T ---
+          { english: "Can / Can't", phonetic: "", vietnamese: "Khả năng (Có thể / Không thể)", type: "grammar" },
+          { english: "The robot can water the plants, but it can't pick fruit.", vietnamese: "Robot có thể tưới cây, nhưng nó không thể hái quả.", type: "example" },
+          { english: "V10 can do the washing but it can't read our moods.", vietnamese: "V10 có thể giặt giũ nhưng nó không thể đọc được tâm trạng của chúng ta.", type: "example" }
         ]
       }
     ];
@@ -2284,18 +3338,588 @@
     // ═══════════════════════════════════════════════════════
     (function init() {
       renderHome();
+      initTest();
+      initGrammar();
       showScreen('home');
-
-      // Resume session
-      const saved = loadState();
-      if (saved.unitId) {
-        const unit = UNITS.find(u => u.id === saved.unitId);
-        if (unit) {
-          // Start with saved position but don't auto-navigate to learn screen
-          // User can tap the unit card to resume
-        }
-      }
     })();
+
+    // ═══════════════════════════════════════════════════════
+    // TAB SWITCHING
+    // ═══════════════════════════════════════════════════════
+    function switchTab(tab) {
+      document.getElementById('tabFlash').classList.toggle('active', tab === 'flash');
+      document.getElementById('tabTest').classList.toggle('active', tab === 'test');
+      document.getElementById('tabGrammar').classList.toggle('active', tab === 'grammar');
+      document.getElementById('tabContentFlash').style.display = tab === 'flash' ? 'flex' : 'none';
+      document.getElementById('tabContentTest').style.display = tab === 'test' ? 'flex' : 'none';
+      document.getElementById('tabContentGrammar').style.display = tab === 'grammar' ? 'flex' : 'none';
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // GRAMMAR QUESTION BANK
+    // ═══════════════════════════════════════════════════════
+    const GRAMMAR_QUESTIONS = [
+      // ── PRESENT SIMPLE ──
+      {
+        topic: 'present_simple', tense: 'Hiện tại đơn',
+        q: 'She ___ to school every day.',
+        options: ['go', 'goes', 'going', 'went'], answer: 'goes',
+        explain: '"She" (ngôi thứ 3 số ít) → thêm -s: goes.'
+      },
+      {
+        topic: 'present_simple', tense: 'Hiện tại đơn',
+        q: 'They ___ football on weekends.',
+        options: ['plays', 'playing', 'play', 'played'], answer: 'play',
+        explain: '"They" (số nhiều) → giữ nguyên động từ: play.'
+      },
+      {
+        topic: 'present_simple', tense: 'Hiện tại đơn',
+        q: '___ he like watching cartoons?',
+        options: ['Do', 'Does', 'Did', 'Is'], answer: 'Does',
+        explain: 'Câu hỏi ngôi 3 số ít → Does + V nguyên mẫu.'
+      },
+      {
+        topic: 'present_simple', tense: 'Hiện tại đơn',
+        q: 'My father ___ the news every evening.',
+        options: ['watch', 'watches', 'watching', 'watched'], answer: 'watches',
+        explain: '"My father" (ngôi 3 số ít) → thêm -es: watches.'
+      },
+      {
+        topic: 'present_simple', tense: 'Hiện tại đơn',
+        q: 'I ___ not like reality shows.',
+        options: ['does', 'do', 'did', 'am'], answer: 'do',
+        explain: '"I" dùng trợ động từ "do" để phủ định.'
+      },
+      {
+        topic: 'present_simple', tense: 'Hiện tại đơn',
+        q: 'The bus ___ at 7 o\'clock every morning.',
+        options: ['arrive', 'arrives', 'arriving', 'arrived'], answer: 'arrives',
+        explain: '"The bus" (ngôi 3 số ít) → thêm -s: arrives.'
+      },
+      {
+        topic: 'present_simple', tense: 'Hiện tại đơn',
+        q: 'We ___ English at school.',
+        options: ['studies', 'studying', 'study', 'studied'], answer: 'study',
+        explain: '"We" (số nhiều) → giữ nguyên động từ: study.'
+      },
+      {
+        topic: 'present_simple', tense: 'Hiện tại đơn',
+        q: 'How often ___ you play badminton?',
+        options: ['does', 'do', 'did', 'are'], answer: 'do',
+        explain: '"You" → dùng trợ động từ "do" trong câu hỏi.'
+      },
+      {
+        topic: 'present_simple', tense: 'Hiện tại đơn',
+        q: 'She ___ not watch TV in the morning.',
+        options: ['do', 'did', 'does', 'is'], answer: 'does',
+        explain: '"She" (ngôi 3 số ít) → dùng "does" để phủ định.'
+      },
+      {
+        topic: 'present_simple', tense: 'Hiện tại đơn',
+        q: 'My sister ___ her homework after dinner.',
+        options: ['do', 'doing', 'does', 'did'], answer: 'does',
+        explain: '"My sister" (ngôi 3 số ít) → thêm -es: does.'
+      },
+      {
+        topic: 'present_simple', tense: 'Hiện tại đơn',
+        q: 'Water ___ at 100 degrees Celsius.',
+        options: ['boil', 'boiling', 'boils', 'boiled'], answer: 'boils',
+        explain: 'Sự thật khoa học dùng hiện tại đơn, ngôi 3 số ít: boils.'
+      },
+      {
+        topic: 'present_simple', tense: 'Hiện tại đơn',
+        q: '___ your parents watch the weather forecast?',
+        options: ['Does', 'Do', 'Did', 'Are'], answer: 'Do',
+        explain: '"Your parents" (số nhiều) → Do + V nguyên mẫu.'
+      },
+
+      // ── PRESENT CONTINUOUS ──
+      {
+        topic: 'present_continuous', tense: 'Hiện tại tiếp diễn',
+        q: 'She ___ a book right now.',
+        options: ['read', 'reads', 'is reading', 'was reading'], answer: 'is reading',
+        explain: '"right now" → hiện tại tiếp diễn: is + V-ing.'
+      },
+      {
+        topic: 'present_continuous', tense: 'Hiện tại tiếp diễn',
+        q: 'They ___ football at the moment.',
+        options: ['play', 'are playing', 'played', 'plays'], answer: 'are playing',
+        explain: '"at the moment" → hiện tại tiếp diễn: are + V-ing.'
+      },
+      {
+        topic: 'present_continuous', tense: 'Hiện tại tiếp diễn',
+        q: '___ he watching TV now?',
+        options: ['Do', 'Does', 'Is', 'Was'], answer: 'Is',
+        explain: 'Câu hỏi hiện tại tiếp diễn ngôi 3 số ít → Is + S + V-ing?'
+      },
+      {
+        topic: 'present_continuous', tense: 'Hiện tại tiếp diễn',
+        q: 'Look! The children ___ in the park.',
+        options: ['run', 'runs', 'are running', 'ran'], answer: 'are running',
+        explain: '"Look!" cho thấy hành động đang xảy ra → are + V-ing.'
+      },
+      {
+        topic: 'present_continuous', tense: 'Hiện tại tiếp diễn',
+        q: 'I ___ my homework right now.',
+        options: ['do', 'am doing', 'does', 'did'], answer: 'am doing',
+        explain: '"I" + hiện tại tiếp diễn → am + V-ing.'
+      },
+      {
+        topic: 'present_continuous', tense: 'Hiện tại tiếp diễn',
+        q: 'We ___ lunch at the moment.',
+        options: ['have', 'are having', 'had', 'has'], answer: 'are having',
+        explain: '"at the moment" → hiện tại tiếp diễn: are + V-ing.'
+      },
+      {
+        topic: 'present_continuous', tense: 'Hiện tại tiếp diễn',
+        q: 'My mother ___ a dress right now.',
+        options: ['makes', 'is making', 'make', 'made'], answer: 'is making',
+        explain: '"right now" + ngôi 3 số ít → is + V-ing.'
+      },
+      {
+        topic: 'present_continuous', tense: 'Hiện tại tiếp diễn',
+        q: 'What ___ you doing?',
+        options: ['do', 'does', 'are', 'were'], answer: 'are',
+        explain: 'Câu hỏi hiện tại tiếp diễn với "you" → are + V-ing.'
+      },
+      {
+        topic: 'present_continuous', tense: 'Hiện tại tiếp diễn',
+        q: 'He ___ not playing games now.',
+        options: ['do', 'does', 'is', 'was'], answer: 'is',
+        explain: 'Phủ định hiện tại tiếp diễn ngôi 3 số ít → is not + V-ing.'
+      },
+      {
+        topic: 'present_continuous', tense: 'Hiện tại tiếp diễn',
+        q: 'The students ___ a test at the moment.',
+        options: ['take', 'are taking', 'took', 'takes'], answer: 'are taking',
+        explain: '"at the moment" → hiện tại tiếp diễn: are + V-ing.'
+      },
+      {
+        topic: 'present_continuous', tense: 'Hiện tại tiếp diễn',
+        q: 'Listen! Someone ___ outside.',
+        options: ['sings', 'sing', 'is singing', 'sang'], answer: 'is singing',
+        explain: '"Listen!" → hành động đang diễn ra → is + V-ing.'
+      },
+      {
+        topic: 'present_continuous', tense: 'Hiện tại tiếp diễn',
+        q: '___ they playing badminton now?',
+        options: ['Do', 'Does', 'Are', 'Were'], answer: 'Are',
+        explain: 'Câu hỏi hiện tại tiếp diễn với "they" → Are + S + V-ing?'
+      },
+
+      // ── PAST SIMPLE ──
+      {
+        topic: 'past_simple', tense: 'Quá khứ đơn',
+        q: 'We ___ volleyball yesterday.',
+        options: ['play', 'plays', 'played', 'playing'], answer: 'played',
+        explain: '"yesterday" → quá khứ đơn: V + -ed.'
+      },
+      {
+        topic: 'past_simple', tense: 'Quá khứ đơn',
+        q: 'She ___ to the museum last Sunday.',
+        options: ['go', 'goes', 'went', 'going'], answer: 'went',
+        explain: '"last Sunday" → quá khứ đơn. "go" bất quy tắc → went.'
+      },
+      {
+        topic: 'past_simple', tense: 'Quá khứ đơn',
+        q: '___ you watch the match last night?',
+        options: ['Do', 'Does', 'Did', 'Were'], answer: 'Did',
+        explain: 'Câu hỏi quá khứ đơn → Did + S + V nguyên mẫu.'
+      },
+      {
+        topic: 'past_simple', tense: 'Quá khứ đơn',
+        q: 'He ___ not come to school yesterday.',
+        options: ['do', 'does', 'did', 'was'], answer: 'did',
+        explain: 'Phủ định quá khứ đơn → did not + V nguyên mẫu.'
+      },
+      {
+        topic: 'past_simple', tense: 'Quá khứ đơn',
+        q: 'They ___ a documentary about robots last week.',
+        options: ['watch', 'watches', 'watched', 'watching'], answer: 'watched',
+        explain: '"last week" → quá khứ đơn: V + -ed.'
+      },
+      {
+        topic: 'past_simple', tense: 'Quá khứ đơn',
+        q: 'My team ___ the championship last year.',
+        options: ['win', 'wins', 'won', 'winning'], answer: 'won',
+        explain: '"last year" → quá khứ đơn. "win" bất quy tắc → won.'
+      },
+      {
+        topic: 'past_simple', tense: 'Quá khứ đơn',
+        q: 'Where ___ you go last summer?',
+        options: ['do', 'does', 'did', 'were'], answer: 'did',
+        explain: 'Câu hỏi Wh- quá khứ đơn → Where + did + S + V nguyên mẫu?'
+      },
+      {
+        topic: 'past_simple', tense: 'Quá khứ đơn',
+        q: 'I ___ my homework an hour ago.',
+        options: ['finish', 'finishes', 'finished', 'finishing'], answer: 'finished',
+        explain: '"an hour ago" → quá khứ đơn: V + -ed.'
+      },
+      {
+        topic: 'past_simple', tense: 'Quá khứ đơn',
+        q: 'The referee ___ the whistle at the end of the match.',
+        options: ['blow', 'blows', 'blew', 'blowing'], answer: 'blew',
+        explain: '"at the end of the match" (quá khứ). "blow" bất quy tắc → blew.'
+      },
+      {
+        topic: 'past_simple', tense: 'Quá khứ đơn',
+        q: 'We ___ swimming at the pool last Saturday.',
+        options: ['go', 'goes', 'went', 'gone'], answer: 'went',
+        explain: '"last Saturday" → quá khứ đơn. "go" bất quy tắc → went.'
+      },
+      {
+        topic: 'past_simple', tense: 'Quá khứ đơn',
+        q: 'She ___ not enjoy the quiz show.',
+        options: ['do', 'does', 'did', 'was'], answer: 'did',
+        explain: 'Phủ định quá khứ đơn → did not + V nguyên mẫu.'
+      },
+      {
+        topic: 'past_simple', tense: 'Quá khứ đơn',
+        q: 'The students ___ a test two days ago.',
+        options: ['take', 'takes', 'took', 'taking'], answer: 'took',
+        explain: '"two days ago" → quá khứ đơn. "take" bất quy tắc → took.'
+      },
+    ];
+
+    // ═══════════════════════════════════════════════════════
+    // GRAMMAR QUIZ STATE
+    // ═══════════════════════════════════════════════════════
+    let gQuiz = {
+      topic: 'all',
+      questions: [],
+      current: 0,
+      correct: 0,
+      answered: false
+    };
+
+    function initGrammar() {
+      // Topic pills — single select
+      document.querySelectorAll('.grammar-topic-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.grammar-topic-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          gQuiz.topic = btn.dataset.topic;
+        });
+      });
+
+      document.getElementById('grammarStartBtn').addEventListener('click', startGrammarQuiz);
+      document.getElementById('gQuizNextBtn').addEventListener('click', nextGrammarQuestion);
+      document.getElementById('gResultRetryBtn').addEventListener('click', startGrammarQuiz);
+      document.getElementById('gResultBackBtn').addEventListener('click', () => showGrammarPanel('setup'));
+    }
+
+    function showGrammarPanel(panel) {
+      document.getElementById('grammarSetup').style.display = panel === 'setup' ? 'block' : 'none';
+      document.getElementById('grammarQuiz').style.display = panel === 'quiz' ? 'block' : 'none';
+      document.getElementById('grammarResult').style.display = panel === 'result' ? 'block' : 'none';
+    }
+
+    function startGrammarQuiz() {
+      const pool = gQuiz.topic === 'all'
+        ? [...GRAMMAR_QUESTIONS]
+        : GRAMMAR_QUESTIONS.filter(q => q.topic === gQuiz.topic);
+
+      // Shuffle và lấy 10 câu
+      gQuiz.questions = pool.sort(() => Math.random() - 0.5).slice(0, 10);
+      gQuiz.current = 0;
+      gQuiz.correct = 0;
+      gQuiz.answered = false;
+
+      showGrammarPanel('quiz');
+      renderGrammarQuestion();
+    }
+
+    function renderGrammarQuestion() {
+      const q = gQuiz.questions[gQuiz.current];
+      const total = gQuiz.questions.length;
+      gQuiz.answered = false;
+
+      document.getElementById('gQuizCounter').textContent = `Câu ${gQuiz.current + 1} / ${total}`;
+      document.getElementById('gQuizScore').textContent = `✓ ${gQuiz.correct}`;
+      document.getElementById('gQuizProgress').style.width = `${(gQuiz.current / total) * 100}%`;
+
+      document.getElementById('gQuizLabel').textContent = q.tense;
+      document.getElementById('gQuizQuestion').textContent = q.q;
+      document.getElementById('gQuizHint').textContent = 'Chọn dạng động từ đúng để điền vào chỗ trống.';
+
+      const optEl = document.getElementById('gQuizOptions');
+      optEl.innerHTML = '';
+      const letters = ['A', 'B', 'C', 'D'];
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-option';
+        btn.innerHTML = `<span class="option-letter">${letters[i]}</span><span>${opt}</span>`;
+        btn.addEventListener('click', () => selectGrammarAnswer(btn, opt, q));
+        optEl.appendChild(btn);
+      });
+
+      document.getElementById('gQuizExplain').style.display = 'none';
+      document.getElementById('gQuizNextBtn').style.display = 'none';
+
+      const card = document.getElementById('gQuizCard');
+      card.style.animation = 'none';
+      card.offsetHeight;
+      card.style.animation = 'fade-in 0.35s ease';
+    }
+
+    function selectGrammarAnswer(btn, chosen, q) {
+      if (gQuiz.answered) return;
+      gQuiz.answered = true;
+
+      const isCorrect = chosen === q.answer;
+      if (isCorrect) gQuiz.correct++;
+
+      document.querySelectorAll('#gQuizOptions .quiz-option').forEach(b => {
+        b.classList.add('disabled');
+        const txt = b.querySelector('span:last-child').textContent;
+        if (txt === q.answer) b.classList.add(isCorrect && txt === chosen ? 'correct' : 'reveal');
+      });
+      if (!isCorrect) btn.classList.add('wrong');
+
+      const explain = document.getElementById('gQuizExplain');
+      explain.textContent = (isCorrect ? '✅ ' : '❌ ') + q.explain;
+      explain.style.display = 'block';
+
+      const nextBtn = document.getElementById('gQuizNextBtn');
+      const isLast = gQuiz.current === gQuiz.questions.length - 1;
+      nextBtn.textContent = isLast ? 'Xem kết quả 🎯' : 'Câu tiếp theo →';
+      nextBtn.style.display = 'block';
+    }
+
+    function nextGrammarQuestion() {
+      if (gQuiz.current < gQuiz.questions.length - 1) {
+        gQuiz.current++;
+        renderGrammarQuestion();
+      } else {
+        showGrammarResult();
+      }
+    }
+
+    function showGrammarResult() {
+      showGrammarPanel('result');
+      const total = gQuiz.questions.length;
+      const pct = Math.round((gQuiz.correct / total) * 100);
+
+      let emoji = '💪', title = 'Cố gắng lên!';
+      if (pct === 100) { emoji = '🏆'; title = 'Hoàn hảo!'; }
+      else if (pct >= 80) { emoji = '🎉'; title = 'Xuất sắc!'; }
+      else if (pct >= 60) { emoji = '👍'; title = 'Khá tốt!'; }
+      else if (pct >= 40) { emoji = '📚'; title = 'Cần ôn thêm!'; }
+
+      document.getElementById('gResultEmoji').textContent = emoji;
+      document.getElementById('gResultTitle').textContent = title;
+      document.getElementById('gResultScore').textContent = `${gQuiz.correct}/${total}`;
+      document.getElementById('gResultSub').textContent = `Bạn trả lời đúng ${gQuiz.correct} trong ${total} câu`;
+      document.getElementById('gStatCorrect').textContent = gQuiz.correct;
+      document.getElementById('gStatWrong').textContent = total - gQuiz.correct;
+      document.getElementById('gStatPct').textContent = pct + '%';
+      document.getElementById('gQuizProgress').style.width = '100%';
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // TEST / QUIZ
+    // ═══════════════════════════════════════════════════════
+    let quiz = {
+      selectedUnits: [],   // unit ids
+      questionCount: 20,
+      questions: [],
+      current: 0,
+      correct: 0,
+      answered: false
+    };
+
+    function initTest() {
+      // Build unit pills
+      const pillsEl = document.getElementById('testUnitPills');
+      pillsEl.innerHTML = '';
+      UNITS.forEach(u => {
+        const pill = document.createElement('button');
+        pill.className = 'test-unit-pill';
+        pill.textContent = `${u.emoji} Unit ${u.id}`;
+        pill.dataset.id = u.id;
+        pill.addEventListener('click', () => {
+          pill.classList.toggle('active');
+          const idx = quiz.selectedUnits.indexOf(u.id);
+          if (idx > -1) quiz.selectedUnits.splice(idx, 1);
+          else quiz.selectedUnits.push(u.id);
+        });
+        pillsEl.appendChild(pill);
+      });
+
+      // Count pills
+      document.getElementById('testCountPills').querySelectorAll('[data-count]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('#testCountPills [data-count]').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          quiz.questionCount = parseInt(btn.dataset.count);
+        });
+      });
+
+      document.getElementById('testStartBtn').addEventListener('click', startQuiz);
+      document.getElementById('quizNextBtn').addEventListener('click', nextQuestion);
+      document.getElementById('resultRetryBtn').addEventListener('click', retryQuiz);
+      document.getElementById('resultBackBtn').addEventListener('click', () => {
+        showTestPanel('setup');
+      });
+    }
+
+    function showTestPanel(panel) {
+      document.getElementById('testSetup').style.display = panel === 'setup' ? 'block' : 'none';
+      document.getElementById('testQuiz').style.display = panel === 'quiz' ? 'block' : 'none';
+      document.getElementById('testResult').style.display = panel === 'result' ? 'block' : 'none';
+    }
+
+    function startQuiz() {
+      // Default: all units if none selected
+      const ids = quiz.selectedUnits.length > 0 ? quiz.selectedUnits : UNITS.map(u => u.id);
+
+      // Collect vocabulary-only items from selected units
+      let pool = [];
+      UNITS.filter(u => ids.includes(u.id)).forEach(u => {
+        u.words.filter(w => w.type === 'vocabulary').forEach(w => {
+          pool.push({ ...w, unitName: u.name });
+        });
+      });
+
+      if (pool.length < 4) {
+        alert('Chọn thêm unit để có đủ từ vựng!'); return;
+      }
+
+      // Shuffle pool and take up to questionCount
+      pool = pool.sort(() => Math.random() - 0.5);
+      const total = Math.min(quiz.questionCount, pool.length);
+      const selected = pool.slice(0, total);
+
+      // Build questions: each question picks 3 wrong answers from remaining pool
+      quiz.questions = selected.map(item => {
+        const wrongs = pool
+          .filter(w => w.english !== item.english)
+          .sort(() => Math.random() - 0.5)
+          .slice(0, 3)
+          .map(w => w.vietnamese);
+
+        const options = [...wrongs, item.vietnamese].sort(() => Math.random() - 0.5);
+        return { item, options, answer: item.vietnamese };
+      });
+
+      quiz.current = 0;
+      quiz.correct = 0;
+      quiz.answered = false;
+
+      showTestPanel('quiz');
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const q = quiz.questions[quiz.current];
+      const total = quiz.questions.length;
+      quiz.answered = false;
+
+      // Topbar
+      document.getElementById('quizCounter').textContent = `Câu ${quiz.current + 1} / ${total}`;
+      document.getElementById('quizScoreBadge').textContent = `✓ ${quiz.correct}`;
+      document.getElementById('quizProgressFill').style.width = `${((quiz.current) / total) * 100}%`;
+
+      // Question card
+      document.getElementById('quizQuestion').textContent = q.item.english;
+      const ph = document.getElementById('quizPhonetic');
+      ph.textContent = q.item.phonetic || '';
+      ph.style.display = q.item.phonetic ? 'block' : 'none';
+      document.getElementById('quizTypeBadge').textContent = 'Vocabulary';
+
+      // Options
+      const optEl = document.getElementById('quizOptions');
+      optEl.innerHTML = '';
+      const letters = ['A', 'B', 'C', 'D'];
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-option';
+        btn.innerHTML = `<span class="option-letter">${letters[i]}</span><span>${opt}</span>`;
+        btn.addEventListener('click', () => selectAnswer(btn, opt, q));
+        optEl.appendChild(btn);
+      });
+
+      // Hide explain + next
+      document.getElementById('quizExplain').style.display = 'none';
+      document.getElementById('quizNextBtn').style.display = 'none';
+
+      // Animate card
+      const card = document.getElementById('quizCard');
+      card.style.animation = 'none';
+      card.offsetHeight; // reflow
+      card.style.animation = 'fade-in 0.35s ease';
+
+      // Tự động đọc từ tiếng Anh
+      setTimeout(() => speak(q.item.english), 400);
+    }
+
+    function selectAnswer(btn, chosen, q) {
+      if (quiz.answered) return;
+      quiz.answered = true;
+
+      const isCorrect = chosen === q.answer;
+      if (isCorrect) quiz.correct++;
+
+      // Style all options
+      document.querySelectorAll('.quiz-option').forEach(b => {
+        b.classList.add('disabled');
+        const txt = b.querySelector('span:last-child').textContent;
+        if (txt === q.answer) b.classList.add(isCorrect && txt === chosen ? 'correct' : 'reveal');
+      });
+      if (!isCorrect) btn.classList.add('wrong');
+
+      // Explain
+      const explain = document.getElementById('quizExplain');
+      explain.textContent = isCorrect
+        ? `✅ Chính xác! "${q.item.english}" nghĩa là "${q.answer}".`
+        : `❌ Sai rồi. Đáp án đúng: "${q.answer}"`;
+      explain.style.display = 'block';
+
+      // Next button
+      const nextBtn = document.getElementById('quizNextBtn');
+      const isLast = quiz.current === quiz.questions.length - 1;
+      nextBtn.textContent = isLast ? 'Xem kết quả 🎯' : 'Câu tiếp theo →';
+      nextBtn.style.display = 'block';
+    }
+
+    function nextQuestion() {
+      if (quiz.current < quiz.questions.length - 1) {
+        quiz.current++;
+        renderQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      showTestPanel('result');
+      const total = quiz.questions.length;
+      const pct = Math.round((quiz.correct / total) * 100);
+
+      let emoji = '😊', title = 'Khá tốt!';
+      if (pct === 100) { emoji = '🏆'; title = 'Hoàn hảo!'; }
+      else if (pct >= 80) { emoji = '🎉'; title = 'Xuất sắc!'; }
+      else if (pct >= 60) { emoji = '👍'; title = 'Khá tốt!'; }
+      else if (pct >= 40) { emoji = '📚'; title = 'Cần ôn thêm!'; }
+      else { emoji = '💪'; title = 'Cố gắng lên!'; }
+
+      document.getElementById('resultEmoji').textContent = emoji;
+      document.getElementById('resultTitle').textContent = title;
+      document.getElementById('resultScore').textContent = `${quiz.correct}/${total}`;
+      document.getElementById('resultSub').textContent = `Bạn trả lời đúng ${quiz.correct} trong ${total} câu hỏi`;
+      document.getElementById('statCorrect').textContent = quiz.correct;
+      document.getElementById('statWrong').textContent = total - quiz.correct;
+      document.getElementById('statPct').textContent = pct + '%';
+
+      // Update progress bar to 100%
+      document.getElementById('quizProgressFill').style.width = '100%';
+    }
+
+    function retryQuiz() {
+      showTestPanel('quiz');
+      startQuiz();
+    }
   </script>
 </body>
 
