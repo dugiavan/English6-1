@@ -1,1395 +1,1306 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>English Flash · Units 7–12</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>English 6 – Flashcards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  /* Light mode orange-pink gradient palette */
-  --bg-from: #fff0eb;
-  --bg-mid:  #ffd6e7;
-  --bg-to:   #ffe8d0;
-  --surface:  rgba(255,255,255,0.55);
-  --surface2: rgba(255,255,255,0.75);
-  --border:  rgba(220,100,120,0.15);
-  --border2: rgba(220,100,120,0.28);
-  --text:    #3d1a26;
-  --text2:   rgba(61,26,38,0.6);
-  --text3:   rgba(61,26,38,0.38);
-  --radius: 24px;
-  --radius-sm: 14px;
-  --pill: 999px;
-  --ease: cubic-bezier(0.4,0,0.2,1);
-  --font-display: 'Syne', sans-serif;
-  --font-mono: 'DM Mono', monospace;
-  --font-body: 'Outfit', sans-serif;
-
-  /* Unit accent colors — slightly deeper for light bg */
-  --c7:  #e8445a;
-  --c8:  #d97b00;
-  --c9:  #2a9e52;
-  --c10: #1a6fd4;
-  --c11: #9b3fcf;
-  --c12: #e06a00;
-  --accent: var(--c7);
-}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-html, body {
-  width: 100%; height: 100%;
-  overflow: hidden;
-  font-family: var(--font-body);
-  -webkit-tap-highlight-color: transparent;
-  -webkit-font-smoothing: antialiased;
-  color: var(--text);
-}
-
-body {
-  background: linear-gradient(135deg, var(--bg-from) 0%, var(--bg-mid) 45%, var(--bg-to) 100%);
-  background-attachment: fixed;
-  min-height: 100vh;
-}
-
-/* Soft radial overlays for depth */
-body::before, body::after {
-  content: '';
-  position: fixed;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 0;
-}
-body::before {
-  width: 55vw; height: 55vw;
-  background: radial-gradient(circle, rgba(255,140,160,0.30) 0%, transparent 70%);
-  top: -12vw; left: -10vw;
-  animation: orbFloat 9s ease-in-out infinite alternate;
-}
-body::after {
-  width: 40vw; height: 40vw;
-  background: radial-gradient(circle, rgba(255,180,100,0.28) 0%, transparent 70%);
-  bottom: -8vw; right: -8vw;
-  animation: orbFloat 11s ease-in-out infinite alternate-reverse;
-}
-@keyframes orbFloat {
-  from { transform: translate(0,0) scale(1); }
-  to   { transform: translate(2vw,1.5vw) scale(1.08); }
-}
-
-/* Glow element — subtle in light mode */
-#glow {
-  position: fixed;
-  width: 420px; height: 420px;
-  border-radius: 50%;
-  filter: blur(100px);
-  pointer-events: none; z-index: 0;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0.08;
-  background: var(--accent);
-  transition: background 0.6s var(--ease);
-}
-
-/* TOP BAR */
-#top-bar {
-  position: fixed; top: 0; left: 0; right: 0;
-  padding: 14px 20px;
-  display: flex; align-items: center; justify-content: space-between;
-  z-index: 100;
-  gap: 10px;
-}
-
-#unit-badge {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  color: var(--accent);
-  background: rgba(255,255,255,0.62);
-  border: 1px solid var(--border2);
-  border-radius: var(--pill);
-  padding: 6px 16px;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 2px 12px rgba(220,80,100,0.1);
-  transition: color 0.4s, border-color 0.4s;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 65vw;
-}
-
-#menu-btn {
-  width: 42px; height: 42px;
-  border-radius: 50%;
-  border: 1px solid var(--border2);
-  background: rgba(255,255,255,0.62);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 2px 12px rgba(220,80,100,0.1);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  color: var(--text2);
-  flex-shrink: 0;
-  transition: transform 0.15s, background 0.15s;
-}
-#menu-btn:active { transform: scale(0.9); background: var(--surface2); }
-
-/* PROGRESS */
-#progress-wrap {
-  position: fixed; top: 70px; left: 20px; right: 20px;
-  z-index: 100;
-  display: flex; align-items: center; gap: 10px;
-}
-#progress-track {
-  flex: 1; height: 4px;
-  background: rgba(220,100,120,0.14);
-  border-radius: var(--pill);
-  overflow: hidden;
-}
-#progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent), #ff9f7f);
-  border-radius: var(--pill);
-  transition: width 0.5s var(--ease), background 0.4s;
-  box-shadow: 0 0 6px rgba(220,100,120,0.4);
-}
-#progress-text {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--text3);
-  min-width: 40px;
-  text-align: right;
-}
-
-/* APP SHELL */
-#app {
-  position: fixed; inset: 0;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  z-index: 1;
-  padding: 0 20px;
-}
-
-#learn-area {
-  display: flex; flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 480px;  /* phone/tablet */
-}
-
-/* ── Desktop: fixed px sizes, no vw scaling ── */
-@media (min-width: 900px) {
-  #app { padding: 0 40px; }
-  #learn-area { max-width: 560px; }
-  .card-face {
-    min-height: 240px !important;
-    max-height: 300px !important;
-    padding: 36px 44px 28px !important;
+  :root {
+    --pink: #f9c5d1;
+    --peach: #fddab0;
+    --orange: #f7b267;
+    --cream: #fff8f3;
+    --glass-bg: rgba(255,255,255,0.55);
+    --glass-border: rgba(255,255,255,0.8);
+    --shadow-soft: 0 8px 40px rgba(247,178,103,0.18), 0 2px 12px rgba(249,197,209,0.18);
+    --shadow-card: 0 20px 60px rgba(200,100,80,0.12), 0 4px 20px rgba(249,197,209,0.25);
+    --text-primary: #2d1f1a;
+    --text-secondary: #8a6a5e;
+    --text-muted: #c4a49c;
+    --accent: #e8845a;
+    --accent-light: #f5a87b;
+    --vocab-tag: #f7b267;
+    --example-tag: #f9c5d1;
+    --radius: 24px;
+    --radius-sm: 14px;
   }
-  .front-word { font-size: 42px !important; letter-spacing: -0.01em !important; }
-  .front-word.long { font-size: 24px !important; }
-  .back-translation { font-size: 32px !important; }
-  .back-translation.long { font-size: 20px !important; }
-  .back-sub { font-size: 14px !important; }
-  .back-eng-small { font-size: 13px !important; }
-  .front-type { font-size: 12px !important; }
-  .tap-hint { font-size: 12px !important; }
-  #controls { gap: 18px; margin-top: 24px; }
-  .ctrl-btn { width: 50px; height: 50px; }
-  #audio-btn { width: 60px; height: 60px; }
-  #swipe-hints { gap: 24px; margin-top: 16px; }
-  .sh-item { font-size: 12px; }
-  #progress-wrap { left: 40px; right: 40px; }
-  #top-bar { padding: 18px 40px; }
-  #unit-badge { font-size: 12px; padding: 7px 18px; }
-  #toolbar-panel { width: 320px; }
-}
 
-/* ── Tablet (portrait/landscape) ── */
-@media (min-width: 600px) and (max-width: 899px) {
-  #learn-area { max-width: 540px; }
-  .card-face {
-    min-height: 220px !important;
-    max-height: 300px !important;
-    padding: 36px 36px 28px !important;
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100dvh;
+    background: linear-gradient(135deg, #fce4ec 0%, #fddab0 45%, #f7c59f 75%, #f7b267 100%);
+    background-attachment: fixed;
+    overflow: hidden;
+    position: relative;
   }
-  .front-word { font-size: clamp(28px, 5vw, 50px) !important; }
-  .ctrl-btn { width: 52px; height: 52px; }
-  #audio-btn { width: 60px; height: 60px; }
-}
 
-/* ── Small Android phones ── */
-@media (max-width: 380px) {
-  .card-face { padding: 24px 16px 18px !important; }
-  .front-word { font-size: clamp(22px, 7.5vw, 40px) !important; }
-  #controls { gap: 10px; margin-top: 16px; }
-  .ctrl-btn { width: 42px; height: 42px; }
-  #audio-btn { width: 50px; height: 50px; }
-}
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: radial-gradient(ellipse at 20% 20%, rgba(255,200,180,0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(249,197,209,0.3) 0%, transparent 50%);
+    pointer-events: none; z-index: 0;
+  }
 
-/* CARD */
-#card-scene {
-  width: 100%;
-  perspective: 1400px;
-  cursor: pointer;
-  user-select: none;
-  margin-top: 14px;
-}
+  /* ── SCREENS ── */
+  .screen { position: fixed; inset: 0; display: flex; flex-direction: column; z-index: 1; }
+  .screen.hidden { display: none; }
 
-#card-inner {
-  position: relative;
-  width: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.52s var(--ease);
-  border-radius: var(--radius);
-}
-#card-inner.flipped { transform: rotateY(180deg); }
+  /* ── HOME SCREEN ── */
+  #homeScreen {
+    padding: 0;
+    overflow-y: auto;
+    align-items: center;
+    background: transparent;
+  }
 
-.card-face {
-  width: 100%;
-  min-height: min(46vw, 220px);
-  max-height: 270px;
-  border-radius: var(--radius);
-  background: rgba(255,255,255,0.68);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1.5px solid rgba(255,255,255,0.85);
-  box-shadow:
-    0 2px 0 rgba(255,255,255,0.9) inset,
-    0 16px 48px rgba(220,80,100,0.13),
-    0 4px 16px rgba(0,0,0,0.06);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  padding: 32px 28px 24px;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  position: relative;
-  overflow: hidden;
-}
-.card-face::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, var(--accent), #ff9f7f);
-  border-radius: var(--radius) var(--radius) 0 0;
-  transition: background 0.4s;
-}
+  .home-header {
+    width: 100%;
+    padding: 56px 28px 28px;
+    text-align: center;
+  }
 
-#card-back {
-  position: absolute; top: 0; left: 0;
-  transform: rotateY(180deg);
-  background: rgba(255,255,255,0.75);
-}
+  .app-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--glass-bg); border: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    padding: 6px 16px; border-radius: 100px; font-size: 12px;
+    color: var(--text-secondary); font-weight: 500; letter-spacing: 0.5px;
+    margin-bottom: 20px;
+  }
 
-/* CARD CONTENT */
-.card-tag {
-  position: absolute; top: 14px; left: 14px;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--accent);
-  background: rgba(220,80,100,0.08);
-  border: 1px solid rgba(220,80,100,0.2);
-  padding: 3px 10px;
-  border-radius: var(--pill);
-  transition: color 0.4s;
-}
-.card-tag.grammar { color: #1a6fd4; background: rgba(26,111,212,0.08); border-color: rgba(26,111,212,0.2); }
-.card-tag.example { color: var(--text3); background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.1); }
+  .app-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(32px, 9vw, 52px);
+    font-weight: 300;
+    color: var(--text-primary);
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+  }
 
-.front-word {
-  font-family: var(--font-display);
-  font-size: clamp(28px, 8vw, 52px);
-  font-weight: 800;
-  color: var(--text);
-  text-align: center;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
-}
-.front-word.long { font-size: clamp(17px, 5vw, 28px); letter-spacing: 0; }
+  .app-subtitle {
+    font-size: 14px; color: var(--text-secondary); font-weight: 400;
+    margin-bottom: 0; letter-spacing: 0.2px;
+  }
 
-.front-type {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--accent);
-  margin-top: 8px;
-  letter-spacing: 0.06em;
-  transition: color 0.4s;
-}
+  .unit-grid {
+    width: 100%; padding: 12px 20px 32px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+    max-width: 700px;
+    margin: 0 auto;
+  }
 
-.tap-hint {
-  margin-top: 16px;
-  font-size: 11px;
-  color: var(--text3);
-  letter-spacing: 0.04em;
-  display: flex; align-items: center; gap: 5px;
-}
+  .unit-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    border-radius: var(--radius);
+    padding: 22px 22px 18px;
+    cursor: pointer;
+    transition: transform 0.25s cubic-bezier(.34,1.56,.64,1), box-shadow 0.25s ease;
+    box-shadow: var(--shadow-soft);
+    position: relative; overflow: hidden;
+  }
 
-/* BACK */
-.back-translation {
-  font-family: var(--font-display);
-  font-size: clamp(22px, 6vw, 36px);
-  font-weight: 700;
-  color: var(--text);
-  text-align: center;
-  line-height: 1.3;
-}
-.back-translation.long { font-size: clamp(14px, 4vw, 22px); font-weight: 400; }
+  .unit-card::before {
+    content: '';
+    position: absolute; top: -40px; right: -40px;
+    width: 100px; height: 100px;
+    background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, transparent 70%);
+    border-radius: 50%;
+  }
 
-.back-sub {
-  font-size: 13px;
-  color: var(--text2);
-  text-align: center;
-  margin-top: 10px;
-  line-height: 1.6;
-  font-style: italic;
-}
+  .unit-card:active { transform: scale(0.97); }
+  @media (hover: hover) { .unit-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-card); } }
 
-.back-eng-small {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--text3);
-  text-align: center;
-  margin-top: 12px;
-}
+  .unit-emoji { font-size: 28px; margin-bottom: 10px; display: block; }
 
-/* Swipe animation */
-#card-scene.swipe-left  { animation: swLeft  0.3s var(--ease); }
-#card-scene.swipe-right { animation: swRight 0.3s var(--ease); }
-@keyframes swLeft  { 0%{transform:translateX(0)}40%{transform:translateX(-16px)}100%{transform:translateX(0)} }
-@keyframes swRight { 0%{transform:translateX(0)}40%{transform:translateX(16px)}100%{transform:translateX(0)} }
+  .unit-number {
+    font-size: 10px; font-weight: 500; letter-spacing: 2px;
+    color: var(--accent); text-transform: uppercase; margin-bottom: 4px;
+  }
 
-/* CONTROLS */
-#controls {
-  display: flex; align-items: center; gap: 14px;
-  margin-top: 22px;
-}
+  .unit-name {
+    font-family: 'Fraunces', serif; font-weight: 400;
+    font-size: 19px; color: var(--text-primary);
+    margin-bottom: 6px; line-height: 1.2;
+  }
 
-.ctrl-btn {
-  width: 48px; height: 48px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(220,100,120,0.2);
-  background: rgba(255,255,255,0.62);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 2px 10px rgba(220,80,100,0.1);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  color: var(--text2);
-  transition: transform 0.15s, background 0.15s, color 0.15s, box-shadow 0.15s;
-}
-.ctrl-btn:active { transform: scale(0.88); }
-.ctrl-btn:hover  { background: rgba(255,255,255,0.85); color: var(--text); box-shadow: 0 4px 16px rgba(220,80,100,0.16); }
+  .unit-grammar {
+    font-size: 11px; color: var(--text-secondary);
+    line-height: 1.4; margin-bottom: 14px;
+  }
 
-#audio-btn {
-  width: 56px; height: 56px;
-  border-radius: 50%;
-  border: 2px solid var(--accent);
-  background: rgba(255,255,255,0.72);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 4px 16px rgba(220,80,100,0.18);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  color: var(--accent);
-  transition: transform 0.15s, box-shadow 0.2s, color 0.4s, border-color 0.4s;
-}
-#audio-btn:active { transform: scale(0.88); }
-#audio-btn.playing { animation: pulse 0.9s ease-in-out infinite; }
-@keyframes pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(220,80,100,0.45), 0 4px 16px rgba(220,80,100,0.18); }
-  70%  { box-shadow: 0 0 0 14px rgba(220,80,100,0), 0 4px 16px rgba(220,80,100,0.18); }
-  100% { box-shadow: 0 0 0 0 rgba(220,80,100,0), 0 4px 16px rgba(220,80,100,0.18); }
-}
+  .unit-meta {
+    display: flex; align-items: center; justify-content: space-between;
+  }
 
-/* Swipe hints */
-#swipe-hints {
-  display: flex; gap: 20px; margin-top: 16px;
-  align-items: center;
-}
-.sh-item {
-  display: flex; align-items: center; gap: 5px;
-  font-size: 11px; color: var(--text3);
-}
+  .unit-count {
+    font-size: 11px; color: var(--text-muted); font-weight: 500;
+  }
 
-/* COMPLETION */
-#completion-screen {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 12px;
-}
-#completion-screen.visible { display: flex; }
-#learn-area.hidden { display: none; }
+  .unit-progress-bar {
+    height: 3px; flex: 1; margin: 0 10px;
+    background: rgba(200,150,130,0.2); border-radius: 3px; overflow: hidden;
+  }
 
-.comp-emoji { font-size: 56px; }
-.comp-title {
-  font-family: var(--font-display);
-  font-size: 36px; font-weight: 800;
-  background: linear-gradient(135deg, var(--accent), #ff7c50);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-}
-.comp-sub { font-size: 14px; color: var(--text2); line-height: 1.6; max-width: 280px; }
-.restart-btn {
-  margin-top: 8px;
-  padding: 12px 28px;
-  border-radius: var(--pill);
-  border: 2px solid var(--accent);
-  background: transparent;
-  color: var(--accent);
-  font-family: var(--font-display);
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-}
-.restart-btn:hover { background: var(--accent); color: #fff; }
+  .unit-progress-fill {
+    height: 100%; background: linear-gradient(90deg, var(--orange), var(--accent));
+    border-radius: 3px; transition: width 0.5s ease;
+  }
 
-/* TOOLBAR */
-#toolbar-overlay {
-  position: fixed; inset: 0;
-  background: rgba(60,20,30,0.25);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  z-index: 200; opacity: 0; pointer-events: none;
-  transition: opacity 0.3s var(--ease);
-}
-#toolbar-overlay.visible { opacity: 1; pointer-events: all; }
+  .unit-arrow {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--orange), var(--accent));
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
 
-#toolbar-panel {
-  position: fixed; top: 0; right: 0; bottom: 0;
-  width: 300px; max-width: 88vw;
-  background: rgba(255,240,235,0.92);
-  backdrop-filter: blur(32px);
-  -webkit-backdrop-filter: blur(32px);
-  border-left: 1.5px solid rgba(220,100,120,0.18);
-  box-shadow: -8px 0 40px rgba(220,80,100,0.14);
-  z-index: 201;
-  display: flex; flex-direction: column;
-  padding: 0 0 32px;
-  transform: translateX(100%);
-  transition: transform 0.36s var(--ease);
-  overflow-y: auto;
-}
-#toolbar-panel.open { transform: translateX(0); }
+  .unit-arrow svg { width: 12px; height: 12px; fill: white; }
 
-#tb-header {
-  padding: 56px 22px 18px;
-  border-bottom: 1px solid rgba(220,100,120,0.15);
-  margin-bottom: 6px;
-}
-#tb-title {
-  font-family: var(--font-display);
-  font-size: 22px; font-weight: 800;
-  color: var(--text);
-}
-#tb-sub { font-size: 12px; color: var(--text3); margin-top: 3px; letter-spacing: 0.04em; }
+  /* ── LEARN SCREEN ── */
+  #learnScreen { justify-content: center; align-items: center; }
 
-.tb-section { padding: 14px 22px 6px; }
-.tb-label {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text3);
-  margin-bottom: 10px;
-}
+  /* Top bar */
+  .learn-topbar {
+    position: fixed; top: 0; left: 0; right: 0;
+    padding: 14px 20px 10px;
+    display: flex; align-items: center; justify-content: space-between;
+    z-index: 100;
+    background: linear-gradient(to bottom, rgba(252,228,236,0.9) 0%, transparent 100%);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  }
 
-#unit-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  padding: 0 22px 6px;
-}
+  .topbar-back {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--glass-bg); border: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px); display: flex; align-items: center;
+    justify-content: center; cursor: pointer;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+  }
 
-.unit-btn {
-  padding: 10px 10px 8px;
-  border-radius: var(--radius-sm);
-  border: 1px solid rgba(220,100,120,0.18);
-  background: rgba(255,255,255,0.5);
-  cursor: pointer;
-  text-align: left;
-  transition: all 0.15s var(--ease);
-}
-.unit-btn:active { transform: scale(0.96); }
-.unit-btn.active {
-  border-color: var(--accent);
-  background: rgba(255,255,255,0.78);
-  box-shadow: 0 0 0 2px rgba(220,80,100,0.15);
-}
-.unit-emoji { font-size: 18px; display: block; margin-bottom: 2px; }
-.unit-name  { font-size: 10px; color: var(--text); font-weight: 600; line-height: 1.3; font-family: var(--font-display); }
-.unit-num   { font-family: var(--font-mono); font-size: 9px; color: var(--text3); }
+  .topbar-back:active { transform: scale(0.9); }
+  .topbar-back svg { width: 16px; height: 16px; }
 
-.tb-divider { height: 1px; background: rgba(220,100,120,0.12); margin: 12px 22px; }
+  .topbar-title {
+    font-family: 'Fraunces', serif; font-size: 15px; font-weight: 400;
+    color: var(--text-primary); flex: 1; text-align: center;
+  }
 
-.toggle-row {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 11px 22px;
-  cursor: pointer;
-  transition: background 0.15s;
-  border-radius: 10px;
-}
-.toggle-row:active { background: rgba(220,100,120,0.07); }
-.toggle-label { font-size: 14px; color: var(--text); }
+  .topbar-gear {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--glass-bg); border: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px); display: flex; align-items: center;
+    justify-content: center; cursor: pointer;
+    transition: transform 0.3s ease; flex-shrink: 0;
+  }
 
-.toggle-sw {
-  width: 42px; height: 24px;
-  border-radius: 12px;
-  background: rgba(200,160,170,0.3);
-  position: relative;
-  transition: background 0.2s;
-  flex-shrink: 0;
-}
-.toggle-sw.on { background: var(--accent); }
-.toggle-knob {
-  position: absolute; top: 3px; left: 3px;
-  width: 18px; height: 18px;
-  border-radius: 50%;
-  background: white;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-  transition: transform 0.2s var(--ease);
-}
-.toggle-sw.on .toggle-knob { transform: translateX(18px); }
+  .topbar-gear.active { transform: rotate(60deg); }
+  .topbar-gear svg { width: 17px; height: 17px; }
 
-.speed-wrap { padding: 4px 22px 14px; }
-.speed-label { font-size: 13px; color: var(--text); margin-bottom: 10px; display: flex; justify-content: space-between; }
-.speed-label span { color: var(--accent); font-family: var(--font-mono); }
-input[type=range] {
-  width: 100%; -webkit-appearance: none; appearance: none;
-  height: 4px; border-radius: 4px;
-  background: rgba(220,100,120,0.2);
-  outline: none; cursor: pointer;
-}
-input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance: none; width: 16px; height: 16px;
-  border-radius: 50%; background: var(--accent);
-  box-shadow: 0 0 8px rgba(220,80,100,0.4);
-  transition: background 0.3s;
-}
+  /* Progress */
+  .progress-area {
+    position: fixed; bottom: 90px; left: 0; right: 0;
+    padding: 0 28px; z-index: 50;
+    display: flex; align-items: center; gap: 12px;
+  }
 
-.action-btn {
-  display: flex; align-items: center; gap: 10px;
-  width: calc(100% - 44px);
-  margin: 0 22px 10px;
-  padding: 12px 16px;
-  border-radius: var(--radius-sm);
-  border: 1px solid rgba(220,100,120,0.18);
-  background: rgba(255,255,255,0.5);
-  color: var(--text2);
-  font-family: var(--font-body);
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.15s;
-  text-align: left;
-}
-.action-btn:hover { background: rgba(255,255,255,0.78); color: var(--text); border-color: rgba(220,100,120,0.3); }
-.action-btn.danger { color: #c02040; }
-.action-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+  .progress-label {
+    font-size: 11px; font-weight: 500; color: var(--text-secondary);
+    white-space: nowrap; min-width: 55px; text-align: right;
+  }
 
-/* Grammar card */
-.grammar-section {
-  width: 100%;
-  background: rgba(26,111,212,0.06);
-  border: 1px solid rgba(26,111,212,0.18);
-  border-radius: 10px;
-  padding: 10px 14px;
-  margin-top: 10px;
-}
-.grammar-title {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.1em;
-  color: #1a6fd4;
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-.grammar-text { font-size: 13px; color: var(--text2); line-height: 1.5; }
+  .progress-track {
+    flex: 1; height: 4px; background: rgba(200,150,130,0.25);
+    border-radius: 4px; overflow: hidden;
+  }
 
-/* TOAST */
-#toast {
-  position: fixed; bottom: 32px; left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  background: rgba(255,240,235,0.95);
-  border: 1px solid rgba(220,100,120,0.25);
-  color: var(--text);
-  font-size: 13px;
-  padding: 10px 20px;
-  border-radius: var(--pill);
-  box-shadow: 0 4px 20px rgba(220,80,100,0.15);
-  z-index: 500;
-  opacity: 0;
-  transition: opacity 0.25s, transform 0.25s;
-  white-space: nowrap;
-  pointer-events: none;
-  backdrop-filter: blur(12px);
-}
-#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--pink), var(--orange));
+    border-radius: 4px; transition: width 0.4s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* Audio button */
+  .audio-btn {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 10px;
+    background: var(--glass-bg); border: 1px solid var(--glass-border);
+    backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    border-radius: 100px; padding: 10px 22px 10px 14px;
+    cursor: pointer; z-index: 50;
+    box-shadow: 0 4px 24px rgba(200,100,80,0.15);
+    transition: transform 0.2s ease;
+  }
+
+  .audio-btn:active { transform: translateX(-50%) scale(0.95); }
+
+  .audio-icon {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--orange), var(--accent));
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .audio-icon svg { width: 14px; height: 14px; fill: white; }
+  .audio-icon.speaking { animation: pulse-speak 0.6s ease-in-out infinite alternate; }
+
+  @keyframes pulse-speak {
+    from { transform: scale(1); box-shadow: 0 0 0 0 rgba(232,132,90,0.4); }
+    to { transform: scale(1.08); box-shadow: 0 0 0 8px rgba(232,132,90,0); }
+  }
+
+  .audio-waves {
+    display: flex; gap: 3px; align-items: center; height: 16px;
+  }
+
+  .audio-waves span {
+    display: block; width: 3px; border-radius: 3px;
+    background: linear-gradient(to top, var(--orange), var(--accent));
+    animation: wave-bar 0.9s ease-in-out infinite alternate;
+  }
+
+  .audio-waves span:nth-child(1) { height: 6px; animation-delay: 0s; }
+  .audio-waves span:nth-child(2) { height: 12px; animation-delay: 0.15s; }
+  .audio-waves span:nth-child(3) { height: 9px; animation-delay: 0.3s; }
+  .audio-waves span:nth-child(4) { height: 14px; animation-delay: 0.1s; }
+  .audio-waves span:nth-child(5) { height: 7px; animation-delay: 0.25s; }
+
+  @keyframes wave-bar {
+    from { height: 4px; opacity: 0.5; }
+    to { height: 14px; opacity: 1; }
+  }
+
+  .audio-waves.idle span { animation: none; height: 4px; opacity: 0.4; }
+
+  .audio-text { font-size: 12px; font-weight: 500; color: var(--text-secondary); }
+
+  /* ── FLASHCARD ── */
+  .card-scene {
+    width: min(88vw, 400px); height: min(58vw, 320px);
+    perspective: 1200px; cursor: pointer;
+    position: relative; z-index: 10;
+  }
+
+  .card-inner {
+    width: 100%; height: 100%;
+    position: relative; transform-style: preserve-3d;
+    transition: transform 0.55s cubic-bezier(.645,.045,.355,1.000);
+  }
+
+  .card-inner.flipped { transform: rotateY(180deg); }
+
+  .card-face {
+    position: absolute; inset: 0;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    border-radius: var(--radius);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 28px 28px 24px;
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    overflow: hidden;
+  }
+
+  .card-face-front {
+    background: rgba(255,255,255,0.65);
+  }
+
+  .card-face-front::before {
+    content: '';
+    position: absolute; top: -60px; right: -60px;
+    width: 160px; height: 160px;
+    background: radial-gradient(circle, rgba(255,210,180,0.5) 0%, transparent 70%);
+    border-radius: 50%; pointer-events: none;
+  }
+
+  .card-face-back {
+    background: rgba(255,248,243,0.72);
+    transform: rotateY(180deg);
+  }
+
+  .card-face-back::before {
+    content: '';
+    position: absolute; bottom: -50px; left: -50px;
+    width: 140px; height: 140px;
+    background: radial-gradient(circle, rgba(249,197,209,0.5) 0%, transparent 70%);
+    border-radius: 50%; pointer-events: none;
+  }
+
+  .card-type-badge {
+    position: absolute; top: 16px; left: 16px;
+    font-size: 10px; font-weight: 500; letter-spacing: 1px;
+    text-transform: uppercase; padding: 4px 10px; border-radius: 100px;
+  }
+
+  .badge-vocabulary { background: rgba(247,178,103,0.2); color: #b87333; }
+  .badge-example { background: rgba(249,197,209,0.3); color: #c0607a; }
+
+  .card-tap-hint {
+    position: absolute; bottom: 14px; right: 18px;
+    font-size: 10px; color: var(--text-muted); display: flex;
+    align-items: center; gap: 4px;
+  }
+
+  .card-english {
+    font-family: 'Fraunces', serif; font-weight: 300;
+    font-size: clamp(22px, 6vw, 34px); color: var(--text-primary);
+    text-align: center; line-height: 1.25;
+    margin-bottom: 10px;
+  }
+
+  .card-phonetic {
+    font-size: 14px; color: var(--accent);
+    text-align: center; font-style: italic;
+    font-weight: 300; letter-spacing: 0.3px;
+  }
+
+  .card-vietnamese {
+    font-family: 'Fraunces', serif; font-weight: 400;
+    font-size: clamp(18px, 5vw, 26px); color: var(--text-primary);
+    text-align: center; line-height: 1.3; margin-bottom: 12px;
+  }
+
+  .card-grammar {
+    font-size: 12px; color: var(--text-secondary); text-align: center;
+    line-height: 1.5; padding: 8px 12px;
+    background: rgba(247,178,103,0.12); border-radius: 10px;
+    max-width: 90%;
+  }
+
+  /* Swipe animation */
+  .card-scene.swipe-left .card-inner {
+    animation: swipe-out-left 0.3s ease forwards;
+  }
+  .card-scene.swipe-right .card-inner {
+    animation: swipe-out-right 0.3s ease forwards;
+  }
+  .card-scene.swipe-in-left .card-inner {
+    animation: swipe-in-left 0.3s ease forwards;
+  }
+  .card-scene.swipe-in-right .card-inner {
+    animation: swipe-in-right 0.3s ease forwards;
+  }
+
+  @keyframes swipe-out-left { to { opacity: 0; transform: translateX(-60px) rotateY(-5deg); } }
+  @keyframes swipe-out-right { to { opacity: 0; transform: translateX(60px) rotateY(5deg); } }
+  @keyframes swipe-in-left { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
+  @keyframes swipe-in-right { from { opacity: 0; transform: translateX(-60px); } to { opacity: 1; transform: translateX(0); } }
+
+  /* ── SETTINGS PANEL ── */
+  .settings-overlay {
+    position: fixed; inset: 0; background: rgba(45,31,26,0.25);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    z-index: 200; opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .settings-overlay.open { opacity: 1; pointer-events: all; }
+
+  .settings-panel {
+    position: absolute; top: 62px; right: 16px;
+    width: min(310px, calc(100vw - 32px));
+    background: rgba(255,252,250,0.92);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+    border-radius: var(--radius);
+    box-shadow: 0 20px 60px rgba(150,80,60,0.2);
+    padding: 20px;
+    transform: translateY(-10px) scale(0.96);
+    transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), opacity 0.3s ease;
+    opacity: 0;
+  }
+
+  .settings-overlay.open .settings-panel { transform: translateY(0) scale(1); opacity: 1; }
+
+  .settings-title {
+    font-family: 'Fraunces', serif; font-size: 16px; font-weight: 400;
+    color: var(--text-primary); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .settings-section { margin-bottom: 18px; }
+
+  .settings-label {
+    font-size: 10px; font-weight: 500; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px;
+  }
+
+  .settings-unit-list {
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+
+  .unit-pill {
+    padding: 5px 12px; border-radius: 100px; font-size: 12px; font-weight: 500;
+    border: 1.5px solid rgba(200,150,130,0.3); cursor: pointer;
+    color: var(--text-secondary); transition: all 0.2s ease;
+    background: transparent;
+  }
+
+  .unit-pill.active {
+    background: linear-gradient(135deg, var(--orange), var(--accent));
+    border-color: transparent; color: white;
+  }
+
+  .settings-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 0; border-bottom: 1px solid rgba(200,150,130,0.12);
+  }
+
+  .settings-row:last-child { border-bottom: none; }
+
+  .settings-row-label { font-size: 13px; color: var(--text-primary); }
+
+  /* Toggle */
+  .toggle {
+    width: 40px; height: 22px; border-radius: 11px;
+    background: rgba(200,150,130,0.25); position: relative;
+    cursor: pointer; transition: background 0.2s ease; flex-shrink: 0;
+  }
+
+  .toggle.on { background: linear-gradient(135deg, var(--orange), var(--accent)); }
+
+  .toggle::after {
+    content: ''; position: absolute; top: 3px; left: 3px;
+    width: 16px; height: 16px; border-radius: 50%; background: white;
+    transition: transform 0.2s ease;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  }
+
+  .toggle.on::after { transform: translateX(18px); }
+
+  /* Speed control */
+  .speed-btns { display: flex; gap: 6px; }
+
+  .speed-btn {
+    padding: 4px 10px; border-radius: 100px; font-size: 11px;
+    border: 1.5px solid rgba(200,150,130,0.3); cursor: pointer;
+    color: var(--text-secondary); transition: all 0.2s ease; background: transparent;
+  }
+
+  .speed-btn.active {
+    background: linear-gradient(135deg, var(--peach), var(--orange));
+    border-color: transparent; color: var(--text-primary); font-weight: 500;
+  }
+
+  /* Action buttons */
+  .settings-actions { display: flex; gap: 8px; margin-top: 4px; }
+
+  .action-btn {
+    flex: 1; padding: 10px; border-radius: var(--radius-sm);
+    font-size: 12px; font-weight: 500; cursor: pointer; border: none;
+    font-family: 'DM Sans', sans-serif; transition: all 0.2s ease;
+  }
+
+  .action-btn-secondary {
+    background: rgba(200,150,130,0.12); color: var(--text-secondary);
+  }
+
+  .action-btn-danger {
+    background: rgba(249,100,100,0.08); color: #e05555;
+  }
+
+  .action-btn:active { transform: scale(0.96); }
+
+  /* Swipe hint */
+  .swipe-hint {
+    position: fixed; bottom: 72px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 20px; z-index: 5; pointer-events: none;
+    opacity: 0; animation: fade-hint 4s ease 1s forwards;
+  }
+
+  @keyframes fade-hint {
+    0% { opacity: 0; transform: translateX(-50%) translateY(6px); }
+    15% { opacity: 0.7; transform: translateX(-50%) translateY(0); }
+    75% { opacity: 0.7; }
+    100% { opacity: 0; }
+  }
+
+  .hint-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-muted); }
+
+  /* Completion screen */
+  .completion {
+    position: fixed; inset: 0; z-index: 300;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, rgba(252,228,236,0.97) 0%, rgba(253,218,176,0.97) 100%);
+    backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+    text-align: center; padding: 40px;
+  }
+
+  .completion.hidden { display: none; }
+
+  .completion.visible {
+    animation: fade-in 0.5s ease;
+  }
+
+  @keyframes fade-in { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+  .completion-emoji { font-size: 64px; margin-bottom: 20px; animation: bounce 1s ease infinite; }
+
+  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+
+  .completion-title {
+    font-family: 'Fraunces', serif; font-size: 32px; font-weight: 400;
+    color: var(--text-primary); margin-bottom: 8px;
+  }
+
+  .completion-sub { font-size: 14px; color: var(--text-secondary); margin-bottom: 32px; }
+
+  .completion-btn {
+    background: linear-gradient(135deg, var(--orange), var(--accent));
+    color: white; border: none; padding: 14px 36px;
+    border-radius: 100px; font-size: 15px; font-weight: 500;
+    font-family: 'DM Sans', sans-serif; cursor: pointer;
+    box-shadow: 0 8px 24px rgba(232,132,90,0.35);
+    transition: transform 0.2s ease;
+  }
+
+  .completion-btn:active { transform: scale(0.96); }
+
+  /* Scroll */
+  #homeScreen::-webkit-scrollbar { display: none; }
+  #homeScreen { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Tablet / Desktop */
+  @media (min-width: 600px) {
+    .card-scene { width: min(70vw, 460px); height: min(45vw, 300px); }
+    .unit-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (min-width: 900px) {
+    .card-scene { width: 500px; height: 310px; }
+    .unit-grid { grid-template-columns: repeat(3, 1fr); }
+  }
 </style>
 </head>
 <body>
 
-<div id="glow"></div>
-
-<!-- Top bar -->
-<div id="top-bar">
-  <div id="unit-badge">Loading…</div>
-  <button id="menu-btn" aria-label="Menu">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-      <line x1="3" y1="7"  x2="21" y2="7"/>
-      <line x1="3" y1="12" x2="21" y2="12"/>
-      <line x1="3" y1="17" x2="21" y2="17"/>
-    </svg>
-  </button>
+<!-- HOME SCREEN -->
+<div class="screen" id="homeScreen">
+  <div class="home-header">
+    <div class="app-badge">📚 English 6 · Book 2</div>
+    <h1 class="app-title">Flashcards</h1>
+    <p class="app-subtitle">Units 7 – 12 · Chọn bài để bắt đầu</p>
+  </div>
+  <div class="unit-grid" id="unitGrid"></div>
 </div>
 
-<!-- Progress -->
-<div id="progress-wrap">
-  <div id="progress-track"><div id="progress-fill"></div></div>
-  <div id="progress-text">0/0</div>
+<!-- LEARN SCREEN -->
+<div class="screen hidden" id="learnScreen">
+  <div class="learn-topbar">
+    <div class="topbar-back" id="backBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" color="var(--text-primary)">
+        <polyline points="15,18 9,12 15,6"></polyline>
+      </svg>
+    </div>
+    <div class="topbar-title" id="topbarTitle"></div>
+    <div class="topbar-gear" id="gearBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Flashcard -->
+  <div class="card-scene" id="cardScene">
+    <div class="card-inner" id="cardInner">
+      <div class="card-face card-face-front" id="cardFront">
+        <span class="card-type-badge" id="frontBadge"></span>
+        <div class="card-english" id="cardEnglish"></div>
+        <div class="card-phonetic" id="cardPhonetic"></div>
+        <div class="card-tap-hint">tap to flip ↩</div>
+      </div>
+      <div class="card-face card-face-back" id="cardBack">
+        <span class="card-type-badge" id="backBadge"></span>
+        <div class="card-vietnamese" id="cardVietnamese"></div>
+        <div class="card-grammar" id="cardGrammar" style="display:none"></div>
+        <div class="card-tap-hint">tap to flip ↩</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Swipe hint (first time) -->
+  <div class="swipe-hint" id="swipeHint">
+    <div class="hint-item">← trước</div>
+    <div class="hint-item">tiếp theo →</div>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-area">
+    <span class="progress-label" id="progressLabel">1 / 1</span>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <!-- Audio button -->
+  <div class="audio-btn" id="audioBtn">
+    <div class="audio-icon" id="audioIcon">
+      <svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+    </div>
+    <div class="audio-waves idle" id="audioWaves">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <span class="audio-text">Phát âm</span>
+  </div>
 </div>
 
-<!-- App -->
-<div id="app">
-  <div id="learn-area">
-    <div id="card-scene" role="button" aria-label="Flip card">
-      <div id="card-inner">
-        <div class="card-face" id="card-front">
-          <span class="card-tag" id="badge-front">Vocabulary</span>
-          <div class="front-word" id="front-word">…</div>
-          <div class="front-type" id="front-type"></div>
-          <div class="tap-hint">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/></svg>
-            Tap to see answer
-          </div>
+<!-- SETTINGS OVERLAY -->
+<div class="settings-overlay" id="settingsOverlay">
+  <div class="settings-panel">
+    <div class="settings-title">⚙️ Cài đặt</div>
+
+    <div class="settings-section">
+      <div class="settings-label">Chọn Unit</div>
+      <div class="settings-unit-list" id="settingsUnitList"></div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-label">Hiển thị</div>
+      <div class="settings-row">
+        <span class="settings-row-label">Phiên âm</span>
+        <div class="toggle on" id="togglePhonetic"></div>
+      </div>
+      <div class="settings-row">
+        <span class="settings-row-label">Nghĩa tiếng Việt</span>
+        <div class="toggle on" id="toggleVietnamese"></div>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-label">Tốc độ đọc</div>
+      <div class="settings-row">
+        <div class="speed-btns">
+          <button class="speed-btn" data-speed="0.7">Chậm</button>
+          <button class="speed-btn active" data-speed="1">Bình thường</button>
+          <button class="speed-btn" data-speed="1.3">Nhanh</button>
         </div>
-        <div class="card-face" id="card-back">
-          <span class="card-tag" id="badge-back">Vocabulary</span>
-          <div class="back-translation" id="back-trans">…</div>
-          <div class="back-sub" id="back-sub"></div>
-          <div class="back-eng-small" id="back-eng-small"></div>
-        </div>
       </div>
     </div>
 
-    <div id="controls">
-      <button class="ctrl-btn" id="prev-btn" aria-label="Previous">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-      </button>
-      <button id="audio-btn" aria-label="Listen">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-        </svg>
-      </button>
-      <button class="ctrl-btn" id="next-btn" aria-label="Next">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </button>
+    <div class="settings-actions">
+      <button class="action-btn action-btn-secondary" id="shuffleBtn">🔀 Xáo bài</button>
+      <button class="action-btn action-btn-danger" id="resetBtn">↺ Reset</button>
     </div>
-
-    <div id="swipe-hints">
-      <div class="sh-item">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-        Prev
-      </div>
-      <div class="sh-item" style="color:var(--text3)">swipe or tap</div>
-      <div class="sh-item">
-        Next
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </div>
-    </div>
-  </div>
-
-  <div id="completion-screen">
-    <div class="comp-emoji">🎉</div>
-    <div class="comp-title">Well done!</div>
-    <div class="comp-sub">You've finished all cards in this unit. Keep practising to remember them better!</div>
-    <button class="restart-btn" id="restart-btn">Restart Unit</button>
   </div>
 </div>
 
-<!-- Toolbar -->
-<div id="toolbar-overlay"></div>
-<div id="toolbar-panel">
-  <div id="tb-header">
-    <div id="tb-title">English Flash</div>
-    <div id="tb-sub">Units 7 – 12 · Flashcards</div>
-  </div>
-
-  <div class="tb-section"><div class="tb-label">Choose Unit</div></div>
-  <div id="unit-grid"></div>
-  <div class="tb-divider"></div>
-
-  <div class="tb-section"><div class="tb-label">Display</div></div>
-  <div class="toggle-row" id="toggle-viet-row">
-    <span class="toggle-label">Vietnamese meaning</span>
-    <div class="toggle-sw on" id="toggle-viet"><div class="toggle-knob"></div></div>
-  </div>
-  <div class="toggle-row" id="toggle-grammar-row">
-    <span class="toggle-label">Grammar cards</span>
-    <div class="toggle-sw on" id="toggle-grammar"><div class="toggle-knob"></div></div>
-  </div>
-  <div class="tb-divider"></div>
-
-  <div class="tb-section"><div class="tb-label">Speech speed</div></div>
-  <div class="speed-wrap">
-    <div class="speed-label">Speed: <span id="speed-val">1.0×</span></div>
-    <input type="range" id="speed-slider" min="0.5" max="1.5" step="0.1" value="1.0">
-  </div>
-  <div class="tb-divider"></div>
-
-  <button class="action-btn" id="btn-shuffle">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
-    Shuffle cards
-  </button>
-  <button class="action-btn danger" id="btn-reset">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.05"/></svg>
-    Reset progress
-  </button>
+<!-- COMPLETION -->
+<div class="completion hidden" id="completionScreen">
+  <div class="completion-emoji">🎉</div>
+  <div class="completion-title">Tuyệt vời!</div>
+  <div class="completion-sub" id="completionSub"></div>
+  <button class="completion-btn" id="completionBtn">Học lại</button>
 </div>
-
-<div id="toast"></div>
 
 <script>
-/* ============================================================
-   DATA — UNITS 7–12
-   ============================================================ */
+// ═══════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════
 const UNITS = [
   {
-    id: 7,
-    name: "TELEVISION",
-    emoji: "📺",
-    color: "#ff6b6b",
-    grammar: [
-      {
-        en: "Wh- Questions",
-        vn: "Câu hỏi có từ để hỏi",
-        example: "What do you watch on TV?",
-        example_vn: "Bạn xem gì trên TV?",
-        note: "What / Where / When / Who / Why / How",
-        type: "grammar"
-      },
-      {
-        en: "Conjunctions: and, but, so",
-        vn: "Liên từ trong câu ghép",
-        example: "I like cartoons, but my sister likes the news.",
-        example_vn: "Tôi thích phim hoạt hình, nhưng chị tôi thích tin tức.",
-        note: "and (thêm vào) · but (tương phản) · so (kết quả)",
-        type: "grammar"
-      }
-    ],
+    id: 7, name: "Television", emoji: "📺",
+    grammar: "Wh-questions, conjunctions (and, but, so)",
     words: [
-      { en: "cartoon", vn: "phim hoạt hình", type: "vocabulary" },
-      { en: "documentary", vn: "phim tài liệu", type: "vocabulary" },
-      { en: "game show", vn: "trò chơi truyền hình", type: "vocabulary" },
-      { en: "news", vn: "tin tức", type: "vocabulary" },
-      { en: "weather forecast", vn: "dự báo thời tiết", type: "vocabulary" },
-      { en: "chat show", vn: "chương trình trò chuyện", type: "vocabulary" },
-      { en: "reality show", vn: "chương trình thực tế", type: "vocabulary" },
-      { en: "sitcom", vn: "phim hài tình huống", type: "vocabulary" },
-      { en: "channel", vn: "kênh truyền hình", type: "vocabulary" },
-      { en: "remote control", vn: "điều khiển từ xa", type: "vocabulary" },
-      { en: "advertisement", vn: "quảng cáo", type: "vocabulary" },
-      { en: "presenter", vn: "người dẫn chương trình", type: "vocabulary" },
-      { en: "What do you watch?", vn: "Bạn xem gì?", type: "example" },
-      { en: "When does it start?", vn: "Nó bắt đầu lúc mấy giờ?", type: "example" },
-      { en: "I love cartoons, and I watch them every day.", vn: "Tôi thích phim hoạt hình và tôi xem chúng mỗi ngày.", type: "example" },
+      { english: "cartoon", phonetic: "/kɑːrˈtuːn/", vietnamese: "phim hoạt hình", type: "vocabulary" },
+      { english: "I like watching cartoons after school.", phonetic: "", vietnamese: "Tôi thích xem phim hoạt hình sau giờ học.", type: "example" },
+      { english: "What cartoons do you watch?", phonetic: "", vietnamese: "Bạn xem phim hoạt hình nào vậy?", type: "example" },
+      { english: "My sister loves cartoons, but I prefer documentaries.", phonetic: "", vietnamese: "Em gái tôi thích hoạt hình, nhưng tôi thích phim tài liệu hơn.", type: "example" },
+      { english: "documentary", phonetic: "/ˌdɒkjuˈmentri/", vietnamese: "phim tài liệu", type: "vocabulary" },
+      { english: "We watched a documentary about animals.", phonetic: "", vietnamese: "Chúng tôi xem một bộ phim tài liệu về động vật.", type: "example" },
+      { english: "What documentary is on tonight?", phonetic: "", vietnamese: "Tối nay có phim tài liệu gì vậy?", type: "example" },
+      { english: "news", phonetic: "/njuːz/", vietnamese: "tin tức", type: "vocabulary" },
+      { english: "My parents watch the news every evening.", phonetic: "", vietnamese: "Bố mẹ tôi xem tin tức mỗi tối.", type: "example" },
+      { english: "The news is on at seven o'clock.", phonetic: "", vietnamese: "Tin tức bắt đầu lúc bảy giờ.", type: "example" },
+      { english: "quiz show", phonetic: "/kwɪz ʃoʊ/", vietnamese: "chương trình đố vui", type: "vocabulary" },
+      { english: "Do you like quiz shows?", phonetic: "", vietnamese: "Bạn có thích chương trình đố vui không?", type: "example" },
+      { english: "The quiz show starts at 8 PM.", phonetic: "", vietnamese: "Chương trình đố vui bắt đầu lúc 8 giờ tối.", type: "example" },
+      { english: "reality show", phonetic: "/riˈæləti ʃoʊ/", vietnamese: "chương trình thực tế", type: "vocabulary" },
+      { english: "I don't like reality shows, so I watch films.", phonetic: "", vietnamese: "Tôi không thích chương trình thực tế, nên tôi xem phim.", type: "example" },
+      { english: "Which reality show is most popular?", phonetic: "", vietnamese: "Chương trình thực tế nào nổi tiếng nhất?", type: "example" },
+      { english: "weather forecast", phonetic: "/ˈweðər ˈfɔːrkæst/", vietnamese: "dự báo thời tiết", type: "vocabulary" },
+      { english: "I check the weather forecast every morning.", phonetic: "", vietnamese: "Tôi xem dự báo thời tiết mỗi sáng.", type: "example" },
+      { english: "The weather forecast says it will rain tomorrow.", phonetic: "", vietnamese: "Dự báo thời tiết nói ngày mai trời sẽ mưa.", type: "example" },
+      { english: "remote control", phonetic: "/rɪˈmoʊt kənˈtroʊl/", vietnamese: "điều khiển từ xa", type: "vocabulary" },
+      { english: "Where is the remote control?", phonetic: "", vietnamese: "Điều khiển từ xa ở đâu vậy?", type: "example" },
+      { english: "He changed channels with the remote control.", phonetic: "", vietnamese: "Anh ấy đổi kênh bằng điều khiển từ xa.", type: "example" },
+      { english: "channel", phonetic: "/ˈtʃænl/", vietnamese: "kênh truyền hình", type: "vocabulary" },
+      { english: "How many channels does your TV have?", phonetic: "", vietnamese: "TV của bạn có bao nhiêu kênh?", type: "example" },
+      { english: "I watch Channel 1 for news and Channel 3 for films.", phonetic: "", vietnamese: "Tôi xem Kênh 1 để xem tin tức và Kênh 3 để xem phim.", type: "example" },
     ]
   },
   {
-    id: 8,
-    name: "SPORTS AND GAMES",
-    emoji: "⚽",
-    color: "#ffd93d",
-    grammar: [
-      {
-        en: "Past Simple",
-        vn: "Thì Quá khứ đơn",
-        example: "She played football yesterday.",
-        example_vn: "Cô ấy chơi bóng đá hôm qua.",
-        note: "verb + -ed (regular) · irregular verbs: go→went, play→played",
-        type: "grammar"
-      },
-      {
-        en: "Imperatives",
-        vn: "Câu mệnh lệnh",
-        example: "Pass the ball! Don't run!",
-        example_vn: "Chuyền bóng! Đừng chạy!",
-        note: "Dùng động từ nguyên thể (không 'to') ở đầu câu",
-        type: "grammar"
-      }
-    ],
+    id: 8, name: "Sports and Games", emoji: "⚽",
+    grammar: "Past Simple, Imperatives",
     words: [
-      { en: "football", vn: "bóng đá", type: "vocabulary" },
-      { en: "basketball", vn: "bóng rổ", type: "vocabulary" },
-      { en: "swimming", vn: "bơi lội", type: "vocabulary" },
-      { en: "badminton", vn: "cầu lông", type: "vocabulary" },
-      { en: "cycling", vn: "đạp xe / xe đạp", type: "vocabulary" },
-      { en: "table tennis", vn: "bóng bàn", type: "vocabulary" },
-      { en: "chess", vn: "cờ vua", type: "vocabulary" },
-      { en: "athletics", vn: "điền kinh", type: "vocabulary" },
-      { en: "team", vn: "đội", type: "vocabulary" },
-      { en: "referee", vn: "trọng tài", type: "vocabulary" },
-      { en: "score", vn: "tỉ số / ghi bàn", type: "vocabulary" },
-      { en: "champion", vn: "nhà vô địch", type: "vocabulary" },
-      { en: "He scored two goals.", vn: "Anh ấy ghi được hai bàn thắng.", type: "example" },
-      { en: "They won the match!", vn: "Họ đã thắng trận đấu!", type: "example" },
-      { en: "Kick the ball hard!", vn: "Đá bóng thật mạnh vào!", type: "example" },
+      { english: "volleyball", phonetic: "/ˈvɒlibɔːl/", vietnamese: "bóng chuyền", type: "vocabulary" },
+      { english: "We played volleyball yesterday.", phonetic: "", vietnamese: "Hôm qua chúng tôi đã chơi bóng chuyền.", type: "example" },
+      { english: "She is good at volleyball.", phonetic: "", vietnamese: "Cô ấy chơi bóng chuyền giỏi.", type: "example" },
+      { english: "badminton", phonetic: "/ˈbædmɪntən/", vietnamese: "cầu lông", type: "vocabulary" },
+      { english: "My father plays badminton every weekend.", phonetic: "", vietnamese: "Bố tôi chơi cầu lông mỗi cuối tuần.", type: "example" },
+      { english: "Do you want to play badminton with me?", phonetic: "", vietnamese: "Bạn có muốn chơi cầu lông với tôi không?", type: "example" },
+      { english: "swimming", phonetic: "/ˈswɪmɪŋ/", vietnamese: "bơi lội", type: "vocabulary" },
+      { english: "I went swimming last Saturday.", phonetic: "", vietnamese: "Thứ Bảy tuần trước tôi đã đi bơi.", type: "example" },
+      { english: "Swimming is good exercise for your body.", phonetic: "", vietnamese: "Bơi lội là bài tập thể dục tốt cho cơ thể.", type: "example" },
+      { english: "cycling", phonetic: "/ˈsaɪklɪŋ/", vietnamese: "đua xe đạp / đạp xe", type: "vocabulary" },
+      { english: "We went cycling in the park.", phonetic: "", vietnamese: "Chúng tôi đã đi đạp xe trong công viên.", type: "example" },
+      { english: "Cycling to school is fun and healthy.", phonetic: "", vietnamese: "Đi xe đạp đến trường vừa vui vừa tốt cho sức khỏe.", type: "example" },
+      { english: "score", phonetic: "/skɔːr/", vietnamese: "ghi điểm / tỉ số", type: "vocabulary" },
+      { english: "He scored two goals in the match.", phonetic: "", vietnamese: "Anh ấy đã ghi hai bàn thắng trong trận đấu.", type: "example" },
+      { english: "What was the final score?", phonetic: "", vietnamese: "Tỉ số cuối cùng là bao nhiêu?", type: "example" },
+      { english: "match", phonetic: "/mætʃ/", vietnamese: "trận đấu", type: "vocabulary" },
+      { english: "We watched a football match last night.", phonetic: "", vietnamese: "Tối qua chúng tôi đã xem một trận bóng đá.", type: "example" },
+      { english: "The match started at 7 PM.", phonetic: "", vietnamese: "Trận đấu bắt đầu lúc 7 giờ tối.", type: "example" },
+      { english: "referee", phonetic: "/ˌrefəˈriː/", vietnamese: "trọng tài", type: "vocabulary" },
+      { english: "The referee blew the whistle.", phonetic: "", vietnamese: "Trọng tài thổi còi.", type: "example" },
+      { english: "The referee made a fair decision.", phonetic: "", vietnamese: "Trọng tài đã đưa ra quyết định công bằng.", type: "example" },
+      { english: "champion", phonetic: "/ˈtʃæmpiən/", vietnamese: "nhà vô địch", type: "vocabulary" },
+      { english: "She became the champion last year.", phonetic: "", vietnamese: "Cô ấy đã trở thành nhà vô địch năm ngoái.", type: "example" },
+      { english: "The champion received a gold medal.", phonetic: "", vietnamese: "Nhà vô địch nhận được huy chương vàng.", type: "example" },
     ]
   },
   {
-    id: 9,
-    name: "CITIES OF THE WORLD",
-    emoji: "🌍",
-    color: "#6bcb77",
-    grammar: [
-      {
-        en: "Possessive Adjectives",
-        vn: "Tính từ sở hữu",
-        example: "This is my city. Her name is Paris.",
-        example_vn: "Đây là thành phố của tôi. Tên của nó là Paris.",
-        note: "my · your · his · her · its · our · their",
-        type: "grammar"
-      },
-      {
-        en: "Possessive Pronouns",
-        vn: "Đại từ sở hữu",
-        example: "That bag is mine. Is this yours?",
-        example_vn: "Cái túi đó là của tôi. Cái này có phải của bạn không?",
-        note: "mine · yours · his · hers · ours · theirs",
-        type: "grammar"
-      }
-    ],
+    id: 9, name: "Cities of the World", emoji: "🌆",
+    grammar: "Possessive adjectives, Possessive pronouns",
     words: [
-      { en: "capital city", vn: "thủ đô", type: "vocabulary" },
-      { en: "landmark", vn: "địa danh nổi tiếng", type: "vocabulary" },
-      { en: "skyscraper", vn: "tòa nhà chọc trời", type: "vocabulary" },
-      { en: "population", vn: "dân số", type: "vocabulary" },
-      { en: "tourist", vn: "khách du lịch", type: "vocabulary" },
-      { en: "monument", vn: "đài tưởng niệm", type: "vocabulary" },
-      { en: "museum", vn: "bảo tàng", type: "vocabulary" },
-      { en: "cathedral", vn: "nhà thờ lớn", type: "vocabulary" },
-      { en: "bridge", vn: "cầu", type: "vocabulary" },
-      { en: "harbour", vn: "cảng / bến cảng", type: "vocabulary" },
-      { en: "avenue", vn: "đại lộ", type: "vocabulary" },
-      { en: "district", vn: "quận / khu vực", type: "vocabulary" },
-      { en: "Its Eiffel Tower is famous.", vn: "Tháp Eiffel của nó rất nổi tiếng.", type: "example" },
-      { en: "Their streets are very clean.", vn: "Những con đường của họ rất sạch.", type: "example" },
-      { en: "Is this city yours or mine?", vn: "Thành phố này là của bạn hay của tôi?", type: "example" },
+      { english: "population", phonetic: "/ˌpɒpjuˈleɪʃn/", vietnamese: "dân số", type: "vocabulary" },
+      { english: "The population of Tokyo is very large.", phonetic: "", vietnamese: "Dân số của Tokyo rất lớn.", type: "example" },
+      { english: "What is the population of your city?", phonetic: "", vietnamese: "Dân số thành phố của bạn là bao nhiêu?", type: "example" },
+      { english: "capital", phonetic: "/ˈkæpɪtl/", vietnamese: "thủ đô", type: "vocabulary" },
+      { english: "Hanoi is the capital of Vietnam.", phonetic: "", vietnamese: "Hà Nội là thủ đô của Việt Nam.", type: "example" },
+      { english: "Our capital city is very beautiful.", phonetic: "", vietnamese: "Thủ đô của chúng ta rất đẹp.", type: "example" },
+      { english: "landmark", phonetic: "/ˈlændmɑːrk/", vietnamese: "địa danh / công trình nổi tiếng", type: "vocabulary" },
+      { english: "The Eiffel Tower is a famous landmark.", phonetic: "", vietnamese: "Tháp Eiffel là một địa danh nổi tiếng.", type: "example" },
+      { english: "What landmark is yours?", phonetic: "", vietnamese: "Địa danh của thành phố bạn là gì?", type: "example" },
+      { english: "skyscraper", phonetic: "/ˈskaɪskreɪpər/", vietnamese: "tòa nhà chọc trời", type: "vocabulary" },
+      { english: "New York has many tall skyscrapers.", phonetic: "", vietnamese: "New York có nhiều tòa nhà chọc trời cao.", type: "example" },
+      { english: "The skyscrapers in Dubai are very impressive.", phonetic: "", vietnamese: "Những tòa nhà chọc trời ở Dubai rất ấn tượng.", type: "example" },
+      { english: "museum", phonetic: "/mjuˈziːəm/", vietnamese: "bảo tàng", type: "vocabulary" },
+      { english: "We visited the history museum yesterday.", phonetic: "", vietnamese: "Hôm qua chúng tôi đã tham quan bảo tàng lịch sử.", type: "example" },
+      { english: "Is there a museum near your house?", phonetic: "", vietnamese: "Gần nhà bạn có bảo tàng không?", type: "example" },
+      { english: "temple", phonetic: "/ˈtempl/", vietnamese: "đền / chùa", type: "vocabulary" },
+      { english: "There is an old temple in our village.", phonetic: "", vietnamese: "Trong làng chúng tôi có một ngôi đền cổ.", type: "example" },
+      { english: "Many tourists visit the famous temple.", phonetic: "", vietnamese: "Nhiều du khách đến thăm ngôi đền nổi tiếng đó.", type: "example" },
+      { english: "harbour", phonetic: "/ˈhɑːrbər/", vietnamese: "cảng / bến cảng", type: "vocabulary" },
+      { english: "Sydney Harbour is one of the most beautiful in the world.", phonetic: "", vietnamese: "Cảng Sydney là một trong những cảng đẹp nhất thế giới.", type: "example" },
+      { english: "We watched the ships at the harbour.", phonetic: "", vietnamese: "Chúng tôi nhìn những con tàu ở bến cảng.", type: "example" },
+      { english: "traffic jam", phonetic: "/ˈtræfɪk dʒæm/", vietnamese: "tắc đường", type: "vocabulary" },
+      { english: "There was a bad traffic jam this morning.", phonetic: "", vietnamese: "Sáng nay có tình trạng tắc đường nghiêm trọng.", type: "example" },
+      { english: "Traffic jams are common in big cities.", phonetic: "", vietnamese: "Tắc đường là điều phổ biến ở các thành phố lớn.", type: "example" },
     ]
   },
   {
-    id: 10,
-    name: "OUR HOUSES IN THE FUTURE",
-    emoji: "🏠",
-    color: "#4d96ff",
-    grammar: [
-      {
-        en: "Future Simple (will)",
-        vn: "Thì Tương lai đơn",
-        example: "We will live in a smart house.",
-        example_vn: "Chúng ta sẽ sống trong một ngôi nhà thông minh.",
-        note: "will + verb (infinitive without 'to')",
-        type: "grammar"
-      },
-      {
-        en: "Might (future possibility)",
-        vn: "Might cho khả năng trong tương lai",
-        example: "Houses might have flying cars.",
-        example_vn: "Các ngôi nhà có thể sẽ có ô tô bay.",
-        note: "might + verb → có thể (kém chắc chắn hơn 'will')",
-        type: "grammar"
-      }
-    ],
+    id: 10, name: "Our Houses in the Future", emoji: "🏠",
+    grammar: "Future Simple (will), Might for possibility",
     words: [
-      { en: "smart home", vn: "nhà thông minh", type: "vocabulary" },
-      { en: "solar panel", vn: "tấm pin mặt trời", type: "vocabulary" },
-      { en: "appliance", vn: "thiết bị gia dụng", type: "vocabulary" },
-      { en: "robot vacuum", vn: "máy hút bụi robot", type: "vocabulary" },
-      { en: "air conditioner", vn: "máy điều hòa", type: "vocabulary" },
-      { en: "underground house", vn: "nhà dưới lòng đất", type: "vocabulary" },
-      { en: "floating house", vn: "nhà nổi trên mặt nước", type: "vocabulary" },
-      { en: "high-rise building", vn: "tòa nhà cao tầng", type: "vocabulary" },
-      { en: "energy-saving", vn: "tiết kiệm năng lượng", type: "vocabulary" },
-      { en: "voice-controlled", vn: "điều khiển bằng giọng nói", type: "vocabulary" },
-      { en: "We will have robot helpers.", vn: "Chúng ta sẽ có robot giúp việc.", type: "example" },
-      { en: "Houses might be built underground.", vn: "Nhà có thể được xây dưới lòng đất.", type: "example" },
-      { en: "It will use solar energy.", vn: "Nó sẽ sử dụng năng lượng mặt trời.", type: "example" },
+      { english: "solar panel", phonetic: "/ˈsoʊlər ˈpænl/", vietnamese: "tấm pin năng lượng mặt trời", type: "vocabulary" },
+      { english: "Our house will have solar panels on the roof.", phonetic: "", vietnamese: "Ngôi nhà của chúng tôi sẽ có tấm pin năng lượng mặt trời trên mái.", type: "example" },
+      { english: "Solar panels can save electricity.", phonetic: "", vietnamese: "Tấm pin năng lượng mặt trời có thể tiết kiệm điện.", type: "example" },
+      { english: "smart home", phonetic: "/smɑːrt hoʊm/", vietnamese: "nhà thông minh", type: "vocabulary" },
+      { english: "I will live in a smart home one day.", phonetic: "", vietnamese: "Một ngày nào đó tôi sẽ sống trong một ngôi nhà thông minh.", type: "example" },
+      { english: "Smart homes can control lights automatically.", phonetic: "", vietnamese: "Nhà thông minh có thể tự động điều khiển đèn.", type: "example" },
+      { english: "appliance", phonetic: "/əˈplaɪəns/", vietnamese: "thiết bị điện gia dụng", type: "vocabulary" },
+      { english: "We have many appliances in our kitchen.", phonetic: "", vietnamese: "Chúng tôi có nhiều thiết bị điện trong bếp.", type: "example" },
+      { english: "Future appliances will be more energy-efficient.", phonetic: "", vietnamese: "Các thiết bị trong tương lai sẽ tiết kiệm năng lượng hơn.", type: "example" },
+      { english: "underground", phonetic: "/ˌʌndərˈɡraʊnd/", vietnamese: "dưới lòng đất", type: "vocabulary" },
+      { english: "Houses might be built underground in the future.", phonetic: "", vietnamese: "Nhà ở có thể được xây dựng dưới lòng đất trong tương lai.", type: "example" },
+      { english: "There are underground cities in some science fiction stories.", phonetic: "", vietnamese: "Có những thành phố dưới lòng đất trong một số truyện khoa học viễn tưởng.", type: "example" },
+      { english: "recycle", phonetic: "/ˌriːˈsaɪkl/", vietnamese: "tái chế", type: "vocabulary" },
+      { english: "Future houses will recycle water and waste.", phonetic: "", vietnamese: "Những ngôi nhà trong tương lai sẽ tái chế nước và rác.", type: "example" },
+      { english: "We should recycle paper and plastic.", phonetic: "", vietnamese: "Chúng ta nên tái chế giấy và nhựa.", type: "example" },
+      { english: "technology", phonetic: "/tekˈnɒlədʒi/", vietnamese: "công nghệ", type: "vocabulary" },
+      { english: "Technology will make our homes smarter.", phonetic: "", vietnamese: "Công nghệ sẽ làm cho ngôi nhà của chúng ta thông minh hơn.", type: "example" },
+      { english: "New technology might change the way we live.", phonetic: "", vietnamese: "Công nghệ mới có thể thay đổi cách chúng ta sống.", type: "example" },
+      { english: "eco-friendly", phonetic: "/ˌiːkoʊ ˈfrendli/", vietnamese: "thân thiện với môi trường", type: "vocabulary" },
+      { english: "Our future house will be eco-friendly.", phonetic: "", vietnamese: "Ngôi nhà tương lai của chúng tôi sẽ thân thiện với môi trường.", type: "example" },
+      { english: "Eco-friendly homes use less energy.", phonetic: "", vietnamese: "Những ngôi nhà thân thiện với môi trường sử dụng ít năng lượng hơn.", type: "example" },
     ]
   },
   {
-    id: 11,
-    name: "OUR GREENER WORLD",
-    emoji: "♻️",
-    color: "#c77dff",
-    grammar: [
-      {
-        en: "Articles: a, an, the",
-        vn: "Mạo từ",
-        example: "Use a bag. An eco bag is better. Save the Earth!",
-        example_vn: "Dùng một cái túi. Túi thân thiện môi trường tốt hơn. Hãy cứu Trái Đất!",
-        note: "a/an (lần đầu / chưa xác định) · the (đã xác định / duy nhất)",
-        type: "grammar"
-      },
-      {
-        en: "First Conditional",
-        vn: "Câu điều kiện loại 1",
-        example: "If we recycle, we will save the planet.",
-        example_vn: "Nếu chúng ta tái chế, chúng ta sẽ cứu hành tinh.",
-        note: "If + present simple, will + verb",
-        type: "grammar"
-      }
-    ],
+    id: 11, name: "Our Greener World", emoji: "🌱",
+    grammar: "Articles (a, an, the), First Conditional",
     words: [
-      { en: "recycle", vn: "tái chế", type: "vocabulary" },
-      { en: "reuse", vn: "tái sử dụng", type: "vocabulary" },
-      { en: "reduce", vn: "giảm thiểu", type: "vocabulary" },
-      { en: "plastic bag", vn: "túi nhựa", type: "vocabulary" },
-      { en: "glass bottle", vn: "chai thủy tinh", type: "vocabulary" },
-      { en: "newspaper", vn: "báo giấy", type: "vocabulary" },
-      { en: "tin can", vn: "lon thiếc", type: "vocabulary" },
-      { en: "compost", vn: "phân ủ / phân compost", type: "vocabulary" },
-      { en: "pollution", vn: "ô nhiễm", type: "vocabulary" },
-      { en: "environment", vn: "môi trường", type: "vocabulary" },
-      { en: "eco-friendly", vn: "thân thiện với môi trường", type: "vocabulary" },
-      { en: "landfill", vn: "bãi rác", type: "vocabulary" },
-      { en: "If we plant trees, it will reduce pollution.", vn: "Nếu chúng ta trồng cây, ô nhiễm sẽ giảm đi.", type: "example" },
-      { en: "An eco bag is better than a plastic bag.", vn: "Túi sinh thái tốt hơn túi nhựa.", type: "example" },
+      { english: "pollution", phonetic: "/pəˈluːʃn/", vietnamese: "ô nhiễm", type: "vocabulary" },
+      { english: "Air pollution is a serious problem in big cities.", phonetic: "", vietnamese: "Ô nhiễm không khí là vấn đề nghiêm trọng ở các thành phố lớn.", type: "example" },
+      { english: "If we reduce pollution, the air will be cleaner.", phonetic: "", vietnamese: "Nếu chúng ta giảm ô nhiễm, không khí sẽ trong sạch hơn.", type: "example" },
+      { english: "deforestation", phonetic: "/dɪˌfɒrɪˈsteɪʃn/", vietnamese: "nạn phá rừng", type: "vocabulary" },
+      { english: "Deforestation destroys the homes of many animals.", phonetic: "", vietnamese: "Nạn phá rừng phá hủy nơi sinh sống của nhiều loài động vật.", type: "example" },
+      { english: "If we stop deforestation, forests will grow back.", phonetic: "", vietnamese: "Nếu chúng ta ngừng phá rừng, các khu rừng sẽ phục hồi.", type: "example" },
+      { english: "renewable energy", phonetic: "/rɪˈnjuːəbl ˈenədʒi/", vietnamese: "năng lượng tái tạo", type: "vocabulary" },
+      { english: "Solar power is a type of renewable energy.", phonetic: "", vietnamese: "Năng lượng mặt trời là một loại năng lượng tái tạo.", type: "example" },
+      { english: "If we use renewable energy, we will reduce pollution.", phonetic: "", vietnamese: "Nếu chúng ta dùng năng lượng tái tạo, chúng ta sẽ giảm ô nhiễm.", type: "example" },
+      { english: "reduce", phonetic: "/rɪˈdjuːs/", vietnamese: "giảm thiểu", type: "vocabulary" },
+      { english: "We should reduce the amount of plastic we use.", phonetic: "", vietnamese: "Chúng ta nên giảm lượng nhựa mình sử dụng.", type: "example" },
+      { english: "If you reduce waste, the environment will be cleaner.", phonetic: "", vietnamese: "Nếu bạn giảm rác thải, môi trường sẽ sạch hơn.", type: "example" },
+      { english: "reuse", phonetic: "/ˌriːˈjuːz/", vietnamese: "tái sử dụng", type: "vocabulary" },
+      { english: "We can reuse shopping bags many times.", phonetic: "", vietnamese: "Chúng ta có thể tái sử dụng túi mua hàng nhiều lần.", type: "example" },
+      { english: "Reuse bottles instead of throwing them away.", phonetic: "", vietnamese: "Hãy tái sử dụng chai lọ thay vì vứt chúng đi.", type: "example" },
+      { english: "endangered species", phonetic: "/ɪnˈdeɪndʒərd ˈspiːʃiːz/", vietnamese: "loài có nguy cơ tuyệt chủng", type: "vocabulary" },
+      { english: "The tiger is an endangered species.", phonetic: "", vietnamese: "Hổ là một loài có nguy cơ tuyệt chủng.", type: "example" },
+      { english: "If we protect nature, endangered species will survive.", phonetic: "", vietnamese: "Nếu chúng ta bảo vệ thiên nhiên, các loài có nguy cơ tuyệt chủng sẽ tồn tại.", type: "example" },
+      { english: "greenhouse effect", phonetic: "/ˈɡriːnhaʊs ɪˈfekt/", vietnamese: "hiệu ứng nhà kính", type: "vocabulary" },
+      { english: "The greenhouse effect causes global warming.", phonetic: "", vietnamese: "Hiệu ứng nhà kính gây ra sự nóng lên toàn cầu.", type: "example" },
+      { english: "If we use less fossil fuel, the greenhouse effect will decrease.", phonetic: "", vietnamese: "Nếu chúng ta dùng ít nhiên liệu hóa thạch hơn, hiệu ứng nhà kính sẽ giảm.", type: "example" },
     ]
   },
   {
-    id: 12,
-    name: "ROBOTS",
-    emoji: "🤖",
-    color: "#ff9f43",
-    grammar: [
-      {
-        en: "Superlative Adjectives (short)",
-        vn: "So sánh nhất (tính từ ngắn)",
-        example: "This robot is the fastest in the world.",
-        example_vn: "Robot này là nhanh nhất trên thế giới.",
-        note: "the + adj + -est · the biggest, the smartest, the oldest",
-        type: "grammar"
-      }
-    ],
+    id: 12, name: "Robots", emoji: "🤖",
+    grammar: "Superlative adjectives",
     words: [
-      { en: "robot", vn: "rô-bốt", type: "vocabulary" },
-      { en: "artificial intelligence", vn: "trí tuệ nhân tạo", type: "vocabulary" },
-      { en: "program", vn: "lập trình / chương trình", type: "vocabulary" },
-      { en: "sensor", vn: "cảm biến", type: "vocabulary" },
-      { en: "household chore", vn: "công việc nhà", type: "vocabulary" },
-      { en: "operate", vn: "vận hành", type: "vocabulary" },
-      { en: "carry", vn: "mang / vác", type: "vocabulary" },
-      { en: "deliver", vn: "giao hàng", type: "vocabulary" },
-      { en: "factory", vn: "nhà máy", type: "vocabulary" },
-      { en: "efficient", vn: "hiệu quả", type: "vocabulary" },
-      { en: "powerful", vn: "mạnh mẽ", type: "vocabulary" },
-      { en: "advanced", vn: "tiên tiến", type: "vocabulary" },
-      { en: "This is the smartest robot.", vn: "Đây là robot thông minh nhất.", type: "example" },
-      { en: "Robots can do the hardest jobs.", vn: "Rô-bốt có thể làm những công việc khó nhất.", type: "example" },
-      { en: "It is the fastest machine in the factory.", vn: "Nó là cái máy nhanh nhất trong nhà máy.", type: "example" },
+      { english: "artificial intelligence", phonetic: "/ˌɑːrtɪˈfɪʃl ɪnˈtelɪdʒəns/", vietnamese: "trí tuệ nhân tạo", type: "vocabulary" },
+      { english: "Artificial intelligence helps robots learn and think.", phonetic: "", vietnamese: "Trí tuệ nhân tạo giúp robot học và suy nghĩ.", type: "example" },
+      { english: "The most advanced robots use artificial intelligence.", phonetic: "", vietnamese: "Những robot tiên tiến nhất sử dụng trí tuệ nhân tạo.", type: "example" },
+      { english: "household chores", phonetic: "/ˈhaʊshəʊld tʃɔːrz/", vietnamese: "việc nhà", type: "vocabulary" },
+      { english: "Some robots can do household chores.", phonetic: "", vietnamese: "Một số robot có thể làm việc nhà.", type: "example" },
+      { english: "The most helpful robot does all the household chores.", phonetic: "", vietnamese: "Robot hữu ích nhất làm tất cả việc nhà.", type: "example" },
+      { english: "factory", phonetic: "/ˈfæktri/", vietnamese: "nhà máy", type: "vocabulary" },
+      { english: "Robots work in factories to make products.", phonetic: "", vietnamese: "Robot làm việc trong các nhà máy để sản xuất hàng hóa.", type: "example" },
+      { english: "This is the largest robot factory in the world.", phonetic: "", vietnamese: "Đây là nhà máy robot lớn nhất thế giới.", type: "example" },
+      { english: "advanced", phonetic: "/ədˈvɑːnst/", vietnamese: "tiên tiến / nâng cao", type: "vocabulary" },
+      { english: "Japan has the most advanced robots.", phonetic: "", vietnamese: "Nhật Bản có những robot tiên tiến nhất.", type: "example" },
+      { english: "The most advanced technology can be found in robots.", phonetic: "", vietnamese: "Công nghệ tiên tiến nhất có thể được tìm thấy trong robot.", type: "example" },
+      { english: "programme", phonetic: "/ˈproʊɡræm/", vietnamese: "lập trình / chương trình", type: "vocabulary" },
+      { english: "Scientists programme robots to do many tasks.", phonetic: "", vietnamese: "Các nhà khoa học lập trình robot để thực hiện nhiều nhiệm vụ.", type: "example" },
+      { english: "Which robot has the most complex programme?", phonetic: "", vietnamese: "Robot nào có chương trình phức tạp nhất?", type: "example" },
+      { english: "emotion", phonetic: "/ɪˈmoʊʃn/", vietnamese: "cảm xúc", type: "vocabulary" },
+      { english: "Some scientists want robots to understand human emotions.", phonetic: "", vietnamese: "Một số nhà khoa học muốn robot hiểu cảm xúc của con người.", type: "example" },
+      { english: "The most human-like robot can show basic emotions.", phonetic: "", vietnamese: "Robot giống người nhất có thể thể hiện các cảm xúc cơ bản.", type: "example" },
+      { english: "explore", phonetic: "/ɪkˈsplɔːr/", vietnamese: "khám phá", type: "vocabulary" },
+      { english: "Robots can explore dangerous places that humans cannot.", phonetic: "", vietnamese: "Robot có thể khám phá những nơi nguy hiểm mà con người không thể.", type: "example" },
+      { english: "The fastest robot can explore the ocean floor.", phonetic: "", vietnamese: "Robot nhanh nhất có thể khám phá đáy đại dương.", type: "example" },
     ]
   }
 ];
 
-/* ============================================================
-   STATE
-   ============================================================ */
-const STORAGE_KEY = 'eng_flash_v1';
-
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
 let state = {
-  unitIndex: 0,
-  cardIndex: 0,
-  isFlipped: false,
-  showViet: true,
-  showGrammar: true,
-  audioSpeed: 1.0,
-  cards: []
+  unitId: null,
+  cards: [],
+  index: 0,
+  flipped: false,
+  showPhonetic: true,
+  showVietnamese: true,
+  audioSpeed: 1,
+  shuffled: false
 };
 
-function saveState() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      unitIndex: state.unitIndex,
-      cardIndex: state.cardIndex,
-      showViet: state.showViet,
-      showGrammar: state.showGrammar,
-      audioSpeed: state.audioSpeed
-    }));
-  } catch(e) {}
-}
-
+const LS_KEY = 'eng6_v2';
 function loadState() {
-  try {
-    const s = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-    if (s.unitIndex !== undefined) state.unitIndex = s.unitIndex;
-    if (s.cardIndex !== undefined) state.cardIndex = s.cardIndex;
-    if (s.showViet !== undefined) state.showViet = s.showViet;
-    if (s.showGrammar !== undefined) state.showGrammar = s.showGrammar;
-    if (s.audioSpeed !== undefined) state.audioSpeed = s.audioSpeed;
-  } catch(e) {}
+  try { return JSON.parse(localStorage.getItem(LS_KEY)) || {}; } catch { return {}; }
+}
+function saveState() {
+  try { localStorage.setItem(LS_KEY, JSON.stringify({ unitId: state.unitId, index: state.index, showPhonetic: state.showPhonetic, showVietnamese: state.showVietnamese, audioSpeed: state.audioSpeed })); } catch {}
 }
 
-function buildCards() {
-  const unit = UNITS[state.unitIndex];
-  const all = [...unit.grammar, ...unit.words];
-  state.cards = state.showGrammar ? all : unit.words;
-}
+// ═══════════════════════════════════════════════════════
+// DOM REFS
+// ═══════════════════════════════════════════════════════
+const homeScreen = document.getElementById('homeScreen');
+const learnScreen = document.getElementById('learnScreen');
+const unitGrid = document.getElementById('unitGrid');
+const cardScene = document.getElementById('cardScene');
+const cardInner = document.getElementById('cardInner');
+const cardEnglish = document.getElementById('cardEnglish');
+const cardPhonetic = document.getElementById('cardPhonetic');
+const cardVietnamese = document.getElementById('cardVietnamese');
+const cardGrammar = document.getElementById('cardGrammar');
+const frontBadge = document.getElementById('frontBadge');
+const backBadge = document.getElementById('backBadge');
+const progressFill = document.getElementById('progressFill');
+const progressLabel = document.getElementById('progressLabel');
+const topbarTitle = document.getElementById('topbarTitle');
+const audioBtn = document.getElementById('audioBtn');
+const audioIcon = document.getElementById('audioIcon');
+const audioWaves = document.getElementById('audioWaves');
+const settingsOverlay = document.getElementById('settingsOverlay');
+const settingsUnitList = document.getElementById('settingsUnitList');
+const togglePhonetic = document.getElementById('togglePhonetic');
+const toggleVietnamese = document.getElementById('toggleVietnamese');
+const completionScreen = document.getElementById('completionScreen');
+const completionSub = document.getElementById('completionSub');
 
-/* ============================================================
-   ACCENT COLORS
-   ============================================================ */
-function setAccent(color) {
-  document.documentElement.style.setProperty('--accent', color);
-  document.getElementById('glow').style.background = color;
-}
+// ═══════════════════════════════════════════════════════
+// HOME SCREEN
+// ═══════════════════════════════════════════════════════
+function renderHome() {
+  const saved = loadState();
+  unitGrid.innerHTML = '';
 
-/* ============================================================
-   RENDER
-   ============================================================ */
-function renderCard() {
-  const unit = UNITS[state.unitIndex];
-  const total = state.cards.length;
-  const idx   = state.cardIndex;
+  UNITS.forEach(unit => {
+    const total = unit.words.length;
+    const savedIdx = (saved.unitId === unit.id) ? (saved.index || 0) : 0;
+    const pct = total > 0 ? Math.round((savedIdx / total) * 100) : 0;
 
-  setAccent(unit.color);
-
-  // Unit badge
-  document.getElementById('unit-badge').textContent =
-    `Unit ${unit.id} · ${unit.name}`;
-
-  // Progress
-  const pct = total === 0 ? 0 : (idx / total) * 100;
-  document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('progress-text').textContent = idx + '/' + total;
-
-  // Card inner flipped state
-  document.getElementById('card-inner').classList.toggle('flipped', state.isFlipped);
-
-  // Completion
-  const done = idx >= total;
-  document.getElementById('learn-area').classList.toggle('hidden', done);
-  document.getElementById('completion-screen').classList.toggle('visible', done);
-  if (done) return;
-
-  const card = state.cards[idx];
-  const isGrammar = card.type === 'grammar';
-  const isExample = card.type === 'example';
-
-  // Front
-  const frontWord = document.getElementById('front-word');
-  const frontType = document.getElementById('front-type');
-  const badgeFront = document.getElementById('badge-front');
-
-  frontWord.textContent = card.en;
-  frontWord.className = 'front-word' + (card.en.length > 24 ? ' long' : '');
-  frontType.textContent = isGrammar ? '📘 Grammar' : (isExample ? '💬 Example sentence' : '📖 Vocabulary');
-  badgeFront.textContent = isGrammar ? 'Grammar' : (isExample ? 'Example' : 'Vocabulary');
-  badgeFront.className = 'card-tag' + (isGrammar ? ' grammar' : '') + (isExample ? ' example' : '');
-
-  // Back
-  const backTrans = document.getElementById('back-trans');
-  const backSub   = document.getElementById('back-sub');
-  const backEng   = document.getElementById('back-eng-small');
-  const badgeBack = document.getElementById('badge-back');
-
-  badgeBack.textContent = badgeFront.textContent;
-  badgeBack.className = badgeFront.className;
-
-  if (state.showViet) {
-    backTrans.textContent = card.vn || card.example_vn || '';
-    backTrans.className = 'back-translation' + ((card.vn || '').length > 30 ? ' long' : '');
-  } else {
-    backTrans.textContent = '(hidden)';
-    backTrans.className = 'back-translation';
-  }
-
-  if (isGrammar) {
-    backSub.textContent = card.note || '';
-    backEng.textContent = card.example ? `e.g. "${card.example}"` : '';
-  } else if (isExample) {
-    backSub.textContent = '';
-    backEng.textContent = '— ' + card.en;
-  } else {
-    backSub.textContent = '';
-    backEng.textContent = '';
-  }
-}
-
-function renderUnitGrid() {
-  const grid = document.getElementById('unit-grid');
-  grid.innerHTML = '';
-  UNITS.forEach((u, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'unit-btn' + (i === state.unitIndex ? ' active' : '');
-    btn.style.borderColor = i === state.unitIndex ? u.color : '';
-    btn.innerHTML = `<span class="unit-emoji">${u.emoji}</span>
-      <span class="unit-num">Unit ${u.id}</span>
-      <span class="unit-name">${u.name}</span>`;
-    btn.addEventListener('click', () => selectUnit(i));
-    grid.appendChild(btn);
+    const card = document.createElement('div');
+    card.className = 'unit-card';
+    card.innerHTML = `
+      <span class="unit-emoji">${unit.emoji}</span>
+      <div class="unit-number">Unit ${unit.id}</div>
+      <div class="unit-name">${unit.name}</div>
+      <div class="unit-grammar">${unit.grammar}</div>
+      <div class="unit-meta">
+        <span class="unit-count">${total} thẻ</span>
+        <div class="unit-progress-bar"><div class="unit-progress-fill" style="width:${pct}%"></div></div>
+        <div class="unit-arrow"><svg viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg></div>
+      </div>`;
+    card.addEventListener('click', () => startUnit(unit.id));
+    unitGrid.appendChild(card);
   });
 }
 
-function syncToggles() {
-  document.getElementById('toggle-viet').classList.toggle('on', state.showViet);
-  document.getElementById('toggle-grammar').classList.toggle('on', state.showGrammar);
-  document.getElementById('speed-slider').value = state.audioSpeed;
-  document.getElementById('speed-val').textContent = state.audioSpeed.toFixed(1) + '×';
+// ═══════════════════════════════════════════════════════
+// LEARN SCREEN
+// ═══════════════════════════════════════════════════════
+function startUnit(unitId, resumeIdx) {
+  const unit = UNITS.find(u => u.id === unitId);
+  if (!unit) return;
+
+  const saved = loadState();
+  state.unitId = unitId;
+  state.cards = [...unit.words];
+  state.shuffled = false;
+  state.flipped = false;
+  state.showPhonetic = saved.showPhonetic !== undefined ? saved.showPhonetic : true;
+  state.showVietnamese = saved.showVietnamese !== undefined ? saved.showVietnamese : true;
+  state.audioSpeed = saved.audioSpeed || 1;
+
+  if (resumeIdx !== undefined) {
+    state.index = resumeIdx;
+  } else if (saved.unitId === unitId && saved.index !== undefined) {
+    state.index = Math.min(saved.index, state.cards.length - 1);
+  } else {
+    state.index = 0;
+  }
+
+  topbarTitle.textContent = `${unit.emoji} ${unit.name}`;
+  togglePhonetic.className = 'toggle' + (state.showPhonetic ? ' on' : '');
+  toggleVietnamese.className = 'toggle' + (state.showVietnamese ? ' on' : '');
+
+  document.querySelectorAll('.speed-btn').forEach(b => {
+    b.classList.toggle('active', parseFloat(b.dataset.speed) === state.audioSpeed);
+  });
+
+  renderSettingsUnits();
+  showScreen('learn');
+  renderCard(false);
 }
 
-/* ============================================================
-   INTERACTIONS — swipe & tap
-   ============================================================ */
-const $scene = document.getElementById('card-scene');
-const $inner = document.getElementById('card-inner');
+function showScreen(name) {
+  homeScreen.classList.toggle('hidden', name !== 'home');
+  learnScreen.classList.toggle('hidden', name !== 'learn');
+}
 
-let touchStartX = 0, touchStartY = 0, touchStartTime = 0, isDragging = false;
+function renderCard(animate, direction) {
+  const card = state.cards[state.index];
+  if (!card) return;
 
-$scene.addEventListener('touchstart', e => {
-  touchStartX = e.touches[0].clientX;
-  touchStartY = e.touches[0].clientY;
-  touchStartTime = Date.now();
-  isDragging = false;
-}, { passive: true });
+  // Reset flip
+  state.flipped = false;
+  cardInner.classList.remove('flipped');
 
-$scene.addEventListener('touchmove', e => {
-  if (Math.abs(e.touches[0].clientX - touchStartX) > 10) isDragging = true;
-}, { passive: true });
+  // Badges
+  const badgeClass = card.type === 'vocabulary' ? 'badge-vocabulary' : 'badge-example';
+  const badgeLabel = card.type === 'vocabulary' ? 'Vocabulary' : 'Example';
+  frontBadge.className = 'card-type-badge ' + badgeClass;
+  frontBadge.textContent = badgeLabel;
+  backBadge.className = 'card-type-badge ' + badgeClass;
+  backBadge.textContent = badgeLabel;
 
-$scene.addEventListener('touchend', e => {
-  const dx = e.changedTouches[0].clientX - touchStartX;
-  const dt = Date.now() - touchStartTime;
-  const isHoriz = Math.abs(dx) > Math.abs(e.changedTouches[0].clientY - touchStartY) * 1.5;
-  if (isDragging && isHoriz && Math.abs(dx) > 50) {
-    dx < 0 ? nextCard() : prevCard();
-  } else if (!isDragging && dt < 500) {
-    flipCard();
+  // Front
+  cardEnglish.textContent = card.english;
+  cardPhonetic.textContent = card.phonetic;
+  cardPhonetic.style.display = (state.showPhonetic && card.phonetic) ? 'block' : 'none';
+
+  // Back
+  cardVietnamese.textContent = card.vietnamese;
+  cardVietnamese.style.display = state.showVietnamese ? 'block' : 'none';
+
+  // Grammar note for vocabulary cards
+  const unit = UNITS.find(u => u.id === state.unitId);
+  if (card.type === 'vocabulary' && unit) {
+    cardGrammar.textContent = '📝 ' + unit.grammar;
+    cardGrammar.style.display = 'block';
+  } else {
+    cardGrammar.style.display = 'none';
   }
-}, { passive: true });
 
-let mouseStartX = 0, mouseDown = false, mouseDragged = false;
-$scene.addEventListener('mousedown', e => { mouseStartX = e.clientX; mouseDown = true; mouseDragged = false; });
-window.addEventListener('mousemove', e => { if (mouseDown && Math.abs(e.clientX - mouseStartX) > 8) mouseDragged = true; });
-$scene.addEventListener('mouseup', e => {
-  if (!mouseDown) return;
-  mouseDown = false;
-  const dx = e.clientX - mouseStartX;
-  if (mouseDragged && Math.abs(dx) > 50) { dx < 0 ? nextCard() : prevCard(); }
-  else if (!mouseDragged) flipCard();
-});
+  // Progress
+  const total = state.cards.length;
+  const pct = total > 1 ? ((state.index + 1) / total) * 100 : 100;
+  progressFill.style.width = pct + '%';
+  progressLabel.textContent = `${state.index + 1} / ${total}`;
 
-document.getElementById('prev-btn').addEventListener('click', e => { e.stopPropagation(); prevCard(); });
-document.getElementById('next-btn').addEventListener('click', e => { e.stopPropagation(); nextCard(); });
+  saveState();
+
+  // Animate
+  if (animate && direction) {
+    const inClass = direction === 'left' ? 'swipe-in-left' : 'swipe-in-right';
+    cardScene.classList.add(inClass);
+    cardScene.addEventListener('animationend', () => cardScene.classList.remove(inClass), { once: true });
+  }
+
+  // Auto-speak
+  setTimeout(() => speakCard(), 300);
+}
 
 function flipCard() {
-  state.isFlipped = !state.isFlipped;
-  $inner.classList.toggle('flipped', state.isFlipped);
-  saveState();
+  state.flipped = !state.flipped;
+  cardInner.classList.toggle('flipped', state.flipped);
 }
 
 function nextCard() {
-  if (state.cardIndex >= state.cards.length) return;
-  animSwipe('left');
-  setTimeout(() => {
-    state.cardIndex++;
-    state.isFlipped = false;
-    renderCard();
-    saveState();
-    if (state.cardIndex < state.cards.length) autoPlay();
-  }, 200);
+  if (state.index >= state.cards.length - 1) {
+    showCompletion();
+    return;
+  }
+  animateSwipe('left', () => {
+    state.index++;
+    renderCard(true, 'left');
+  });
 }
 
 function prevCard() {
-  if (state.cardIndex <= 0) return;
-  animSwipe('right');
-  setTimeout(() => {
-    state.cardIndex--;
-    state.isFlipped = false;
-    renderCard();
-    saveState();
-    autoPlay();
-  }, 200);
+  if (state.index <= 0) return;
+  animateSwipe('right', () => {
+    state.index--;
+    renderCard(true, 'right');
+  });
 }
 
-function animSwipe(dir) {
-  $scene.classList.remove('swipe-left', 'swipe-right');
-  void $scene.offsetWidth;
-  $scene.classList.add('swipe-' + dir);
-  setTimeout(() => $scene.classList.remove('swipe-left', 'swipe-right'), 350);
+function animateSwipe(dir, cb) {
+  const outClass = dir === 'left' ? 'swipe-left' : 'swipe-right';
+  cardScene.classList.add(outClass);
+  cardScene.addEventListener('animationend', () => {
+    cardScene.classList.remove(outClass);
+    cb();
+  }, { once: true });
 }
 
-/* ============================================================
-   AUDIO
-   ============================================================ */
+// ═══════════════════════════════════════════════════════
+// AUDIO
+// ═══════════════════════════════════════════════════════
 let synth = window.speechSynthesis;
-let voices = [];
 let speaking = false;
 
-synth.onvoiceschanged = () => { voices = synth.getVoices(); };
-voices = synth.getVoices();
-
-function getEnVoice() {
-  const prefs = ['en-US', 'en-GB', 'en-AU', 'en'];
-  for (const p of prefs) {
-    const v = voices.find(v => v.lang.startsWith(p));
-    if (v) return v;
-  }
-  return voices[0] || null;
+function speakCard() {
+  const card = state.cards[state.index];
+  if (!card || !synth) return;
+  speak(card.english);
 }
 
-function speakEN(text) {
-  if (!text || !synth) return;
+function speak(text) {
+  if (!synth) return;
   synth.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  const v = getEnVoice();
-  if (v) u.voice = v;
-  u.lang = 'en-US';
-  u.rate = state.audioSpeed;
-  u.pitch = 1;
-  u.onstart = () => { speaking = true; document.getElementById('audio-btn').classList.add('playing'); };
-  u.onend = u.onerror = () => { speaking = false; document.getElementById('audio-btn').classList.remove('playing'); };
-  synth.speak(u);
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'en-US';
+  utt.rate = state.audioSpeed;
+
+  utt.onstart = () => {
+    speaking = true;
+    audioIcon.classList.add('speaking');
+    audioWaves.classList.remove('idle');
+  };
+  utt.onend = utt.onerror = () => {
+    speaking = false;
+    audioIcon.classList.remove('speaking');
+    audioWaves.classList.add('idle');
+  };
+
+  synth.speak(utt);
 }
 
-function playCard() {
-  if (state.cardIndex < state.cards.length) {
-    speakEN(state.cards[state.cardIndex].en);
+// ═══════════════════════════════════════════════════════
+// SETTINGS
+// ═══════════════════════════════════════════════════════
+function renderSettingsUnits() {
+  settingsUnitList.innerHTML = '';
+  UNITS.forEach(u => {
+    const pill = document.createElement('div');
+    pill.className = 'unit-pill' + (u.id === state.unitId ? ' active' : '');
+    pill.textContent = `${u.emoji} U${u.id}`;
+    pill.addEventListener('click', () => {
+      closeSettings();
+      startUnit(u.id, 0);
+    });
+    settingsUnitList.appendChild(pill);
+  });
+}
+
+function openSettings() {
+  renderSettingsUnits();
+  settingsOverlay.classList.add('open');
+  document.getElementById('gearBtn').classList.add('active');
+}
+
+function closeSettings() {
+  settingsOverlay.classList.remove('open');
+  document.getElementById('gearBtn').classList.remove('active');
+}
+
+// ═══════════════════════════════════════════════════════
+// COMPLETION
+// ═══════════════════════════════════════════════════════
+function showCompletion() {
+  const unit = UNITS.find(u => u.id === state.unitId);
+  completionSub.textContent = `Bạn đã hoàn thành ${state.cards.length} thẻ trong "${unit.name}"`;
+  completionScreen.classList.remove('hidden');
+  completionScreen.classList.add('visible');
+}
+
+// ═══════════════════════════════════════════════════════
+// TOUCH / SWIPE
+// ═══════════════════════════════════════════════════════
+let touchStartX = 0, touchStartY = 0, touchStartTime = 0;
+
+cardScene.addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+  touchStartTime = Date.now();
+}, { passive: true });
+
+cardScene.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  const dt = Date.now() - touchStartTime;
+  const absDx = Math.abs(dx), absDy = Math.abs(dy);
+
+  if (absDx < 10 && absDy < 10 && dt < 400) {
+    flipCard();
+  } else if (absDx > 50 && absDx > absDy * 1.5) {
+    if (dx < 0) nextCard(); else prevCard();
   }
-}
+}, { passive: true });
 
-function autoPlay() { setTimeout(playCard, 300); }
+// Mouse swipe
+let mouseStartX = 0, mouseStartTime = 0, isDragging = false;
 
-document.getElementById('audio-btn').addEventListener('click', e => { e.stopPropagation(); playCard(); });
-
-/* ============================================================
-   TOOLBAR
-   ============================================================ */
-const $overlay = document.getElementById('toolbar-overlay');
-const $panel   = document.getElementById('toolbar-panel');
-
-const openToolbar  = () => { $overlay.classList.add('visible'); $panel.classList.add('open'); renderUnitGrid(); syncToggles(); };
-const closeToolbar = () => { $overlay.classList.remove('visible'); $panel.classList.remove('open'); };
-
-document.getElementById('menu-btn').addEventListener('click', openToolbar);
-$overlay.addEventListener('click', closeToolbar);
-
-function selectUnit(idx) {
-  state.unitIndex = idx;
-  state.cardIndex = 0;
-  state.isFlipped = false;
-  buildCards();
-  renderCard();
-  autoPlay();
-  saveState();
-  closeToolbar();
-  showToast(`📚 Unit ${UNITS[idx].id}: ${UNITS[idx].name}`);
-}
-
-document.getElementById('toggle-viet-row').addEventListener('click', () => {
-  state.showViet = !state.showViet;
-  syncToggles();
-  renderCard();
-  saveState();
-  showToast(state.showViet ? '✅ Vietnamese shown' : '🙈 Vietnamese hidden');
+cardScene.addEventListener('mousedown', e => {
+  mouseStartX = e.clientX;
+  mouseStartTime = Date.now();
+  isDragging = false;
 });
 
-document.getElementById('toggle-grammar-row').addEventListener('click', () => {
-  state.showGrammar = !state.showGrammar;
-  buildCards();
-  if (state.cardIndex >= state.cards.length) state.cardIndex = 0;
-  syncToggles();
-  renderCard();
-  saveState();
-  showToast(state.showGrammar ? '✅ Grammar cards included' : '🙈 Grammar cards hidden');
+cardScene.addEventListener('mousemove', e => {
+  if (Math.abs(e.clientX - mouseStartX) > 5) isDragging = true;
 });
 
-document.getElementById('speed-slider').addEventListener('input', e => {
-  state.audioSpeed = parseFloat(e.target.value);
-  document.getElementById('speed-val').textContent = state.audioSpeed.toFixed(1) + '×';
-  saveState();
+cardScene.addEventListener('mouseup', e => {
+  const dx = e.clientX - mouseStartX;
+  const dt = Date.now() - mouseStartTime;
+  if (!isDragging && dt < 300) { flipCard(); return; }
+  if (Math.abs(dx) > 60) { if (dx < 0) nextCard(); else prevCard(); }
+  isDragging = false;
 });
 
-document.getElementById('btn-shuffle').addEventListener('click', () => {
-  const arr = [...state.cards];
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  state.cards = arr;
-  state.cardIndex = 0;
-  state.isFlipped = false;
-  renderCard();
-  saveState();
-  closeToolbar();
-  showToast('🔀 Cards shuffled!');
-  autoPlay();
-});
-
-document.getElementById('btn-reset').addEventListener('click', () => {
-  state.cardIndex = 0;
-  state.isFlipped = false;
-  buildCards();
-  renderCard();
-  saveState();
-  closeToolbar();
-  showToast('🔄 Progress reset');
-  autoPlay();
-});
-
-document.getElementById('restart-btn').addEventListener('click', () => {
-  state.cardIndex = 0;
-  state.isFlipped = false;
-  buildCards();
-  renderCard();
-  saveState();
-  autoPlay();
-});
-
-/* ============================================================
-   TOAST
-   ============================================================ */
-let toastTimer = null;
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  if (toastTimer) clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
-}
-
-/* ============================================================
-   KEYBOARD
-   ============================================================ */
+// ═══════════════════════════════════════════════════════
+// KEYBOARD
+// ═══════════════════════════════════════════════════════
 document.addEventListener('keydown', e => {
-  if (e.target.tagName === 'INPUT') return;
-  switch(e.key) {
-    case 'ArrowRight': nextCard(); break;
-    case 'ArrowLeft': prevCard(); break;
-    case ' ': e.preventDefault(); flipCard(); break;
-    case 's': case 'S': playCard(); break;
-    case 'Escape': closeToolbar(); break;
-  }
+  if (learnScreen.classList.contains('hidden')) return;
+  if (e.key === 'ArrowRight') nextCard();
+  else if (e.key === 'ArrowLeft') prevCard();
+  else if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flipCard(); }
+  else if (e.key === 's' || e.key === 'S') speakCard();
 });
 
-/* ============================================================
-   INIT
-   ============================================================ */
-function init() {
-  loadState();
-  if (state.unitIndex >= UNITS.length) state.unitIndex = 0;
-  buildCards();
-  if (state.cardIndex >= state.cards.length) state.cardIndex = 0;
-  renderCard();
-  syncToggles();
-  setTimeout(playCard, 900);
-}
+// ═══════════════════════════════════════════════════════
+// EVENTS
+// ═══════════════════════════════════════════════════════
+document.getElementById('backBtn').addEventListener('click', () => {
+  synth && synth.cancel();
+  closeSettings();
+  showScreen('home');
+  renderHome();
+});
 
-init();
+document.getElementById('gearBtn').addEventListener('click', () => {
+  settingsOverlay.classList.contains('open') ? closeSettings() : openSettings();
+});
+
+settingsOverlay.addEventListener('click', e => {
+  if (e.target === settingsOverlay) closeSettings();
+});
+
+audioBtn.addEventListener('click', speakCard);
+
+togglePhonetic.addEventListener('click', () => {
+  state.showPhonetic = !state.showPhonetic;
+  togglePhonetic.classList.toggle('on', state.showPhonetic);
+  cardPhonetic.style.display = (state.showPhonetic && state.cards[state.index]?.phonetic) ? 'block' : 'none';
+  saveState();
+});
+
+toggleVietnamese.addEventListener('click', () => {
+  state.showVietnamese = !state.showVietnamese;
+  toggleVietnamese.classList.toggle('on', state.showVietnamese);
+  if (state.flipped) cardVietnamese.style.display = state.showVietnamese ? 'block' : 'none';
+  saveState();
+});
+
+document.querySelectorAll('.speed-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    state.audioSpeed = parseFloat(btn.dataset.speed);
+    document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    saveState();
+  });
+});
+
+document.getElementById('shuffleBtn').addEventListener('click', () => {
+  state.cards = [...state.cards].sort(() => Math.random() - 0.5);
+  state.index = 0;
+  state.shuffled = true;
+  closeSettings();
+  renderCard(false);
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  state.index = 0;
+  const unit = UNITS.find(u => u.id === state.unitId);
+  state.cards = unit ? [...unit.words] : state.cards;
+  closeSettings();
+  renderCard(false);
+  saveState();
+});
+
+document.getElementById('completionBtn').addEventListener('click', () => {
+  completionScreen.classList.add('hidden');
+  completionScreen.classList.remove('visible');
+  state.index = 0;
+  const unit = UNITS.find(u => u.id === state.unitId);
+  if (unit) state.cards = [...unit.words];
+  renderCard(false);
+});
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+(function init() {
+  renderHome();
+  showScreen('home');
+
+  // Resume session
+  const saved = loadState();
+  if (saved.unitId) {
+    const unit = UNITS.find(u => u.id === saved.unitId);
+    if (unit) {
+      // Start with saved position but don't auto-navigate to learn screen
+      // User can tap the unit card to resume
+    }
+  }
+})();
 </script>
 </body>
 </html>
