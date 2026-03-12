@@ -494,6 +494,7 @@
       position: relative;
       transform-style: preserve-3d;
       transition: transform 0.55s cubic-bezier(.645, .045, .355, 1.000);
+      will-change: transform;
     }
 
     .card-inner.flipped {
@@ -2136,6 +2137,7 @@
     // TOUCH / SWIPE
     // ═══════════════════════════════════════════════════════
     let touchStartX = 0, touchStartY = 0, touchStartTime = 0;
+    let lastTouchEnd = 0; // chặn ghost click sau touchend
 
     cardScene.addEventListener('touchstart', e => {
       touchStartX = e.touches[0].clientX;
@@ -2144,6 +2146,10 @@
     }, { passive: true });
 
     cardScene.addEventListener('touchend', e => {
+      // 1. Prevent Ghost Clicks: chặn mousedown/mouseup/click sinh ra sau touch
+      e.preventDefault();
+      lastTouchEnd = Date.now();
+
       const dx = e.changedTouches[0].clientX - touchStartX;
       const dy = e.changedTouches[0].clientY - touchStartY;
       const dt = Date.now() - touchStartTime;
@@ -2156,22 +2162,26 @@
       } else if (absDx < 30 && absDy < 30 && dt < 500) {
         flipCard();
       }
-    }, { passive: true });
+    }, { passive: false }); // passive: false để e.preventDefault() hoạt động
 
-    // Mouse swipe
+    // ── Mouse swipe (desktop only) ──
+    // 2. Separate Concerns: bỏ qua hoàn toàn nếu vừa có touch event
     let mouseStartX = 0, mouseStartTime = 0, isDragging = false;
 
     cardScene.addEventListener('mousedown', e => {
+      if (Date.now() - lastTouchEnd < 500) return; // đang là touch device → bỏ qua
       mouseStartX = e.clientX;
       mouseStartTime = Date.now();
       isDragging = false;
     });
 
     cardScene.addEventListener('mousemove', e => {
+      if (Date.now() - lastTouchEnd < 500) return;
       if (Math.abs(e.clientX - mouseStartX) > 5) isDragging = true;
     });
 
     cardScene.addEventListener('mouseup', e => {
+      if (Date.now() - lastTouchEnd < 500) return; // ghost click từ touch → bỏ qua
       const dx = e.clientX - mouseStartX;
       const dt = Date.now() - mouseStartTime;
       if (!isDragging && dt < 300) { flipCard(); return; }
