@@ -2149,10 +2149,12 @@
       const dt = Date.now() - touchStartTime;
       const absDx = Math.abs(dx), absDy = Math.abs(dy);
 
-      if (absDx < 10 && absDy < 10 && dt < 400) {
-        flipCard();
-      } else if (absDx > 50 && absDx > absDy * 1.5) {
+      // Swipe: di chuyển ngang rõ ràng (> 40px) và ngang hơn dọc
+      if (absDx > 40 && absDx > absDy * 1.2) {
         if (dx < 0) nextCard(); else prevCard();
+        // Tap: không swipe, thời gian ngắn (< 500ms), không di chuyển quá nhiều
+      } else if (absDx < 30 && absDy < 30 && dt < 500) {
+        flipCard();
       }
     }, { passive: true });
 
