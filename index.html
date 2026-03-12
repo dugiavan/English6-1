@@ -1,951 +1,1924 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>English 6 – Flashcards</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --pink: #f9c5d1;
-    --peach: #fddab0;
-    --orange: #f7b267;
-    --cream: #fff8f3;
-    --glass-bg: rgba(255,255,255,0.55);
-    --glass-border: rgba(255,255,255,0.8);
-    --shadow-soft: 0 8px 40px rgba(247,178,103,0.18), 0 2px 12px rgba(249,197,209,0.18);
-    --shadow-card: 0 20px 60px rgba(200,100,80,0.12), 0 4px 20px rgba(249,197,209,0.25);
-    --text-primary: #2d1f1a;
-    --text-secondary: #8a6a5e;
-    --text-muted: #c4a49c;
-    --accent: #e8845a;
-    --accent-light: #f5a87b;
-    --vocab-tag: #f7b267;
-    --example-tag: #f9c5d1;
-    --radius: 24px;
-    --radius-sm: 14px;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100dvh;
-    background: linear-gradient(135deg, #fce4ec 0%, #fddab0 45%, #f7c59f 75%, #f7b267 100%);
-    background-attachment: fixed;
-    overflow: hidden;
-    position: relative;
-  }
-
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background: radial-gradient(ellipse at 20% 20%, rgba(255,200,180,0.4) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 80%, rgba(249,197,209,0.3) 0%, transparent 50%);
-    pointer-events: none; z-index: 0;
-  }
-
-  /* ── SCREENS ── */
-  .screen { position: fixed; inset: 0; display: flex; flex-direction: column; z-index: 1; }
-  .screen.hidden { display: none; }
-
-  /* ── HOME SCREEN ── */
-  #homeScreen {
-    padding: 0;
-    overflow-y: auto;
-    align-items: center;
-    background: transparent;
-  }
-
-  .home-header {
-    width: 100%;
-    padding: 56px 28px 28px;
-    text-align: center;
-  }
-
-  .app-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--glass-bg); border: 1px solid var(--glass-border);
-    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-    padding: 6px 16px; border-radius: 100px; font-size: 12px;
-    color: var(--text-secondary); font-weight: 500; letter-spacing: 0.5px;
-    margin-bottom: 20px;
-  }
-
-  .app-title {
-    font-family: 'Fraunces', serif;
-    font-size: clamp(32px, 9vw, 52px);
-    font-weight: 300;
-    color: var(--text-primary);
-    line-height: 1.1;
-    letter-spacing: -1px;
-    margin-bottom: 8px;
-  }
-
-  .app-subtitle {
-    font-size: 14px; color: var(--text-secondary); font-weight: 400;
-    margin-bottom: 0; letter-spacing: 0.2px;
-  }
-
-  .unit-grid {
-    width: 100%; padding: 12px 20px 32px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 14px;
-    max-width: 700px;
-    margin: 0 auto;
-  }
-
-  .unit-card {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-    border-radius: var(--radius);
-    padding: 22px 22px 18px;
-    cursor: pointer;
-    transition: transform 0.25s cubic-bezier(.34,1.56,.64,1), box-shadow 0.25s ease;
-    box-shadow: var(--shadow-soft);
-    position: relative; overflow: hidden;
-  }
-
-  .unit-card::before {
-    content: '';
-    position: absolute; top: -40px; right: -40px;
-    width: 100px; height: 100px;
-    background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, transparent 70%);
-    border-radius: 50%;
-  }
-
-  .unit-card:active { transform: scale(0.97); }
-  @media (hover: hover) { .unit-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-card); } }
-
-  .unit-emoji { font-size: 28px; margin-bottom: 10px; display: block; }
-
-  .unit-number {
-    font-size: 10px; font-weight: 500; letter-spacing: 2px;
-    color: var(--accent); text-transform: uppercase; margin-bottom: 4px;
-  }
-
-  .unit-name {
-    font-family: 'Fraunces', serif; font-weight: 400;
-    font-size: 19px; color: var(--text-primary);
-    margin-bottom: 6px; line-height: 1.2;
-  }
-
-  .unit-grammar {
-    font-size: 11px; color: var(--text-secondary);
-    line-height: 1.4; margin-bottom: 14px;
-  }
-
-  .unit-meta {
-    display: flex; align-items: center; justify-content: space-between;
-  }
-
-  .unit-count {
-    font-size: 11px; color: var(--text-muted); font-weight: 500;
-  }
-
-  .unit-progress-bar {
-    height: 3px; flex: 1; margin: 0 10px;
-    background: rgba(200,150,130,0.2); border-radius: 3px; overflow: hidden;
-  }
-
-  .unit-progress-fill {
-    height: 100%; background: linear-gradient(90deg, var(--orange), var(--accent));
-    border-radius: 3px; transition: width 0.5s ease;
-  }
-
-  .unit-arrow {
-    width: 26px; height: 26px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--orange), var(--accent));
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .unit-arrow svg { width: 12px; height: 12px; fill: white; }
-
-  /* ── LEARN SCREEN ── */
-  #learnScreen { justify-content: center; align-items: center; }
-
-  /* Top bar */
-  .learn-topbar {
-    position: fixed; top: 0; left: 0; right: 0;
-    padding: 14px 20px 10px;
-    display: flex; align-items: center; justify-content: space-between;
-    z-index: 100;
-    background: linear-gradient(to bottom, rgba(252,228,236,0.9) 0%, transparent 100%);
-    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-  }
-
-  .topbar-back {
-    width: 38px; height: 38px; border-radius: 50%;
-    background: var(--glass-bg); border: 1px solid var(--glass-border);
-    backdrop-filter: blur(20px); display: flex; align-items: center;
-    justify-content: center; cursor: pointer;
-    transition: transform 0.2s ease;
-    flex-shrink: 0;
-  }
-
-  .topbar-back:active { transform: scale(0.9); }
-  .topbar-back svg { width: 16px; height: 16px; }
-
-  .topbar-title {
-    font-family: 'Fraunces', serif; font-size: 15px; font-weight: 400;
-    color: var(--text-primary); flex: 1; text-align: center;
-  }
-
-  .topbar-gear {
-    width: 38px; height: 38px; border-radius: 50%;
-    background: var(--glass-bg); border: 1px solid var(--glass-border);
-    backdrop-filter: blur(20px); display: flex; align-items: center;
-    justify-content: center; cursor: pointer;
-    transition: transform 0.3s ease; flex-shrink: 0;
-  }
-
-  .topbar-gear.active { transform: rotate(60deg); }
-  .topbar-gear svg { width: 17px; height: 17px; }
-
-  /* Progress */
-  .progress-area {
-    position: fixed; bottom: 90px; left: 0; right: 0;
-    padding: 0 28px; z-index: 50;
-    display: flex; align-items: center; gap: 12px;
-  }
-
-  .progress-label {
-    font-size: 11px; font-weight: 500; color: var(--text-secondary);
-    white-space: nowrap; min-width: 55px; text-align: right;
-  }
-
-  .progress-track {
-    flex: 1; height: 4px; background: rgba(200,150,130,0.25);
-    border-radius: 4px; overflow: hidden;
-  }
-
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--pink), var(--orange));
-    border-radius: 4px; transition: width 0.4s cubic-bezier(.4,0,.2,1);
-  }
-
-  /* Audio button */
-  .audio-btn {
-    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-    display: flex; align-items: center; gap: 10px;
-    background: var(--glass-bg); border: 1px solid var(--glass-border);
-    backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-    border-radius: 100px; padding: 10px 22px 10px 14px;
-    cursor: pointer; z-index: 50;
-    box-shadow: 0 4px 24px rgba(200,100,80,0.15);
-    transition: transform 0.2s ease;
-  }
-
-  .audio-btn:active { transform: translateX(-50%) scale(0.95); }
-
-  .audio-icon {
-    width: 32px; height: 32px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--orange), var(--accent));
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .audio-icon svg { width: 14px; height: 14px; fill: white; }
-  .audio-icon.speaking { animation: pulse-speak 0.6s ease-in-out infinite alternate; }
-
-  @keyframes pulse-speak {
-    from { transform: scale(1); box-shadow: 0 0 0 0 rgba(232,132,90,0.4); }
-    to { transform: scale(1.08); box-shadow: 0 0 0 8px rgba(232,132,90,0); }
-  }
-
-  .audio-waves {
-    display: flex; gap: 3px; align-items: center; height: 16px;
-  }
-
-  .audio-waves span {
-    display: block; width: 3px; border-radius: 3px;
-    background: linear-gradient(to top, var(--orange), var(--accent));
-    animation: wave-bar 0.9s ease-in-out infinite alternate;
-  }
-
-  .audio-waves span:nth-child(1) { height: 6px; animation-delay: 0s; }
-  .audio-waves span:nth-child(2) { height: 12px; animation-delay: 0.15s; }
-  .audio-waves span:nth-child(3) { height: 9px; animation-delay: 0.3s; }
-  .audio-waves span:nth-child(4) { height: 14px; animation-delay: 0.1s; }
-  .audio-waves span:nth-child(5) { height: 7px; animation-delay: 0.25s; }
-
-  @keyframes wave-bar {
-    from { height: 4px; opacity: 0.5; }
-    to { height: 14px; opacity: 1; }
-  }
-
-  .audio-waves.idle span { animation: none; height: 4px; opacity: 0.4; }
-
-  .audio-text { font-size: 12px; font-weight: 500; color: var(--text-secondary); }
-
-  /* ── FLASHCARD ── */
-  .card-scene {
-    width: min(88vw, 400px); height: min(58vw, 320px);
-    perspective: 1200px; cursor: pointer;
-    position: relative; z-index: 10;
-  }
-
-  .card-inner {
-    width: 100%; height: 100%;
-    position: relative; transform-style: preserve-3d;
-    transition: transform 0.55s cubic-bezier(.645,.045,.355,1.000);
-  }
-
-  .card-inner.flipped { transform: rotateY(180deg); }
-
-  .card-face {
-    position: absolute; inset: 0;
-    backface-visibility: hidden; -webkit-backface-visibility: hidden;
-    border-radius: var(--radius);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    padding: 28px 28px 24px;
-    box-shadow: var(--shadow-card);
-    border: 1px solid var(--glass-border);
-    backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-    overflow: hidden;
-  }
-
-  .card-face-front {
-    background: rgba(255,255,255,0.65);
-  }
-
-  .card-face-front::before {
-    content: '';
-    position: absolute; top: -60px; right: -60px;
-    width: 160px; height: 160px;
-    background: radial-gradient(circle, rgba(255,210,180,0.5) 0%, transparent 70%);
-    border-radius: 50%; pointer-events: none;
-  }
-
-  .card-face-back {
-    background: rgba(255,248,243,0.72);
-    transform: rotateY(180deg);
-  }
-
-  .card-face-back::before {
-    content: '';
-    position: absolute; bottom: -50px; left: -50px;
-    width: 140px; height: 140px;
-    background: radial-gradient(circle, rgba(249,197,209,0.5) 0%, transparent 70%);
-    border-radius: 50%; pointer-events: none;
-  }
-
-  .card-type-badge {
-    position: absolute; top: 16px; left: 16px;
-    font-size: 10px; font-weight: 500; letter-spacing: 1px;
-    text-transform: uppercase; padding: 4px 10px; border-radius: 100px;
-  }
-
-  .badge-vocabulary { background: rgba(247,178,103,0.2); color: #b87333; }
-  .badge-example { background: rgba(249,197,209,0.3); color: #c0607a; }
-
-  .card-tap-hint {
-    position: absolute; bottom: 14px; right: 18px;
-    font-size: 10px; color: var(--text-muted); display: flex;
-    align-items: center; gap: 4px;
-  }
-
-  .card-english {
-    font-family: 'Fraunces', serif; font-weight: 300;
-    font-size: clamp(22px, 6vw, 34px); color: var(--text-primary);
-    text-align: center; line-height: 1.25;
-    margin-bottom: 10px;
-  }
-
-  .card-phonetic {
-    font-size: 14px; color: var(--accent);
-    text-align: center; font-style: italic;
-    font-weight: 300; letter-spacing: 0.3px;
-  }
-
-  .card-vietnamese {
-    font-family: 'Fraunces', serif; font-weight: 400;
-    font-size: clamp(18px, 5vw, 26px); color: var(--text-primary);
-    text-align: center; line-height: 1.3; margin-bottom: 12px;
-  }
-
-  .card-grammar {
-    font-size: 12px; color: var(--text-secondary); text-align: center;
-    line-height: 1.5; padding: 8px 12px;
-    background: rgba(247,178,103,0.12); border-radius: 10px;
-    max-width: 90%;
-  }
-
-  /* Swipe animation */
-  .card-scene.swipe-left .card-inner {
-    animation: swipe-out-left 0.3s ease forwards;
-  }
-  .card-scene.swipe-right .card-inner {
-    animation: swipe-out-right 0.3s ease forwards;
-  }
-  .card-scene.swipe-in-left .card-inner {
-    animation: swipe-in-left 0.3s ease forwards;
-  }
-  .card-scene.swipe-in-right .card-inner {
-    animation: swipe-in-right 0.3s ease forwards;
-  }
-
-  @keyframes swipe-out-left { to { opacity: 0; transform: translateX(-60px) rotateY(-5deg); } }
-  @keyframes swipe-out-right { to { opacity: 0; transform: translateX(60px) rotateY(5deg); } }
-  @keyframes swipe-in-left { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
-  @keyframes swipe-in-right { from { opacity: 0; transform: translateX(-60px); } to { opacity: 1; transform: translateX(0); } }
-
-  /* ── SETTINGS PANEL ── */
-  .settings-overlay {
-    position: fixed; inset: 0; background: rgba(45,31,26,0.25);
-    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-    z-index: 200; opacity: 0; pointer-events: none;
-    transition: opacity 0.3s ease;
-  }
-
-  .settings-overlay.open { opacity: 1; pointer-events: all; }
-
-  .settings-panel {
-    position: absolute; top: 62px; right: 16px;
-    width: min(310px, calc(100vw - 32px));
-    background: rgba(255,252,250,0.92);
-    border: 1px solid var(--glass-border);
-    backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-    border-radius: var(--radius);
-    box-shadow: 0 20px 60px rgba(150,80,60,0.2);
-    padding: 20px;
-    transform: translateY(-10px) scale(0.96);
-    transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), opacity 0.3s ease;
-    opacity: 0;
-  }
-
-  .settings-overlay.open .settings-panel { transform: translateY(0) scale(1); opacity: 1; }
-
-  .settings-title {
-    font-family: 'Fraunces', serif; font-size: 16px; font-weight: 400;
-    color: var(--text-primary); margin-bottom: 16px;
-    display: flex; align-items: center; gap: 8px;
-  }
-
-  .settings-section { margin-bottom: 18px; }
-
-  .settings-label {
-    font-size: 10px; font-weight: 500; letter-spacing: 1.5px;
-    text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px;
-  }
-
-  .settings-unit-list {
-    display: flex; flex-wrap: wrap; gap: 6px;
-  }
-
-  .unit-pill {
-    padding: 5px 12px; border-radius: 100px; font-size: 12px; font-weight: 500;
-    border: 1.5px solid rgba(200,150,130,0.3); cursor: pointer;
-    color: var(--text-secondary); transition: all 0.2s ease;
-    background: transparent;
-  }
-
-  .unit-pill.active {
-    background: linear-gradient(135deg, var(--orange), var(--accent));
-    border-color: transparent; color: white;
-  }
-
-  .settings-row {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 8px 0; border-bottom: 1px solid rgba(200,150,130,0.12);
-  }
-
-  .settings-row:last-child { border-bottom: none; }
-
-  .settings-row-label { font-size: 13px; color: var(--text-primary); }
-
-  /* Toggle */
-  .toggle {
-    width: 40px; height: 22px; border-radius: 11px;
-    background: rgba(200,150,130,0.25); position: relative;
-    cursor: pointer; transition: background 0.2s ease; flex-shrink: 0;
-  }
-
-  .toggle.on { background: linear-gradient(135deg, var(--orange), var(--accent)); }
-
-  .toggle::after {
-    content: ''; position: absolute; top: 3px; left: 3px;
-    width: 16px; height: 16px; border-radius: 50%; background: white;
-    transition: transform 0.2s ease;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
-  }
-
-  .toggle.on::after { transform: translateX(18px); }
-
-  /* Speed control */
-  .speed-btns { display: flex; gap: 6px; }
-
-  .speed-btn {
-    padding: 4px 10px; border-radius: 100px; font-size: 11px;
-    border: 1.5px solid rgba(200,150,130,0.3); cursor: pointer;
-    color: var(--text-secondary); transition: all 0.2s ease; background: transparent;
-  }
-
-  .speed-btn.active {
-    background: linear-gradient(135deg, var(--peach), var(--orange));
-    border-color: transparent; color: var(--text-primary); font-weight: 500;
-  }
-
-  /* Action buttons */
-  .settings-actions { display: flex; gap: 8px; margin-top: 4px; }
-
-  .action-btn {
-    flex: 1; padding: 10px; border-radius: var(--radius-sm);
-    font-size: 12px; font-weight: 500; cursor: pointer; border: none;
-    font-family: 'DM Sans', sans-serif; transition: all 0.2s ease;
-  }
-
-  .action-btn-secondary {
-    background: rgba(200,150,130,0.12); color: var(--text-secondary);
-  }
-
-  .action-btn-danger {
-    background: rgba(249,100,100,0.08); color: #e05555;
-  }
-
-  .action-btn:active { transform: scale(0.96); }
-
-  /* Swipe hint */
-  .swipe-hint {
-    position: fixed; bottom: 72px; left: 50%; transform: translateX(-50%);
-    display: flex; gap: 20px; z-index: 5; pointer-events: none;
-    opacity: 0; animation: fade-hint 4s ease 1s forwards;
-  }
-
-  @keyframes fade-hint {
-    0% { opacity: 0; transform: translateX(-50%) translateY(6px); }
-    15% { opacity: 0.7; transform: translateX(-50%) translateY(0); }
-    75% { opacity: 0.7; }
-    100% { opacity: 0; }
-  }
-
-  .hint-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-muted); }
-
-  /* Completion screen */
-  .completion {
-    position: fixed; inset: 0; z-index: 300;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    background: linear-gradient(135deg, rgba(252,228,236,0.97) 0%, rgba(253,218,176,0.97) 100%);
-    backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-    text-align: center; padding: 40px;
-  }
-
-  .completion.hidden { display: none; }
-
-  .completion.visible {
-    animation: fade-in 0.5s ease;
-  }
-
-  @keyframes fade-in { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-
-  .completion-emoji { font-size: 64px; margin-bottom: 20px; animation: bounce 1s ease infinite; }
-
-  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-
-  .completion-title {
-    font-family: 'Fraunces', serif; font-size: 32px; font-weight: 400;
-    color: var(--text-primary); margin-bottom: 8px;
-  }
-
-  .completion-sub { font-size: 14px; color: var(--text-secondary); margin-bottom: 32px; }
-
-  .completion-btn {
-    background: linear-gradient(135deg, var(--orange), var(--accent));
-    color: white; border: none; padding: 14px 36px;
-    border-radius: 100px; font-size: 15px; font-weight: 500;
-    font-family: 'DM Sans', sans-serif; cursor: pointer;
-    box-shadow: 0 8px 24px rgba(232,132,90,0.35);
-    transition: transform 0.2s ease;
-  }
-
-  .completion-btn:active { transform: scale(0.96); }
-
-  /* Scroll */
-  #homeScreen::-webkit-scrollbar { display: none; }
-  #homeScreen { -ms-overflow-style: none; scrollbar-width: none; }
-
-  /* Tablet / Desktop */
-  @media (min-width: 600px) {
-    .card-scene { width: min(70vw, 460px); height: min(45vw, 300px); }
-    .unit-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-
-  @media (min-width: 900px) {
-    .card-scene { width: 500px; height: 310px; }
-    .unit-grid { grid-template-columns: repeat(3, 1fr); }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>English 6 – Flashcards</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --pink: #f9c5d1;
+      --peach: #fddab0;
+      --orange: #f7b267;
+      --cream: #fff8f3;
+      --glass-bg: rgba(255, 255, 255, 0.55);
+      --glass-border: rgba(255, 255, 255, 0.8);
+      --shadow-soft: 0 8px 40px rgba(247, 178, 103, 0.18), 0 2px 12px rgba(249, 197, 209, 0.18);
+      --shadow-card: 0 20px 60px rgba(200, 100, 80, 0.12), 0 4px 20px rgba(249, 197, 209, 0.25);
+      --text-primary: #2d1f1a;
+      --text-secondary: #8a6a5e;
+      --text-muted: #c4a49c;
+      --accent: #e8845a;
+      --accent-light: #f5a87b;
+      --vocab-tag: #f7b267;
+      --example-tag: #f9c5d1;
+      --radius: 24px;
+      --radius-sm: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100dvh;
+      background: linear-gradient(135deg, #fce4ec 0%, #fddab0 45%, #f7c59f 75%, #f7b267 100%);
+      background-attachment: fixed;
+      overflow: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at 20% 20%, rgba(255, 200, 180, 0.4) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(249, 197, 209, 0.3) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── SCREENS ── */
+    .screen {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      z-index: 1;
+    }
+
+    .screen.hidden {
+      display: none;
+    }
+
+    /* ── HOME SCREEN ── */
+    #homeScreen {
+      padding: 0;
+      overflow-y: auto;
+      align-items: center;
+      background: transparent;
+    }
+
+    .home-header {
+      width: 100%;
+      padding: 56px 28px 28px;
+      text-align: center;
+    }
+
+    .app-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      margin-bottom: 20px;
+    }
+
+    .app-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(32px, 9vw, 52px);
+      font-weight: 300;
+      color: var(--text-primary);
+      line-height: 1.1;
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+    }
+
+    .app-subtitle {
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-weight: 400;
+      margin-bottom: 0;
+      letter-spacing: 0.2px;
+    }
+
+    .unit-grid {
+      width: 100%;
+      padding: 12px 20px 32px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .unit-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-radius: var(--radius);
+      padding: 22px 22px 18px;
+      cursor: pointer;
+      transition: transform 0.25s cubic-bezier(.34, 1.56, .64, 1), box-shadow 0.25s ease;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .unit-card::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .unit-card:active {
+      transform: scale(0.97);
+    }
+
+    @media (hover: hover) {
+      .unit-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-card);
+      }
+    }
+
+    .unit-emoji {
+      font-size: 28px;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .unit-number {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .unit-name {
+      font-family: 'Fraunces', serif;
+      font-weight: 400;
+      font-size: 19px;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+      line-height: 1.2;
+    }
+
+    .unit-grammar {
+      font-size: 11px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+      margin-bottom: 14px;
+    }
+
+    .unit-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .unit-count {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .unit-progress-bar {
+      height: 3px;
+      flex: 1;
+      margin: 0 10px;
+      background: rgba(200, 150, 130, 0.2);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .unit-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--orange), var(--accent));
+      border-radius: 3px;
+      transition: width 0.5s ease;
+    }
+
+    .unit-arrow {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--orange), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .unit-arrow svg {
+      width: 12px;
+      height: 12px;
+      fill: white;
+    }
+
+    /* ── LEARN SCREEN ── */
+    #learnScreen {
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Top bar */
+    .learn-topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 14px 20px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 100;
+      background: linear-gradient(to bottom, rgba(252, 228, 236, 0.9) 0%, transparent 100%);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .topbar-back {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(20px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .topbar-back:active {
+      transform: scale(0.9);
+    }
+
+    .topbar-back svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .topbar-title {
+      font-family: 'Fraunces', serif;
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text-primary);
+      flex: 1;
+      text-align: center;
+    }
+
+    .topbar-gear {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(20px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .topbar-gear.active {
+      transform: rotate(60deg);
+    }
+
+    .topbar-gear svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    /* Progress */
+    .progress-area {
+      position: fixed;
+      bottom: 90px;
+      left: 0;
+      right: 0;
+      padding: 0 28px;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .progress-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      min-width: 55px;
+      text-align: right;
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 4px;
+      background: rgba(200, 150, 130, 0.25);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--pink), var(--orange));
+      border-radius: 4px;
+      transition: width 0.4s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    /* Audio button */
+    .audio-btn {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-radius: 100px;
+      padding: 10px 22px 10px 14px;
+      cursor: pointer;
+      z-index: 50;
+      box-shadow: 0 4px 24px rgba(200, 100, 80, 0.15);
+      transition: transform 0.2s ease;
+    }
+
+    .audio-btn:active {
+      transform: translateX(-50%) scale(0.95);
+    }
+
+    .audio-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--orange), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .audio-icon svg {
+      width: 14px;
+      height: 14px;
+      fill: white;
+    }
+
+    .audio-icon.speaking {
+      animation: pulse-speak 0.6s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulse-speak {
+      from {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(232, 132, 90, 0.4);
+      }
+
+      to {
+        transform: scale(1.08);
+        box-shadow: 0 0 0 8px rgba(232, 132, 90, 0);
+      }
+    }
+
+    .audio-waves {
+      display: flex;
+      gap: 3px;
+      align-items: center;
+      height: 16px;
+    }
+
+    .audio-waves span {
+      display: block;
+      width: 3px;
+      border-radius: 3px;
+      background: linear-gradient(to top, var(--orange), var(--accent));
+      animation: wave-bar 0.9s ease-in-out infinite alternate;
+    }
+
+    .audio-waves span:nth-child(1) {
+      height: 6px;
+      animation-delay: 0s;
+    }
+
+    .audio-waves span:nth-child(2) {
+      height: 12px;
+      animation-delay: 0.15s;
+    }
+
+    .audio-waves span:nth-child(3) {
+      height: 9px;
+      animation-delay: 0.3s;
+    }
+
+    .audio-waves span:nth-child(4) {
+      height: 14px;
+      animation-delay: 0.1s;
+    }
+
+    .audio-waves span:nth-child(5) {
+      height: 7px;
+      animation-delay: 0.25s;
+    }
+
+    @keyframes wave-bar {
+      from {
+        height: 4px;
+        opacity: 0.5;
+      }
+
+      to {
+        height: 14px;
+        opacity: 1;
+      }
+    }
+
+    .audio-waves.idle span {
+      animation: none;
+      height: 4px;
+      opacity: 0.4;
+    }
+
+    .audio-text {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    /* ── FLASHCARD ── */
+    .card-scene {
+      width: min(88vw, 400px);
+      height: min(58vw, 320px);
+      perspective: 1200px;
+      cursor: pointer;
+      position: relative;
+      z-index: 10;
+    }
+
+    .card-inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.55s cubic-bezier(.645, .045, .355, 1.000);
+    }
+
+    .card-inner.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 28px 24px;
+      box-shadow: var(--shadow-card);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      overflow: hidden;
+    }
+
+    .card-face-front {
+      background: rgba(255, 255, 255, 0.65);
+    }
+
+    .card-face-front::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 160px;
+      height: 160px;
+      background: radial-gradient(circle, rgba(255, 210, 180, 0.5) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .card-face-back {
+      background: rgba(255, 248, 243, 0.72);
+      transform: rotateY(180deg);
+    }
+
+    .card-face-back::before {
+      content: '';
+      position: absolute;
+      bottom: -50px;
+      left: -50px;
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, rgba(249, 197, 209, 0.5) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .card-type-badge {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 100px;
+    }
+
+    .badge-vocabulary {
+      background: rgba(247, 178, 103, 0.2);
+      color: #b87333;
+    }
+
+    .badge-example {
+      background: rgba(249, 197, 209, 0.3);
+      color: #c0607a;
+    }
+
+    .card-tap-hint {
+      position: absolute;
+      bottom: 14px;
+      right: 18px;
+      font-size: 10px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .card-english {
+      font-family: 'Fraunces', serif;
+      font-weight: 300;
+      font-size: clamp(22px, 6vw, 34px);
+      color: var(--text-primary);
+      text-align: center;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+
+    .card-phonetic {
+      font-size: 14px;
+      color: var(--accent);
+      text-align: center;
+      font-style: italic;
+      font-weight: 300;
+      letter-spacing: 0.3px;
+    }
+
+    .card-vietnamese {
+      font-family: 'Fraunces', serif;
+      font-weight: 400;
+      font-size: clamp(18px, 5vw, 26px);
+      color: var(--text-primary);
+      text-align: center;
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+
+    .card-grammar {
+      font-size: 12px;
+      color: var(--text-secondary);
+      text-align: center;
+      line-height: 1.5;
+      padding: 8px 12px;
+      background: rgba(247, 178, 103, 0.12);
+      border-radius: 10px;
+      max-width: 90%;
+    }
+
+    /* Swipe animation */
+    .card-scene.swipe-left .card-inner {
+      animation: swipe-out-left 0.3s ease forwards;
+    }
+
+    .card-scene.swipe-right .card-inner {
+      animation: swipe-out-right 0.3s ease forwards;
+    }
+
+    .card-scene.swipe-in-left .card-inner {
+      animation: swipe-in-left 0.3s ease forwards;
+    }
+
+    .card-scene.swipe-in-right .card-inner {
+      animation: swipe-in-right 0.3s ease forwards;
+    }
+
+    @keyframes swipe-out-left {
+      to {
+        opacity: 0;
+        transform: translateX(-60px) rotateY(-5deg);
+      }
+    }
+
+    @keyframes swipe-out-right {
+      to {
+        opacity: 0;
+        transform: translateX(60px) rotateY(5deg);
+      }
+    }
+
+    @keyframes swipe-in-left {
+      from {
+        opacity: 0;
+        transform: translateX(60px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes swipe-in-right {
+      from {
+        opacity: 0;
+        transform: translateX(-60px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* ── SETTINGS PANEL ── */
+    .settings-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(45, 31, 26, 0.25);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .settings-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .settings-panel {
+      position: absolute;
+      top: 62px;
+      right: 16px;
+      width: min(310px, calc(100vw - 32px));
+      background: rgba(255, 252, 250, 0.92);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border-radius: var(--radius);
+      box-shadow: 0 20px 60px rgba(150, 80, 60, 0.2);
+      padding: 20px;
+      transform: translateY(-10px) scale(0.96);
+      transition: transform 0.3s cubic-bezier(.34, 1.56, .64, 1), opacity 0.3s ease;
+      opacity: 0;
+    }
+
+    .settings-overlay.open .settings-panel {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+
+    .settings-title {
+      font-family: 'Fraunces', serif;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .settings-section {
+      margin-bottom: 18px;
+    }
+
+    .settings-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .settings-unit-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .unit-pill {
+      padding: 5px 12px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1.5px solid rgba(200, 150, 130, 0.3);
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+      background: transparent;
+    }
+
+    .unit-pill.active {
+      background: linear-gradient(135deg, var(--orange), var(--accent));
+      border-color: transparent;
+      color: white;
+    }
+
+    .settings-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(200, 150, 130, 0.12);
+    }
+
+    .settings-row:last-child {
+      border-bottom: none;
+    }
+
+    .settings-row-label {
+      font-size: 13px;
+      color: var(--text-primary);
+    }
+
+    /* Toggle */
+    .toggle {
+      width: 40px;
+      height: 22px;
+      border-radius: 11px;
+      background: rgba(200, 150, 130, 0.25);
+      position: relative;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .toggle.on {
+      background: linear-gradient(135deg, var(--orange), var(--accent));
+    }
+
+    .toggle::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: white;
+      transition: transform 0.2s ease;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+    }
+
+    .toggle.on::after {
+      transform: translateX(18px);
+    }
+
+    /* Speed control */
+    .speed-btns {
+      display: flex;
+      gap: 6px;
+    }
+
+    .speed-btn {
+      padding: 4px 10px;
+      border-radius: 100px;
+      font-size: 11px;
+      border: 1.5px solid rgba(200, 150, 130, 0.3);
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+      background: transparent;
+    }
+
+    .speed-btn.active {
+      background: linear-gradient(135deg, var(--peach), var(--orange));
+      border-color: transparent;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    /* Action buttons */
+    .settings-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .action-btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.2s ease;
+    }
+
+    .action-btn-secondary {
+      background: rgba(200, 150, 130, 0.12);
+      color: var(--text-secondary);
+    }
+
+    .action-btn-danger {
+      background: rgba(249, 100, 100, 0.08);
+      color: #e05555;
+    }
+
+    .action-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* Swipe hint */
+    .swipe-hint {
+      position: fixed;
+      bottom: 72px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 20px;
+      z-index: 5;
+      pointer-events: none;
+      opacity: 0;
+      animation: fade-hint 4s ease 1s forwards;
+    }
+
+    @keyframes fade-hint {
+      0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(6px);
+      }
+
+      15% {
+        opacity: 0.7;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      75% {
+        opacity: 0.7;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    .hint-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Completion screen */
+    .completion {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(252, 228, 236, 0.97) 0%, rgba(253, 218, 176, 0.97) 100%);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      text-align: center;
+      padding: 40px;
+    }
+
+    .completion.hidden {
+      display: none;
+    }
+
+    .completion.visible {
+      animation: fade-in 0.5s ease;
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .completion-emoji {
+      font-size: 64px;
+      margin-bottom: 20px;
+      animation: bounce 1s ease infinite;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-12px);
+      }
+    }
+
+    .completion-title {
+      font-family: 'Fraunces', serif;
+      font-size: 32px;
+      font-weight: 400;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .completion-sub {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+    }
+
+    .completion-btn {
+      background: linear-gradient(135deg, var(--orange), var(--accent));
+      color: white;
+      border: none;
+      padding: 14px 36px;
+      border-radius: 100px;
+      font-size: 15px;
+      font-weight: 500;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(232, 132, 90, 0.35);
+      transition: transform 0.2s ease;
+    }
+
+    .completion-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* Scroll */
+    #homeScreen::-webkit-scrollbar {
+      display: none;
+    }
+
+    #homeScreen {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Tablet / Desktop */
+    @media (min-width: 600px) {
+      .card-scene {
+        width: min(70vw, 460px);
+        height: min(45vw, 300px);
+      }
+
+      .unit-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 900px) {
+      .card-scene {
+        width: 500px;
+        height: 310px;
+      }
+
+      .unit-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- HOME SCREEN -->
-<div class="screen" id="homeScreen">
-  <div class="home-header">
-    <div class="app-badge">📚 English 6 · Book 2</div>
-    <h1 class="app-title">Flashcards</h1>
-    <p class="app-subtitle">Units 7 – 12 · Chọn bài để bắt đầu</p>
-  </div>
-  <div class="unit-grid" id="unitGrid"></div>
-</div>
-
-<!-- LEARN SCREEN -->
-<div class="screen hidden" id="learnScreen">
-  <div class="learn-topbar">
-    <div class="topbar-back" id="backBtn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" color="var(--text-primary)">
-        <polyline points="15,18 9,12 15,6"></polyline>
-      </svg>
+  <!-- HOME SCREEN -->
+  <div class="screen" id="homeScreen">
+    <div class="home-header">
+      <div class="app-badge">📚 English 6 · Book 2</div>
+      <h1 class="app-title">Flashcards</h1>
+      <p class="app-subtitle">Units 7 – 12 · Chọn bài để bắt đầu</p>
     </div>
-    <div class="topbar-title" id="topbarTitle"></div>
-    <div class="topbar-gear" id="gearBtn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="3"></circle>
-        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-      </svg>
-    </div>
+    <div class="unit-grid" id="unitGrid"></div>
   </div>
 
-  <!-- Flashcard -->
-  <div class="card-scene" id="cardScene">
-    <div class="card-inner" id="cardInner">
-      <div class="card-face card-face-front" id="cardFront">
-        <span class="card-type-badge" id="frontBadge"></span>
-        <div class="card-english" id="cardEnglish"></div>
-        <div class="card-phonetic" id="cardPhonetic"></div>
-        <div class="card-tap-hint">tap to flip ↩</div>
+  <!-- LEARN SCREEN -->
+  <div class="screen hidden" id="learnScreen">
+    <div class="learn-topbar">
+      <div class="topbar-back" id="backBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+          stroke-linejoin="round" color="var(--text-primary)">
+          <polyline points="15,18 9,12 15,6"></polyline>
+        </svg>
       </div>
-      <div class="card-face card-face-back" id="cardBack">
-        <span class="card-type-badge" id="backBadge"></span>
-        <div class="card-vietnamese" id="cardVietnamese"></div>
-        <div class="card-grammar" id="cardGrammar" style="display:none"></div>
-        <div class="card-tap-hint">tap to flip ↩</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Swipe hint (first time) -->
-  <div class="swipe-hint" id="swipeHint">
-    <div class="hint-item">← trước</div>
-    <div class="hint-item">tiếp theo →</div>
-  </div>
-
-  <!-- Progress -->
-  <div class="progress-area">
-    <span class="progress-label" id="progressLabel">1 / 1</span>
-    <div class="progress-track">
-      <div class="progress-fill" id="progressFill"></div>
-    </div>
-  </div>
-
-  <!-- Audio button -->
-  <div class="audio-btn" id="audioBtn">
-    <div class="audio-icon" id="audioIcon">
-      <svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-    </div>
-    <div class="audio-waves idle" id="audioWaves">
-      <span></span><span></span><span></span><span></span><span></span>
-    </div>
-    <span class="audio-text">Phát âm</span>
-  </div>
-</div>
-
-<!-- SETTINGS OVERLAY -->
-<div class="settings-overlay" id="settingsOverlay">
-  <div class="settings-panel">
-    <div class="settings-title">⚙️ Cài đặt</div>
-
-    <div class="settings-section">
-      <div class="settings-label">Chọn Unit</div>
-      <div class="settings-unit-list" id="settingsUnitList"></div>
-    </div>
-
-    <div class="settings-section">
-      <div class="settings-label">Hiển thị</div>
-      <div class="settings-row">
-        <span class="settings-row-label">Phiên âm</span>
-        <div class="toggle on" id="togglePhonetic"></div>
-      </div>
-      <div class="settings-row">
-        <span class="settings-row-label">Nghĩa tiếng Việt</span>
-        <div class="toggle on" id="toggleVietnamese"></div>
+      <div class="topbar-title" id="topbarTitle"></div>
+      <div class="topbar-gear" id="gearBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path
+            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
+          </path>
+        </svg>
       </div>
     </div>
 
-    <div class="settings-section">
-      <div class="settings-label">Tốc độ đọc</div>
-      <div class="settings-row">
-        <div class="speed-btns">
-          <button class="speed-btn" data-speed="0.7">Chậm</button>
-          <button class="speed-btn active" data-speed="1">Bình thường</button>
-          <button class="speed-btn" data-speed="1.3">Nhanh</button>
+    <!-- Flashcard -->
+    <div class="card-scene" id="cardScene">
+      <div class="card-inner" id="cardInner">
+        <div class="card-face card-face-front" id="cardFront">
+          <span class="card-type-badge" id="frontBadge"></span>
+          <div class="card-english" id="cardEnglish"></div>
+          <div class="card-phonetic" id="cardPhonetic"></div>
+          <div class="card-tap-hint">tap to flip ↩</div>
+        </div>
+        <div class="card-face card-face-back" id="cardBack">
+          <span class="card-type-badge" id="backBadge"></span>
+          <div class="card-vietnamese" id="cardVietnamese"></div>
+          <div class="card-grammar" id="cardGrammar" style="display:none"></div>
+          <div class="card-tap-hint">tap to flip ↩</div>
         </div>
       </div>
     </div>
 
-    <div class="settings-actions">
-      <button class="action-btn action-btn-secondary" id="shuffleBtn">🔀 Xáo bài</button>
-      <button class="action-btn action-btn-danger" id="resetBtn">↺ Reset</button>
+    <!-- Swipe hint (first time) -->
+    <div class="swipe-hint" id="swipeHint">
+      <div class="hint-item">← trước</div>
+      <div class="hint-item">tiếp theo →</div>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-area">
+      <span class="progress-label" id="progressLabel">1 / 1</span>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+
+    <!-- Audio button -->
+    <div class="audio-btn" id="audioBtn">
+      <div class="audio-icon" id="audioIcon">
+        <svg viewBox="0 0 24 24">
+          <path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+        </svg>
+      </div>
+      <div class="audio-waves idle" id="audioWaves">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <span class="audio-text">Phát âm</span>
     </div>
   </div>
-</div>
 
-<!-- COMPLETION -->
-<div class="completion hidden" id="completionScreen">
-  <div class="completion-emoji">🎉</div>
-  <div class="completion-title">Tuyệt vời!</div>
-  <div class="completion-sub" id="completionSub"></div>
-  <button class="completion-btn" id="completionBtn">Học lại</button>
-</div>
+  <!-- SETTINGS OVERLAY -->
+  <div class="settings-overlay" id="settingsOverlay">
+    <div class="settings-panel">
+      <div class="settings-title">⚙️ Cài đặt</div>
 
-<script>
-// ═══════════════════════════════════════════════════════
-// DATA
-// ═══════════════════════════════════════════════════════
-const UNITS = [
-  {
-    id: 7, name: "Television", emoji: "📺",
-    grammar: "Wh-questions, conjunctions (and, but, so)",
-    words: [
-      { english: "cartoon", phonetic: "/kɑːrˈtuːn/", vietnamese: "phim hoạt hình", type: "vocabulary" },
-      { english: "I like watching cartoons after school.", phonetic: "", vietnamese: "Tôi thích xem phim hoạt hình sau giờ học.", type: "example" },
-      { english: "What cartoons do you watch?", phonetic: "", vietnamese: "Bạn xem phim hoạt hình nào vậy?", type: "example" },
-      { english: "My sister loves cartoons, but I prefer documentaries.", phonetic: "", vietnamese: "Em gái tôi thích hoạt hình, nhưng tôi thích phim tài liệu hơn.", type: "example" },
-      { english: "documentary", phonetic: "/ˌdɒkjuˈmentri/", vietnamese: "phim tài liệu", type: "vocabulary" },
-      { english: "We watched a documentary about animals.", phonetic: "", vietnamese: "Chúng tôi xem một bộ phim tài liệu về động vật.", type: "example" },
-      { english: "What documentary is on tonight?", phonetic: "", vietnamese: "Tối nay có phim tài liệu gì vậy?", type: "example" },
-      { english: "news", phonetic: "/njuːz/", vietnamese: "tin tức", type: "vocabulary" },
-      { english: "My parents watch the news every evening.", phonetic: "", vietnamese: "Bố mẹ tôi xem tin tức mỗi tối.", type: "example" },
-      { english: "The news is on at seven o'clock.", phonetic: "", vietnamese: "Tin tức bắt đầu lúc bảy giờ.", type: "example" },
-      { english: "quiz show", phonetic: "/kwɪz ʃoʊ/", vietnamese: "chương trình đố vui", type: "vocabulary" },
-      { english: "Do you like quiz shows?", phonetic: "", vietnamese: "Bạn có thích chương trình đố vui không?", type: "example" },
-      { english: "The quiz show starts at 8 PM.", phonetic: "", vietnamese: "Chương trình đố vui bắt đầu lúc 8 giờ tối.", type: "example" },
-      { english: "reality show", phonetic: "/riˈæləti ʃoʊ/", vietnamese: "chương trình thực tế", type: "vocabulary" },
-      { english: "I don't like reality shows, so I watch films.", phonetic: "", vietnamese: "Tôi không thích chương trình thực tế, nên tôi xem phim.", type: "example" },
-      { english: "Which reality show is most popular?", phonetic: "", vietnamese: "Chương trình thực tế nào nổi tiếng nhất?", type: "example" },
-      { english: "weather forecast", phonetic: "/ˈweðər ˈfɔːrkæst/", vietnamese: "dự báo thời tiết", type: "vocabulary" },
-      { english: "I check the weather forecast every morning.", phonetic: "", vietnamese: "Tôi xem dự báo thời tiết mỗi sáng.", type: "example" },
-      { english: "The weather forecast says it will rain tomorrow.", phonetic: "", vietnamese: "Dự báo thời tiết nói ngày mai trời sẽ mưa.", type: "example" },
-      { english: "remote control", phonetic: "/rɪˈmoʊt kənˈtroʊl/", vietnamese: "điều khiển từ xa", type: "vocabulary" },
-      { english: "Where is the remote control?", phonetic: "", vietnamese: "Điều khiển từ xa ở đâu vậy?", type: "example" },
-      { english: "He changed channels with the remote control.", phonetic: "", vietnamese: "Anh ấy đổi kênh bằng điều khiển từ xa.", type: "example" },
-      { english: "channel", phonetic: "/ˈtʃænl/", vietnamese: "kênh truyền hình", type: "vocabulary" },
-      { english: "How many channels does your TV have?", phonetic: "", vietnamese: "TV của bạn có bao nhiêu kênh?", type: "example" },
-      { english: "I watch Channel 1 for news and Channel 3 for films.", phonetic: "", vietnamese: "Tôi xem Kênh 1 để xem tin tức và Kênh 3 để xem phim.", type: "example" },
-    ]
-  },
-  {
-    id: 8, name: "Sports and Games", emoji: "⚽",
-    grammar: "Past Simple, Imperatives",
-    words: [
-      { english: "volleyball", phonetic: "/ˈvɒlibɔːl/", vietnamese: "bóng chuyền", type: "vocabulary" },
-      { english: "We played volleyball yesterday.", phonetic: "", vietnamese: "Hôm qua chúng tôi đã chơi bóng chuyền.", type: "example" },
-      { english: "She is good at volleyball.", phonetic: "", vietnamese: "Cô ấy chơi bóng chuyền giỏi.", type: "example" },
-      { english: "badminton", phonetic: "/ˈbædmɪntən/", vietnamese: "cầu lông", type: "vocabulary" },
-      { english: "My father plays badminton every weekend.", phonetic: "", vietnamese: "Bố tôi chơi cầu lông mỗi cuối tuần.", type: "example" },
-      { english: "Do you want to play badminton with me?", phonetic: "", vietnamese: "Bạn có muốn chơi cầu lông với tôi không?", type: "example" },
-      { english: "swimming", phonetic: "/ˈswɪmɪŋ/", vietnamese: "bơi lội", type: "vocabulary" },
-      { english: "I went swimming last Saturday.", phonetic: "", vietnamese: "Thứ Bảy tuần trước tôi đã đi bơi.", type: "example" },
-      { english: "Swimming is good exercise for your body.", phonetic: "", vietnamese: "Bơi lội là bài tập thể dục tốt cho cơ thể.", type: "example" },
-      { english: "cycling", phonetic: "/ˈsaɪklɪŋ/", vietnamese: "đua xe đạp / đạp xe", type: "vocabulary" },
-      { english: "We went cycling in the park.", phonetic: "", vietnamese: "Chúng tôi đã đi đạp xe trong công viên.", type: "example" },
-      { english: "Cycling to school is fun and healthy.", phonetic: "", vietnamese: "Đi xe đạp đến trường vừa vui vừa tốt cho sức khỏe.", type: "example" },
-      { english: "score", phonetic: "/skɔːr/", vietnamese: "ghi điểm / tỉ số", type: "vocabulary" },
-      { english: "He scored two goals in the match.", phonetic: "", vietnamese: "Anh ấy đã ghi hai bàn thắng trong trận đấu.", type: "example" },
-      { english: "What was the final score?", phonetic: "", vietnamese: "Tỉ số cuối cùng là bao nhiêu?", type: "example" },
-      { english: "match", phonetic: "/mætʃ/", vietnamese: "trận đấu", type: "vocabulary" },
-      { english: "We watched a football match last night.", phonetic: "", vietnamese: "Tối qua chúng tôi đã xem một trận bóng đá.", type: "example" },
-      { english: "The match started at 7 PM.", phonetic: "", vietnamese: "Trận đấu bắt đầu lúc 7 giờ tối.", type: "example" },
-      { english: "referee", phonetic: "/ˌrefəˈriː/", vietnamese: "trọng tài", type: "vocabulary" },
-      { english: "The referee blew the whistle.", phonetic: "", vietnamese: "Trọng tài thổi còi.", type: "example" },
-      { english: "The referee made a fair decision.", phonetic: "", vietnamese: "Trọng tài đã đưa ra quyết định công bằng.", type: "example" },
-      { english: "champion", phonetic: "/ˈtʃæmpiən/", vietnamese: "nhà vô địch", type: "vocabulary" },
-      { english: "She became the champion last year.", phonetic: "", vietnamese: "Cô ấy đã trở thành nhà vô địch năm ngoái.", type: "example" },
-      { english: "The champion received a gold medal.", phonetic: "", vietnamese: "Nhà vô địch nhận được huy chương vàng.", type: "example" },
-    ]
-  },
-  {
-    id: 9, name: "Cities of the World", emoji: "🌆",
-    grammar: "Possessive adjectives, Possessive pronouns",
-    words: [
-      { english: "population", phonetic: "/ˌpɒpjuˈleɪʃn/", vietnamese: "dân số", type: "vocabulary" },
-      { english: "The population of Tokyo is very large.", phonetic: "", vietnamese: "Dân số của Tokyo rất lớn.", type: "example" },
-      { english: "What is the population of your city?", phonetic: "", vietnamese: "Dân số thành phố của bạn là bao nhiêu?", type: "example" },
-      { english: "capital", phonetic: "/ˈkæpɪtl/", vietnamese: "thủ đô", type: "vocabulary" },
-      { english: "Hanoi is the capital of Vietnam.", phonetic: "", vietnamese: "Hà Nội là thủ đô của Việt Nam.", type: "example" },
-      { english: "Our capital city is very beautiful.", phonetic: "", vietnamese: "Thủ đô của chúng ta rất đẹp.", type: "example" },
-      { english: "landmark", phonetic: "/ˈlændmɑːrk/", vietnamese: "địa danh / công trình nổi tiếng", type: "vocabulary" },
-      { english: "The Eiffel Tower is a famous landmark.", phonetic: "", vietnamese: "Tháp Eiffel là một địa danh nổi tiếng.", type: "example" },
-      { english: "What landmark is yours?", phonetic: "", vietnamese: "Địa danh của thành phố bạn là gì?", type: "example" },
-      { english: "skyscraper", phonetic: "/ˈskaɪskreɪpər/", vietnamese: "tòa nhà chọc trời", type: "vocabulary" },
-      { english: "New York has many tall skyscrapers.", phonetic: "", vietnamese: "New York có nhiều tòa nhà chọc trời cao.", type: "example" },
-      { english: "The skyscrapers in Dubai are very impressive.", phonetic: "", vietnamese: "Những tòa nhà chọc trời ở Dubai rất ấn tượng.", type: "example" },
-      { english: "museum", phonetic: "/mjuˈziːəm/", vietnamese: "bảo tàng", type: "vocabulary" },
-      { english: "We visited the history museum yesterday.", phonetic: "", vietnamese: "Hôm qua chúng tôi đã tham quan bảo tàng lịch sử.", type: "example" },
-      { english: "Is there a museum near your house?", phonetic: "", vietnamese: "Gần nhà bạn có bảo tàng không?", type: "example" },
-      { english: "temple", phonetic: "/ˈtempl/", vietnamese: "đền / chùa", type: "vocabulary" },
-      { english: "There is an old temple in our village.", phonetic: "", vietnamese: "Trong làng chúng tôi có một ngôi đền cổ.", type: "example" },
-      { english: "Many tourists visit the famous temple.", phonetic: "", vietnamese: "Nhiều du khách đến thăm ngôi đền nổi tiếng đó.", type: "example" },
-      { english: "harbour", phonetic: "/ˈhɑːrbər/", vietnamese: "cảng / bến cảng", type: "vocabulary" },
-      { english: "Sydney Harbour is one of the most beautiful in the world.", phonetic: "", vietnamese: "Cảng Sydney là một trong những cảng đẹp nhất thế giới.", type: "example" },
-      { english: "We watched the ships at the harbour.", phonetic: "", vietnamese: "Chúng tôi nhìn những con tàu ở bến cảng.", type: "example" },
-      { english: "traffic jam", phonetic: "/ˈtræfɪk dʒæm/", vietnamese: "tắc đường", type: "vocabulary" },
-      { english: "There was a bad traffic jam this morning.", phonetic: "", vietnamese: "Sáng nay có tình trạng tắc đường nghiêm trọng.", type: "example" },
-      { english: "Traffic jams are common in big cities.", phonetic: "", vietnamese: "Tắc đường là điều phổ biến ở các thành phố lớn.", type: "example" },
-    ]
-  },
-  {
-    id: 10, name: "Our Houses in the Future", emoji: "🏠",
-    grammar: "Future Simple (will), Might for possibility",
-    words: [
-      { english: "solar panel", phonetic: "/ˈsoʊlər ˈpænl/", vietnamese: "tấm pin năng lượng mặt trời", type: "vocabulary" },
-      { english: "Our house will have solar panels on the roof.", phonetic: "", vietnamese: "Ngôi nhà của chúng tôi sẽ có tấm pin năng lượng mặt trời trên mái.", type: "example" },
-      { english: "Solar panels can save electricity.", phonetic: "", vietnamese: "Tấm pin năng lượng mặt trời có thể tiết kiệm điện.", type: "example" },
-      { english: "smart home", phonetic: "/smɑːrt hoʊm/", vietnamese: "nhà thông minh", type: "vocabulary" },
-      { english: "I will live in a smart home one day.", phonetic: "", vietnamese: "Một ngày nào đó tôi sẽ sống trong một ngôi nhà thông minh.", type: "example" },
-      { english: "Smart homes can control lights automatically.", phonetic: "", vietnamese: "Nhà thông minh có thể tự động điều khiển đèn.", type: "example" },
-      { english: "appliance", phonetic: "/əˈplaɪəns/", vietnamese: "thiết bị điện gia dụng", type: "vocabulary" },
-      { english: "We have many appliances in our kitchen.", phonetic: "", vietnamese: "Chúng tôi có nhiều thiết bị điện trong bếp.", type: "example" },
-      { english: "Future appliances will be more energy-efficient.", phonetic: "", vietnamese: "Các thiết bị trong tương lai sẽ tiết kiệm năng lượng hơn.", type: "example" },
-      { english: "underground", phonetic: "/ˌʌndərˈɡraʊnd/", vietnamese: "dưới lòng đất", type: "vocabulary" },
-      { english: "Houses might be built underground in the future.", phonetic: "", vietnamese: "Nhà ở có thể được xây dựng dưới lòng đất trong tương lai.", type: "example" },
-      { english: "There are underground cities in some science fiction stories.", phonetic: "", vietnamese: "Có những thành phố dưới lòng đất trong một số truyện khoa học viễn tưởng.", type: "example" },
-      { english: "recycle", phonetic: "/ˌriːˈsaɪkl/", vietnamese: "tái chế", type: "vocabulary" },
-      { english: "Future houses will recycle water and waste.", phonetic: "", vietnamese: "Những ngôi nhà trong tương lai sẽ tái chế nước và rác.", type: "example" },
-      { english: "We should recycle paper and plastic.", phonetic: "", vietnamese: "Chúng ta nên tái chế giấy và nhựa.", type: "example" },
-      { english: "technology", phonetic: "/tekˈnɒlədʒi/", vietnamese: "công nghệ", type: "vocabulary" },
-      { english: "Technology will make our homes smarter.", phonetic: "", vietnamese: "Công nghệ sẽ làm cho ngôi nhà của chúng ta thông minh hơn.", type: "example" },
-      { english: "New technology might change the way we live.", phonetic: "", vietnamese: "Công nghệ mới có thể thay đổi cách chúng ta sống.", type: "example" },
-      { english: "eco-friendly", phonetic: "/ˌiːkoʊ ˈfrendli/", vietnamese: "thân thiện với môi trường", type: "vocabulary" },
-      { english: "Our future house will be eco-friendly.", phonetic: "", vietnamese: "Ngôi nhà tương lai của chúng tôi sẽ thân thiện với môi trường.", type: "example" },
-      { english: "Eco-friendly homes use less energy.", phonetic: "", vietnamese: "Những ngôi nhà thân thiện với môi trường sử dụng ít năng lượng hơn.", type: "example" },
-    ]
-  },
-  {
-    id: 11, name: "Our Greener World", emoji: "🌱",
-    grammar: "Articles (a, an, the), First Conditional",
-    words: [
-      { english: "pollution", phonetic: "/pəˈluːʃn/", vietnamese: "ô nhiễm", type: "vocabulary" },
-      { english: "Air pollution is a serious problem in big cities.", phonetic: "", vietnamese: "Ô nhiễm không khí là vấn đề nghiêm trọng ở các thành phố lớn.", type: "example" },
-      { english: "If we reduce pollution, the air will be cleaner.", phonetic: "", vietnamese: "Nếu chúng ta giảm ô nhiễm, không khí sẽ trong sạch hơn.", type: "example" },
-      { english: "deforestation", phonetic: "/dɪˌfɒrɪˈsteɪʃn/", vietnamese: "nạn phá rừng", type: "vocabulary" },
-      { english: "Deforestation destroys the homes of many animals.", phonetic: "", vietnamese: "Nạn phá rừng phá hủy nơi sinh sống của nhiều loài động vật.", type: "example" },
-      { english: "If we stop deforestation, forests will grow back.", phonetic: "", vietnamese: "Nếu chúng ta ngừng phá rừng, các khu rừng sẽ phục hồi.", type: "example" },
-      { english: "renewable energy", phonetic: "/rɪˈnjuːəbl ˈenədʒi/", vietnamese: "năng lượng tái tạo", type: "vocabulary" },
-      { english: "Solar power is a type of renewable energy.", phonetic: "", vietnamese: "Năng lượng mặt trời là một loại năng lượng tái tạo.", type: "example" },
-      { english: "If we use renewable energy, we will reduce pollution.", phonetic: "", vietnamese: "Nếu chúng ta dùng năng lượng tái tạo, chúng ta sẽ giảm ô nhiễm.", type: "example" },
-      { english: "reduce", phonetic: "/rɪˈdjuːs/", vietnamese: "giảm thiểu", type: "vocabulary" },
-      { english: "We should reduce the amount of plastic we use.", phonetic: "", vietnamese: "Chúng ta nên giảm lượng nhựa mình sử dụng.", type: "example" },
-      { english: "If you reduce waste, the environment will be cleaner.", phonetic: "", vietnamese: "Nếu bạn giảm rác thải, môi trường sẽ sạch hơn.", type: "example" },
-      { english: "reuse", phonetic: "/ˌriːˈjuːz/", vietnamese: "tái sử dụng", type: "vocabulary" },
-      { english: "We can reuse shopping bags many times.", phonetic: "", vietnamese: "Chúng ta có thể tái sử dụng túi mua hàng nhiều lần.", type: "example" },
-      { english: "Reuse bottles instead of throwing them away.", phonetic: "", vietnamese: "Hãy tái sử dụng chai lọ thay vì vứt chúng đi.", type: "example" },
-      { english: "endangered species", phonetic: "/ɪnˈdeɪndʒərd ˈspiːʃiːz/", vietnamese: "loài có nguy cơ tuyệt chủng", type: "vocabulary" },
-      { english: "The tiger is an endangered species.", phonetic: "", vietnamese: "Hổ là một loài có nguy cơ tuyệt chủng.", type: "example" },
-      { english: "If we protect nature, endangered species will survive.", phonetic: "", vietnamese: "Nếu chúng ta bảo vệ thiên nhiên, các loài có nguy cơ tuyệt chủng sẽ tồn tại.", type: "example" },
-      { english: "greenhouse effect", phonetic: "/ˈɡriːnhaʊs ɪˈfekt/", vietnamese: "hiệu ứng nhà kính", type: "vocabulary" },
-      { english: "The greenhouse effect causes global warming.", phonetic: "", vietnamese: "Hiệu ứng nhà kính gây ra sự nóng lên toàn cầu.", type: "example" },
-      { english: "If we use less fossil fuel, the greenhouse effect will decrease.", phonetic: "", vietnamese: "Nếu chúng ta dùng ít nhiên liệu hóa thạch hơn, hiệu ứng nhà kính sẽ giảm.", type: "example" },
-    ]
-  },
-  {
-    id: 12, name: "Robots", emoji: "🤖",
-    grammar: "Superlative adjectives",
-    words: [
-      { english: "artificial intelligence", phonetic: "/ˌɑːrtɪˈfɪʃl ɪnˈtelɪdʒəns/", vietnamese: "trí tuệ nhân tạo", type: "vocabulary" },
-      { english: "Artificial intelligence helps robots learn and think.", phonetic: "", vietnamese: "Trí tuệ nhân tạo giúp robot học và suy nghĩ.", type: "example" },
-      { english: "The most advanced robots use artificial intelligence.", phonetic: "", vietnamese: "Những robot tiên tiến nhất sử dụng trí tuệ nhân tạo.", type: "example" },
-      { english: "household chores", phonetic: "/ˈhaʊshəʊld tʃɔːrz/", vietnamese: "việc nhà", type: "vocabulary" },
-      { english: "Some robots can do household chores.", phonetic: "", vietnamese: "Một số robot có thể làm việc nhà.", type: "example" },
-      { english: "The most helpful robot does all the household chores.", phonetic: "", vietnamese: "Robot hữu ích nhất làm tất cả việc nhà.", type: "example" },
-      { english: "factory", phonetic: "/ˈfæktri/", vietnamese: "nhà máy", type: "vocabulary" },
-      { english: "Robots work in factories to make products.", phonetic: "", vietnamese: "Robot làm việc trong các nhà máy để sản xuất hàng hóa.", type: "example" },
-      { english: "This is the largest robot factory in the world.", phonetic: "", vietnamese: "Đây là nhà máy robot lớn nhất thế giới.", type: "example" },
-      { english: "advanced", phonetic: "/ədˈvɑːnst/", vietnamese: "tiên tiến / nâng cao", type: "vocabulary" },
-      { english: "Japan has the most advanced robots.", phonetic: "", vietnamese: "Nhật Bản có những robot tiên tiến nhất.", type: "example" },
-      { english: "The most advanced technology can be found in robots.", phonetic: "", vietnamese: "Công nghệ tiên tiến nhất có thể được tìm thấy trong robot.", type: "example" },
-      { english: "programme", phonetic: "/ˈproʊɡræm/", vietnamese: "lập trình / chương trình", type: "vocabulary" },
-      { english: "Scientists programme robots to do many tasks.", phonetic: "", vietnamese: "Các nhà khoa học lập trình robot để thực hiện nhiều nhiệm vụ.", type: "example" },
-      { english: "Which robot has the most complex programme?", phonetic: "", vietnamese: "Robot nào có chương trình phức tạp nhất?", type: "example" },
-      { english: "emotion", phonetic: "/ɪˈmoʊʃn/", vietnamese: "cảm xúc", type: "vocabulary" },
-      { english: "Some scientists want robots to understand human emotions.", phonetic: "", vietnamese: "Một số nhà khoa học muốn robot hiểu cảm xúc của con người.", type: "example" },
-      { english: "The most human-like robot can show basic emotions.", phonetic: "", vietnamese: "Robot giống người nhất có thể thể hiện các cảm xúc cơ bản.", type: "example" },
-      { english: "explore", phonetic: "/ɪkˈsplɔːr/", vietnamese: "khám phá", type: "vocabulary" },
-      { english: "Robots can explore dangerous places that humans cannot.", phonetic: "", vietnamese: "Robot có thể khám phá những nơi nguy hiểm mà con người không thể.", type: "example" },
-      { english: "The fastest robot can explore the ocean floor.", phonetic: "", vietnamese: "Robot nhanh nhất có thể khám phá đáy đại dương.", type: "example" },
-    ]
-  }
-];
+      <div class="settings-section">
+        <div class="settings-label">Chọn Unit</div>
+        <div class="settings-unit-list" id="settingsUnitList"></div>
+      </div>
 
-// ═══════════════════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════════════════
-let state = {
-  unitId: null,
-  cards: [],
-  index: 0,
-  flipped: false,
-  showPhonetic: true,
-  showVietnamese: true,
-  audioSpeed: 1,
-  shuffled: false
-};
+      <div class="settings-section">
+        <div class="settings-label">Hiển thị</div>
+        <div class="settings-row">
+          <span class="settings-row-label">Phiên âm</span>
+          <div class="toggle on" id="togglePhonetic"></div>
+        </div>
+        <div class="settings-row">
+          <span class="settings-row-label">Nghĩa tiếng Việt</span>
+          <div class="toggle on" id="toggleVietnamese"></div>
+        </div>
+      </div>
 
-const LS_KEY = 'eng6_v2';
-function loadState() {
-  try { return JSON.parse(localStorage.getItem(LS_KEY)) || {}; } catch { return {}; }
-}
-function saveState() {
-  try { localStorage.setItem(LS_KEY, JSON.stringify({ unitId: state.unitId, index: state.index, showPhonetic: state.showPhonetic, showVietnamese: state.showVietnamese, audioSpeed: state.audioSpeed })); } catch {}
-}
+      <div class="settings-section">
+        <div class="settings-label">Tốc độ đọc</div>
+        <div class="settings-row">
+          <div class="speed-btns">
+            <button class="speed-btn" data-speed="0.7">Chậm</button>
+            <button class="speed-btn active" data-speed="1">Bình thường</button>
+            <button class="speed-btn" data-speed="1.3">Nhanh</button>
+          </div>
+        </div>
+      </div>
 
-// ═══════════════════════════════════════════════════════
-// DOM REFS
-// ═══════════════════════════════════════════════════════
-const homeScreen = document.getElementById('homeScreen');
-const learnScreen = document.getElementById('learnScreen');
-const unitGrid = document.getElementById('unitGrid');
-const cardScene = document.getElementById('cardScene');
-const cardInner = document.getElementById('cardInner');
-const cardEnglish = document.getElementById('cardEnglish');
-const cardPhonetic = document.getElementById('cardPhonetic');
-const cardVietnamese = document.getElementById('cardVietnamese');
-const cardGrammar = document.getElementById('cardGrammar');
-const frontBadge = document.getElementById('frontBadge');
-const backBadge = document.getElementById('backBadge');
-const progressFill = document.getElementById('progressFill');
-const progressLabel = document.getElementById('progressLabel');
-const topbarTitle = document.getElementById('topbarTitle');
-const audioBtn = document.getElementById('audioBtn');
-const audioIcon = document.getElementById('audioIcon');
-const audioWaves = document.getElementById('audioWaves');
-const settingsOverlay = document.getElementById('settingsOverlay');
-const settingsUnitList = document.getElementById('settingsUnitList');
-const togglePhonetic = document.getElementById('togglePhonetic');
-const toggleVietnamese = document.getElementById('toggleVietnamese');
-const completionScreen = document.getElementById('completionScreen');
-const completionSub = document.getElementById('completionSub');
+      <div class="settings-actions">
+        <button class="action-btn action-btn-secondary" id="shuffleBtn">🔀 Xáo bài</button>
+        <button class="action-btn action-btn-danger" id="resetBtn">↺ Reset</button>
+      </div>
+    </div>
+  </div>
 
-// ═══════════════════════════════════════════════════════
-// HOME SCREEN
-// ═══════════════════════════════════════════════════════
-function renderHome() {
-  const saved = loadState();
-  unitGrid.innerHTML = '';
+  <!-- COMPLETION -->
+  <div class="completion hidden" id="completionScreen">
+    <div class="completion-emoji">🎉</div>
+    <div class="completion-title">Tuyệt vời!</div>
+    <div class="completion-sub" id="completionSub"></div>
+    <button class="completion-btn" id="completionBtn">Học lại</button>
+  </div>
 
-  UNITS.forEach(unit => {
-    const total = unit.words.length;
-    const savedIdx = (saved.unitId === unit.id) ? (saved.index || 0) : 0;
-    const pct = total > 0 ? Math.round((savedIdx / total) * 100) : 0;
+  <script>
+    // ═══════════════════════════════════════════════════════
+    // DATA
+    // ═══════════════════════════════════════════════════════
+    const UNITS = [
+      {
+        id: 7, name: "Television", emoji: "📺",
+        grammar: "Wh-questions, conjunctions (and, but, so)",
+        words: [
+          // 1. Cartoon
+          { english: "cartoon", phonetic: "/kɑːrˈtuːn/", vietnamese: "phim hoạt hình", type: "vocabulary" },
+          { english: "I like watching cartoons after school.", vietnamese: "Tôi thích xem phim hoạt hình sau giờ học.", type: "example" },
+          { english: "What cartoons do you watch?", vietnamese: "Bạn xem phim hoạt hình nào vậy?", type: "example" },
+          { english: "My sister loves cartoons, but I prefer documentaries.", vietnamese: "Em gái tôi thích hoạt hình, nhưng tôi thích phim tài liệu hơn.", type: "example" },
+          { english: "Jerry is a famous character in that cartoon.", vietnamese: "Jerry là một nhân vật nổi tiếng trong bộ phim hoạt hình đó.", type: "example" },
 
-    const card = document.createElement('div');
-    card.className = 'unit-card';
-    card.innerHTML = `
+          // 2. Animated film
+          { english: "animated film", phonetic: "/ˈænɪmeɪtɪd fɪlm/", vietnamese: "phim hoạt hình (đồ họa máy tính)", type: "vocabulary" },
+          { english: "Toy Story is an interesting animated film.", vietnamese: "Toy Story là một bộ phim hoạt hình thú vị.", type: "example" },
+          { english: "Do you like animated films or live-action films?", vietnamese: "Bạn thích phim hoạt hình hay phim người đóng?", type: "example" },
+          { english: "This film is animated, so children love it.", vietnamese: "Bộ phim này là hoạt hình, nên trẻ em rất thích nó.", type: "example" },
+          { english: "Who is the main character in this animated film?", vietnamese: "Ai là nhân vật chính trong bộ phim hoạt hình này?", type: "example" },
+
+          // 3. Channel
+          { english: "channel", phonetic: "/ˈtʃænl/", vietnamese: "kênh truyền hình", type: "vocabulary" },
+          { english: "How many channels does your TV have?", vietnamese: "TV của bạn có bao nhiêu kênh?", type: "example" },
+          { english: "Discovery Channel is very educational.", vietnamese: "Kênh Discovery rất có tính giáo dục.", type: "example" },
+          { english: "I like Channel 1, but my brother likes Channel 3.", vietnamese: "Tôi thích Kênh 1, nhưng em trai tôi thích Kênh 3.", type: "example" },
+          { english: "Which channel is the music talent show on?", vietnamese: "Chương trình tài năng âm nhạc chiếu trên kênh nào?", type: "example" },
+
+          // 4. Comedy
+          { english: "comedy", phonetic: "/ˈkɒmədi/", vietnamese: "phim hài", type: "vocabulary" },
+          { english: "We watch a comedy and we laugh a lot.", vietnamese: "Chúng tôi xem một bộ phim hài và chúng tôi cười rất nhiều.", type: "example" },
+          { english: "Is that comedy funny or boring?", vietnamese: "Bộ phim hài đó hài hước hay nhàm chán?", type: "example" },
+          { english: "I like comedies because they make me happy.", vietnamese: "Tôi thích phim hài vì chúng làm tôi vui.", type: "example" },
+          { english: "Which comedy is the most popular now?", vietnamese: "Bộ phim hài nào đang phổ biến nhất hiện nay?", type: "example" },
+
+          // 5. Game show
+          { english: "game show", phonetic: "/ˈɡeɪm ʃəʊ/", vietnamese: "chương trình trò chơi", type: "vocabulary" },
+          { english: "The game show starts at 8 PM.", vietnamese: "Chương trình trò chơi bắt đầu lúc 8 giờ tối.", type: "example" },
+          { english: "He won a lot of money in that game show.", vietnamese: "Anh ấy đã thắng rất nhiều tiền trong chương trình đó.", type: "example" },
+          { english: "Why do you like this game show?", vietnamese: "Tại sao bạn lại thích chương trình trò chơi này?", type: "example" },
+          { english: "The game show is interesting, so I watch it every week.", vietnamese: "Chương trình này thú vị nên tôi xem nó mỗi tuần.", type: "example" },
+
+          // 6. Programme
+          { english: "programme", phonetic: "/ˈprəʊɡræm/", vietnamese: "chương trình", type: "vocabulary" },
+          { english: "What is your favorite TV programme?", vietnamese: "Chương trình TV yêu thích của bạn là gì?", type: "example" },
+          { english: "This programme is for kids, so it is very cute.", vietnamese: "Chương trình này dành cho trẻ em nên nó rất đáng yêu.", type: "example" },
+          { english: "The English in a Minute programme is very helpful.", vietnamese: "Chương trình Tiếng Anh trong một phút rất hữu ích.", type: "example" },
+          { english: "There are many educational programmes on VTV7.", vietnamese: "Có nhiều chương trình giáo dục trên kênh VTV7.", type: "example" },
+
+          // 7. Viewer
+          { english: "viewer", phonetic: "/ˈvjuːə(r)/", vietnamese: "người xem", type: "vocabulary" },
+          { english: "The talent show has millions of viewers.", vietnamese: "Cuộc thi tài năng có hàng triệu người xem.", type: "example" },
+          { english: "How can viewers vote for their favorite singer?", vietnamese: "Làm thế nào người xem có thể bình chọn cho ca sĩ họ yêu thích?", type: "example" },
+          { english: "The viewers feel bored because the show is too long.", vietnamese: "Người xem cảm thấy chán vì chương trình quá dài.", type: "example" },
+          { english: "Viewers can watch this programme live on the website.", vietnamese: "Người xem có thể xem trực tiếp chương trình này trên website.", type: "example" },
+
+          // 8. Wildlife
+          { english: "wildlife", phonetic: "/ˈwaɪldlaɪf/", vietnamese: "thế giới động vật", type: "vocabulary" },
+          { english: "I love watching wildlife programmes.", vietnamese: "Tôi yêu thích xem các chương trình về thế giới động vật.", type: "example" },
+          { english: "This documentary tells us about African wildlife.", vietnamese: "Phim tài liệu này kể cho chúng ta về động vật hoang dã châu Phi.", type: "example" },
+          { english: "Dolphins are my favorite wildlife animals.", vietnamese: "Cá heo là loài động vật hoang dã yêu thích của tôi.", type: "example" },
+          { english: "The wildlife world is very interesting.", vietnamese: "Thế giới động vật hoang dã rất thú vị.", type: "example" },
+
+          // 9. Boring
+          { english: "boring", phonetic: "/ˈbɔːrɪŋ/", vietnamese: "nhàm chán", type: "vocabulary" },
+          { english: "I don't like that film because it is boring.", vietnamese: "Tôi không thích bộ phim đó vì nó nhàm chán.", type: "example" },
+          { english: "The news is sometimes boring to children.", vietnamese: "Tin tức đôi khi nhàm chán đối với trẻ em.", type: "example" },
+          { english: "Is this book boring or interesting?", vietnamese: "Cuốn sách này chán hay là thú vị?", type: "example" },
+          { english: "I felt bored, so I changed the channel.", vietnamese: "Tôi cảm thấy chán nên tôi đã đổi kênh.", type: "example" },
+
+          // 10. Educational
+          { english: "educational", phonetic: "/ˌedʒuˈkeɪʃənl/", vietnamese: "mang tính giáo dục", type: "vocabulary" },
+          { english: "TV can be educational for students.", vietnamese: "TV có thể mang tính giáo dục đối với học sinh.", type: "example" },
+          { english: "This programme educates children about nature.", vietnamese: "Chương trình này giáo dục trẻ em về thiên nhiên.", type: "example" },
+          { english: "Is the Discovery Channel educational?", vietnamese: "Kênh Discovery có tính giáo dục không?", type: "example" },
+          { english: "The show is funny and educational.", vietnamese: "Chương trình này vừa hài hước vừa mang tính giáo dục.", type: "example" },
+
+          // 11. Popular
+          { english: "popular", phonetic: "/ˈpɒpjələ(r)/", vietnamese: "phổ biến / được yêu thích", type: "vocabulary" },
+          { english: "Animated films are very popular with kids.", vietnamese: "Phim hoạt hình rất được trẻ em yêu thích.", type: "example" },
+          { english: "Who is the most popular character in this cartoon?", vietnamese: "Ai là nhân vật được yêu thích nhất trong phim hoạt hình này?", type: "example" },
+          { english: "Football is a popular sport on TV.", vietnamese: "Bóng đá là một môn thể thao phổ biến trên TV.", type: "example" },
+          { english: "This talent show is popular, but I don't like it.", vietnamese: "Chương trình tài năng này nổi tiếng, nhưng tôi không thích nó.", type: "example" },
+
+          // 12. Funny
+          { english: "funny", phonetic: "/ˈfʌni/", vietnamese: "hài hước", type: "vocabulary" },
+          { english: "The monkey in the clip is so funny.", vietnamese: "Con khỉ trong đoạn clip thật hài hước.", type: "example" },
+          { english: "Is the main character funny?", vietnamese: "Nhân vật chính có hài hước không?", type: "example" },
+          { english: "The comedy is funny, so we watch it again.", vietnamese: "Bộ phim hài rất buồn cười, nên chúng tôi xem lại nó lần nữa.", type: "example" },
+          { english: "He tells many funny stories on the talk show.", vietnamese: "Anh ấy kể nhiều câu chuyện hài hước trên chương trình trò chuyện.", type: "example" },
+
+          // 13. Clever
+          { english: "clever", phonetic: "/ˈklevə(r)/", vietnamese: "thông minh", type: "vocabulary" },
+          { english: "The clever fox escaped the hunter.", vietnamese: "Con cáo khôn ngoan đã thoát khỏi người thợ săn.", type: "example" },
+          { english: "She is a clever girl, so she won the quiz show.", vietnamese: "Cô ấy là một cô gái thông minh nên đã thắng chương trình đố vui.", type: "example" },
+          { english: "How clever the character is!", vietnamese: "Nhân vật đó thông minh làm sao!", type: "example" },
+          { english: "Is the robot in the film clever?", vietnamese: "Con rô-bốt trong phim có thông minh không?", type: "example" },
+
+          // 14. Cute
+          { english: "cute", phonetic: "/kjuːt/", vietnamese: "đáng yêu", type: "vocabulary" },
+          { english: "The dolphins in the film are very cute.", vietnamese: "Những con cá heo trong phim rất đáng yêu.", type: "example" },
+          { english: "I like cute characters in cartoons.", vietnamese: "Tôi thích những nhân vật đáng yêu trong phim hoạt hình.", type: "example" },
+          { english: "Look! That puppy is so cute.", vietnamese: "Nhìn kìa! Chú chó con đó thật đáng yêu.", type: "example" },
+          { english: "The show is cute and interesting.", vietnamese: "Chương trình này vừa đáng yêu vừa thú vị.", type: "example" },
+
+          // 15. Compete
+          { english: "compete", phonetic: "/kəmˈpiːt/", vietnamese: "thi đấu", type: "vocabulary" },
+          { english: "Ten students compete in the talent show.", vietnamese: "Mười học sinh tranh tài trong cuộc thi tài năng.", type: "example" },
+          { english: "They compete for the first prize.", vietnamese: "Họ thi đấu để giành giải nhất.", type: "example" },
+          { english: "Who will compete in the game show tonight?", vietnamese: "Ai sẽ thi đấu trong chương trình trò chơi tối nay?", type: "example" },
+          { english: "We compete with each other but we are friends.", vietnamese: "Chúng tôi thi đấu với nhau nhưng chúng tôi là bạn.", type: "example" },
+
+          // 16. Live
+          { english: "live", phonetic: "/laɪv/", vietnamese: "trực tiếp", type: "vocabulary" },
+          { english: "Are you watching the football match live?", vietnamese: "Bạn có đang xem trực tiếp trận bóng đá không?", type: "example" },
+          { english: "The music show is live, but the film is not.", vietnamese: "Chương trình ca nhạc là trực tiếp, nhưng phim thì không.", type: "example" },
+          { english: "I want to see the talent show live.", vietnamese: "Tôi muốn xem trực tiếp cuộc thi tài năng.", type: "example" },
+          { english: "Where can I watch the news live?", vietnamese: "Tôi có thể xem trực tiếp tin tức ở đâu?", type: "example" },
+
+          // 17. TV Guide
+          { english: "TV guide", phonetic: "/ˌtiː ˈviː ɡaɪd/", vietnamese: "lịch chiếu chương trình", type: "vocabulary" },
+          { english: "Please check the TV guide for the cartoon time.", vietnamese: "Làm ơn kiểm tra lịch chiếu để biết giờ phim hoạt hình.", type: "example" },
+          { english: "The TV guide says the film is at 9 PM.", vietnamese: "Lịch chiếu nói bộ phim bắt đầu lúc 9 giờ tối.", type: "example" },
+          { english: "Where is the TV guide?", vietnamese: "Lịch chiếu chương trình ở đâu vậy?", type: "example" },
+          { english: "I use the TV guide to choose my programmes.", vietnamese: "Tôi dùng lịch chiếu để chọn các chương trình của mình.", type: "example" },
+
+          // 18. Clip
+          { english: "clip", phonetic: "/klɪp/", vietnamese: "đoạn phim ngắn", type: "vocabulary" },
+          { english: "This funny clip has many views.", vietnamese: "Đoạn phim ngắn hài hước này có rất nhiều lượt xem.", type: "example" },
+          { english: "Did you watch the clip of the singing cat?", vietnamese: "Bạn đã xem đoạn phim về con mèo biết hát chưa?", type: "example" },
+          { english: "The clip is only one minute long.", vietnamese: "Đoạn phim chỉ dài có một phút.", type: "example" },
+          { english: "Watch this clip and answer the questions.", vietnamese: "Xem đoạn phim này và trả lời các câu hỏi.", type: "example" },
+
+          // 19. Remote control
+          { english: "remote control", phonetic: "/rɪˈmoʊt kənˈtroʊl/", vietnamese: "điều khiển từ xa", type: "vocabulary" },
+          { english: "Where is the remote control?", vietnamese: "Điều khiển từ xa ở đâu vậy?", type: "example" },
+          { english: "He changed channels with the remote control.", vietnamese: "Anh ấy đổi kênh bằng điều khiển từ xa.", type: "example" },
+          { english: "The remote control is broken, so I can't turn on the TV.", vietnamese: "Cái điều khiển bị hỏng rồi, nên tôi không bật được TV.", type: "example" },
+          { english: "Give me the remote control, please.", vietnamese: "Làm ơn đưa cho tôi cái điều khiển.", type: "example" },
+
+          // 20. News
+          { english: "news", phonetic: "/njuːz/", vietnamese: "tin tức", type: "vocabulary" },
+          { english: "My parents watch the news every evening.", vietnamese: "Bố mẹ tôi xem tin tức mỗi tối.", type: "example" },
+          { english: "The news is on at seven o'clock.", vietnamese: "Tin tức bắt đầu lúc bảy giờ.", type: "example" },
+          { english: "Is there any good news today?", vietnamese: "Hôm nay có tin tức gì tốt không?", type: "example" },
+          { english: "I watch the news but my sister watches films.", vietnamese: "Tôi xem tin tức nhưng em gái tôi xem phim.", type: "example" },
+          // --- PHẦN NGỮ PHÁP 1: CÂU HỎI WH-QUESTIONS ---
+
+          // Who
+          { english: "Who", phonetic: "", vietnamese: "Ai (Hỏi về người)", type: "grammar" },
+          { english: "Who is your favourite person on TV?", vietnamese: "Ai là người bạn yêu thích trên TV?", type: "example" },
+          { english: "Who are the main characters in this film?", vietnamese: "Ai là những nhân vật chính trong bộ phim này?", type: "example" },
+          { english: "Who is the director of the Discovery Channel?", vietnamese: "Ai là giám đốc của kênh Discovery?", type: "example" },
+          { english: "Who won the talent show last night?", vietnamese: "Ai đã thắng cuộc thi tài năng tối qua?", type: "example" },
+
+          // What
+          { english: "What", phonetic: "", vietnamese: "Cái gì / Gì (Hỏi về sự vật, hành động)", type: "grammar" },
+          { english: "What are you watching, Hung?", vietnamese: "Bạn đang xem gì thế Hùng?", type: "example" },
+          { english: "What is your favourite TV programme?", vietnamese: "Chương trình TV yêu thích của bạn là gì?", type: "example" },
+          { english: "What time does the news start?", vietnamese: "Mấy giờ thì bản tin bắt đầu?", type: "example" },
+          { english: "What channel is the football match on?", vietnamese: "Trận bóng đá chiếu trên kênh nào vậy?", type: "example" },
+
+          // Where
+          { english: "Where", phonetic: "", vietnamese: "Ở đâu (Hỏi về nơi chốn)", type: "grammar" },
+          { english: "Where is the remote control?", vietnamese: "Cái điều khiển từ xa ở đâu?", type: "example" },
+          { english: "Where do they film this game show?", vietnamese: "Họ quay chương trình trò chơi này ở đâu?", type: "example" },
+          { english: "Where can I find the TV guide?", vietnamese: "Tôi có thể tìm lịch chiếu truyền hình ở đâu?", type: "example" },
+          { english: "Where is the Discovery Channel based?", vietnamese: "Kênh Discovery có trụ sở ở đâu?", type: "example" },
+
+          // When
+          { english: "When", phonetic: "", vietnamese: "Khi nào (Hỏi về thời gian)", type: "grammar" },
+          { english: "When is the weather forecast on?", vietnamese: "Khi nào thì có dự báo thời tiết?", type: "example" },
+          { english: "When do you usually watch TV?", vietnamese: "Bạn thường xem TV khi nào?", type: "example" },
+          { english: "When did the first animated film come out?", vietnamese: "Bộ phim hoạt hình đầu tiên ra mắt khi nào?", type: "example" },
+          { english: "When is the next episode of this comedy?", vietnamese: "Khi nào thì có tập tiếp theo của bộ phim hài này?", type: "example" },
+
+          // Why
+          { english: "Why", phonetic: "", vietnamese: "Tại sao (Hỏi về lý do)", type: "grammar" },
+          { english: "Why do you like the Wildlife programme?", vietnamese: "Tại sao bạn lại thích chương trình thế giới động vật?", type: "example" },
+          { english: "Why is she laughing so much?", vietnamese: "Tại sao cô ấy lại cười nhiều thế?", type: "example" },
+          { english: "Why don't you watch the talent show?", vietnamese: "Tại sao bạn không xem chương trình tài năng?", type: "example" },
+          { english: "Why is this cartoon so popular with children?", vietnamese: "Tại sao bộ phim hoạt hình này lại phổ biến với trẻ em như vậy?", type: "example" },
+
+          // How many
+          { english: "How many", phonetic: "", vietnamese: "Bao nhiêu (Hỏi về số lượng)", type: "grammar" },
+          { english: "How many hours a day do you watch TV?", vietnamese: "Bạn xem TV bao nhiêu giờ mỗi ngày?", type: "example" },
+          { english: "How many channels does your television have?", vietnamese: "TV của bạn có bao nhiêu kênh?", type: "example" },
+          { english: "How many characters are there in this clip?", vietnamese: "Có bao nhiêu nhân vật trong đoạn clip này?", type: "example" },
+          { english: "How many viewers are watching the live show?", vietnamese: "Có bao nhiêu người xem đang xem chương trình trực tiếp?", type: "example" },
+
+          // How often
+          { english: "How often", phonetic: "", vietnamese: "Có thường xuyên không (Hỏi về tần suất)", type: "grammar" },
+          { english: "How often do you watch TV?", vietnamese: "Bạn có thường xuyên xem TV không?", type: "example" },
+          { english: "How often is the news on?", vietnamese: "Bản tin được chiếu thường xuyên như thế nào?", type: "example" },
+          { english: "How often do they show animated films?", vietnamese: "Họ có thường xuyên chiếu phim hoạt hình không?", type: "example" },
+          { english: "How often do you check the weather forecast?", vietnamese: "Bạn có thường xuyên xem dự báo thời tiết không?", type: "example" },
+
+          // --- PHẦN NGỮ PHÁP 2: LIÊN TỪ (CONJUNCTIONS) ---
+
+          // And
+          { english: "And", phonetic: "", vietnamese: "Và (Bổ sung thông tin)", type: "grammar" },
+          { english: "Ocean Life is on at 7.30, and Laughing out Loud comes next at 8.00.", vietnamese: "Chương trình Cuộc sống đại dương chiếu lúc 7:30, và chương trình Cười sảng khoái chiếu tiếp theo lúc 8:00.", type: "example" },
+          { english: "I'm helping decorate the house, and my brother is busy cooking.", vietnamese: "Tôi đang giúp trang trí nhà cửa, và anh trai tôi thì đang bận nấu ăn.", type: "example" },
+          { english: "The show is educational, and it is very interesting too.", vietnamese: "Chương trình này mang tính giáo dục, và nó cũng rất thú vị nữa.", type: "example" },
+          { english: "I like the comedy, and my parents like it too.", vietnamese: "Tôi thích bộ phim hài, và bố mẹ tôi cũng thích nó.", type: "example" },
+
+          // But
+          { english: "But", phonetic: "", vietnamese: "Nhưng (Sự đối lập, tương phản)", type: "grammar" },
+          { english: "I like watching cartoons, but my brother likes watching sports.", vietnamese: "Tôi thích xem hoạt hình, nhưng anh trai tôi lại thích xem thể thao.", type: "example" },
+          { english: "The talent show is popular, but I don't like it.", vietnamese: "Cuộc thi tài năng này nổi tiếng, nhưng tôi không thích nó.", type: "example" },
+          { english: "I want to watch the film, but I have too much homework.", vietnamese: "Tôi muốn xem phim, nhưng tôi có quá nhiều bài tập về nhà.", type: "example" },
+          { english: "The TV is old, but it still works very well.", vietnamese: "Cái TV này cũ rồi, nhưng nó vẫn còn dùng rất tốt.", type: "example" },
+
+          // So
+          { english: "So", phonetic: "", vietnamese: "Vì vậy / Cho nên (Kết quả)", type: "grammar" },
+          { english: "I like The Seven Kitties very much, so I watch it every day.", vietnamese: "Tôi rất thích phim Bảy chú mèo con, cho nên tôi xem nó mỗi ngày.", type: "example" },
+          { english: "I have a lot of homework tonight, so I can't watch TV.", vietnamese: "Tối nay tôi có rất nhiều bài tập, vì vậy tôi không thể xem TV.", type: "example" },
+          { english: "The weather forecast says it will rain, so I will stay home.", vietnamese: "Dự báo thời tiết nói trời sẽ mưa, nên tôi sẽ ở nhà.", type: "example" },
+          { english: "This game show is boring, so I changed the channel.", vietnamese: "Chương trình trò chơi này nhàm chán, nên tôi đã chuyển kênh.", type: "example" }
+        ]
+      },
+      {
+        id: 8, name: "Sports and Games", emoji: "⚽",
+        grammar: "Past Simple, Imperatives",
+        words: [
+          // === TỪ VỰNG (VOCABULARY) ===
+
+          // 1. Volleyball
+          { english: "volleyball", phonetic: "/ˈvɒlibɔːl/", vietnamese: "bóng chuyền", type: "vocabulary" },
+          { english: "We played volleyball yesterday.", vietnamese: "Hôm qua chúng tôi đã chơi bóng chuyền.", type: "example" },
+          { english: "She is good at volleyball.", vietnamese: "Cô ấy chơi bóng chuyền giỏi.", type: "example" },
+          { english: "How many players are there in a volleyball team?", vietnamese: "Có bao nhiêu người chơi trong một đội bóng chuyền?", type: "example" },
+          { english: "They are playing volleyball on the beach.", vietnamese: "Họ đang chơi bóng chuyền trên bãi biển.", type: "example" },
+
+          // 2. Badminton
+          { english: "badminton", phonetic: "/ˈbædmɪntən/", vietnamese: "cầu lông", type: "vocabulary" },
+          { english: "My father plays badminton every weekend.", vietnamese: "Bố tôi chơi cầu lông mỗi cuối tuần.", type: "example" },
+          { english: "Do you want to play badminton with me?", vietnamese: "Bạn có muốn chơi cầu lông với tôi không?", type: "example" },
+          { english: "I need a new racket to play badminton.", vietnamese: "Tôi cần một cái vợt mới để chơi cầu lông.", type: "example" },
+          { english: "We played badminton in the schoolyard this morning.", vietnamese: "Sáng nay chúng tôi đã chơi cầu lông ở sân trường.", type: "example" },
+
+          // 3. Swimming
+          { english: "swimming", phonetic: "/ˈswɪmɪŋ/", vietnamese: "bơi lội", type: "vocabulary" },
+          { english: "I went swimming last Saturday.", vietnamese: "Thứ Bảy tuần trước tôi đã đi bơi.", type: "example" },
+          { english: "Swimming is good exercise for your body.", vietnamese: "Bơi lội là bài tập thể dục tốt cho cơ thể.", type: "example" },
+          { english: "Don't forget to bring your goggles when you go swimming.", vietnamese: "Đừng quên mang theo kính bơi khi bạn đi bơi.", type: "example" },
+          { english: "How often do you go swimming in the summer?", vietnamese: "Bạn có thường xuyên đi bơi vào mùa hè không?", type: "example" },
+
+          // 4. Cycling
+          { english: "cycling", phonetic: "/ˈsaɪklɪŋ/", vietnamese: "đua xe đạp / đạp xe", type: "vocabulary" },
+          { english: "We went cycling in the park.", vietnamese: "Chúng tôi đã đi đạp xe trong công viên.", type: "example" },
+          { english: "Cycling to school is fun and healthy.", vietnamese: "Đi xe đạp đến trường vừa vui vừa tốt cho sức khỏe.", type: "example" },
+          { english: "My brother loves cycling in his free time.", vietnamese: "Anh trai tôi thích đạp xe vào thời gian rảnh.", type: "example" },
+          { english: "He won a cycling competition last month.", vietnamese: "Anh ấy đã thắng một cuộc thi đạp xe tháng trước.", type: "example" },
+
+          // 5. Karate
+          { english: "karate", phonetic: "/kəˈrɑːti/", vietnamese: "môn võ karate", type: "vocabulary" },
+          { english: "I do karate three times a week.", vietnamese: "Tôi tập võ karate ba lần một tuần.", type: "example" },
+          { english: "She started doing karate when she was six.", vietnamese: "Cô ấy bắt đầu tập karate khi lên sáu tuổi.", type: "example" },
+          { english: "Karate helps you to be strong and confident.", vietnamese: "Karate giúp bạn mạnh mẽ và tự tin.", type: "example" },
+          { english: "He is wearing a white karate uniform.", vietnamese: "Anh ấy đang mặc bộ đồng phục karate màu trắng.", type: "example" },
+
+          // 6. Chess
+          { english: "chess", phonetic: "/tʃes/", vietnamese: "cờ vua", type: "vocabulary" },
+          { english: "My grandfather taught me how to play chess.", vietnamese: "Ông tôi đã dạy tôi cách chơi cờ vua.", type: "example" },
+          { english: "Chess is an intelligent game.", vietnamese: "Cờ vua là một trò chơi trí tuệ.", type: "example" },
+          { english: "They are playing chess in the quiet room.", vietnamese: "Họ đang chơi cờ vua trong phòng yên tĩnh.", type: "example" },
+          { english: "Do you like playing chess or cards?", vietnamese: "Bạn thích chơi cờ vua hay chơi bài?", type: "example" },
+
+          // 7. Table tennis
+          { english: "table tennis", phonetic: "/ˈteɪbl ˈtenɪs/", vietnamese: "bóng bàn", type: "vocabulary" },
+          { english: "We often play table tennis at the gym.", vietnamese: "Chúng tôi thường chơi bóng bàn ở phòng tập thể dục.", type: "example" },
+          { english: "Table tennis is a popular sport in China.", vietnamese: "Bóng bàn là một môn thể thao phổ biến ở Trung Quốc.", type: "example" },
+          { english: "You need a small ball and rackets to play table tennis.", vietnamese: "Bạn cần một quả bóng nhỏ và vợt để chơi bóng bàn.", type: "example" },
+          { english: "Who is the world table tennis champion?", vietnamese: "Ai là nhà vô địch bóng bàn thế giới?", type: "example" },
+
+          // 8. Gym
+          { english: "gym", phonetic: "/dʒɪm/", vietnamese: "phòng tập thể dục", type: "vocabulary" },
+          { english: "I go to the gym every morning to keep fit.", vietnamese: "Tôi đến phòng tập mỗi sáng để giữ dáng.", type: "example" },
+          { english: "The school gym is very big and modern.", vietnamese: "Phòng tập của trường rất lớn và hiện đại.", type: "example" },
+          { english: "Don't talk loudly in the gym.", vietnamese: "Đừng nói chuyện lớn tiếng trong phòng tập.", type: "example" },
+          { english: "There is a lot of equipment in this gym.", vietnamese: "Có rất nhiều thiết bị trong phòng tập này.", type: "example" },
+
+          // 9. Score
+          { english: "score", phonetic: "/skɔːr/", vietnamese: "ghi điểm / tỉ số", type: "vocabulary" },
+          { english: "He scored two goals in the match.", vietnamese: "Anh ấy đã ghi hai bàn thắng trong trận đấu.", type: "example" },
+          { english: "What was the final score?", vietnamese: "Tỉ số cuối cùng là bao nhiêu?", type: "example" },
+          { english: "She tried to score but she failed.", vietnamese: "Cô ấy đã cố gắng ghi điểm nhưng thất bại.", type: "example" },
+          { english: "The team with the higher score wins.", vietnamese: "Đội có điểm số cao hơn sẽ thắng.", type: "example" },
+
+          // 10. Referee
+          { english: "referee", phonetic: "/ˌrefəˈriː/", vietnamese: "trọng tài", type: "vocabulary" },
+          { english: "The referee blew the whistle to start the match.", vietnamese: "Trọng tài thổi còi để bắt đầu trận đấu.", type: "example" },
+          { english: "The referee made a fair decision.", vietnamese: "Trọng tài đã đưa ra quyết định công bằng.", type: "example" },
+          { english: "Players must listen to the referee.", vietnamese: "Các cầu thủ phải nghe lời trọng tài.", type: "example" },
+          { english: "The referee gave him a red card.", vietnamese: "Trọng tài đã tặng anh ấy một chiếc thẻ đỏ.", type: "example" },
+
+          // 11. Champion
+          { english: "champion", phonetic: "/ˈtʃæmpiən/", vietnamese: "nhà vô địch", type: "vocabulary" },
+          { english: "She became the champion last year.", vietnamese: "Cô ấy đã trở thành nhà vô địch năm ngoái.", type: "example" },
+          { english: "The champion received a gold medal.", vietnamese: "Nhà vô địch nhận được huy chương vàng.", type: "example" },
+          { english: "We are the champions of the tournament.", vietnamese: "Chúng ta là những nhà vô địch của giải đấu.", type: "example" },
+          { english: "He is a world boxing champion.", vietnamese: "Anh ấy là nhà vô địch quyền anh thế giới.", type: "example" },
+
+          // 12. Equipment
+          { english: "equipment", phonetic: "/ɪˈkwɪpmənt/", vietnamese: "thiết bị / dụng cụ", type: "vocabulary" },
+          { english: "The gym has modern sports equipment.", vietnamese: "Phòng tập có thiết bị thể thao hiện đại.", type: "example" },
+          { english: "We need more equipment for the game.", vietnamese: "Chúng tôi cần thêm thiết bị cho trò chơi.", type: "example" },
+          { english: "Sports equipment is expensive.", vietnamese: "Dụng cụ thể thao rất đắt tiền.", type: "example" },
+          { english: "You should check your equipment before cycling.", vietnamese: "Bạn nên kiểm tra dụng cụ trước khi đạp xe.", type: "example" },
+
+          // 13. Marathon
+          { english: "marathon", phonetic: "/ˈmærəθən/", vietnamese: "cuộc đua marathon", type: "vocabulary" },
+          { english: "He ran his first marathon last Sunday.", vietnamese: "Anh ấy đã chạy cuộc đua marathon đầu tiên vào Chủ nhật tuần trước.", type: "example" },
+          { english: "A marathon is a very long race.", vietnamese: "Marathon là một cuộc đua rất dài.", type: "example" },
+          { english: "She is training hard for the city marathon.", vietnamese: "Cô ấy đang tập luyện chăm chỉ cho giải marathon thành phố.", type: "example" },
+          { english: "Marathon runners need to be very fit.", vietnamese: "Những người chạy marathon cần phải rất khỏe mạnh.", type: "example" },
+
+          // 14. Fit
+          { english: "fit", phonetic: "/fɪt/", vietnamese: "mạnh khỏe / cân đối", type: "vocabulary" },
+          { english: "Doing exercise helps you keep fit.", vietnamese: "Tập thể dục giúp bạn giữ dáng cân đối.", type: "example" },
+          { english: "He is very fit because he cycles every day.", vietnamese: "Anh ấy rất khỏe mạnh vì anh ấy đạp xe mỗi ngày.", type: "example" },
+          { english: "Are you fit enough to run a marathon?", vietnamese: "Bạn có đủ khỏe để chạy marathon không?", type: "example" },
+          { english: "She eats healthy food to stay fit.", vietnamese: "Cô ấy ăn thực phẩm lành mạnh để giữ dáng.", type: "example" },
+
+          // 15. Tournament
+          { english: "tournament", phonetic: "/ˈtʊənəmənt/", vietnamese: "giải đấu", type: "vocabulary" },
+          { english: "Our school football tournament starts next week.", vietnamese: "Giải bóng đá trường mình bắt đầu vào tuần tới.", type: "example" },
+          { english: "Which team won the tournament?", vietnamese: "Đội nào đã thắng giải đấu?", type: "example" },
+          { english: "The tennis tournament took place in France.", vietnamese: "Giải quần vợt đã diễn ra ở Pháp.", type: "example" },
+          { english: "Many countries participate in this tournament.", vietnamese: "Nhiều quốc gia tham gia vào giải đấu này.", type: "example" },
+
+          // 16. Playground
+          { english: "playground", phonetic: "/ˈpleɪɡraʊnd/", vietnamese: "sân chơi", type: "vocabulary" },
+          { english: "Children are playing on the playground.", vietnamese: "Trẻ em đang chơi trên sân chơi.", type: "example" },
+          { english: "Let's go to the playground after school.", vietnamese: "Chúng ta hãy đến sân chơi sau giờ học nhé.", type: "example" },
+          { english: "The playground has a lot of new toys.", vietnamese: "Sân chơi có rất nhiều đồ chơi mới.", type: "example" },
+          { english: "Don't run too fast in the playground.", vietnamese: "Đừng chạy quá nhanh trong sân chơi.", type: "example" },
+
+          // 17. Congratulations
+          { english: "congratulations", phonetic: "/kənˌɡrætʃuˈleɪʃnz/", vietnamese: "lời chúc mừng", type: "vocabulary" },
+          { english: "Congratulations! You won the first prize.", vietnamese: "Chúc mừng! Bạn đã giành giải nhất.", type: "example" },
+          { english: "We sent our congratulations to the champion.", vietnamese: "Chúng tôi đã gửi lời chúc mừng đến nhà vô địch.", type: "example" },
+          { english: "Congratulations on your success!", vietnamese: "Chúc mừng thành công của bạn!", type: "example" },
+          { english: "Everyone said 'Congratulations' to him.", vietnamese: "Mọi người đều nói 'Chúc mừng' với anh ấy.", type: "example" },
+
+          // 18. Sporty
+          { english: "sporty", phonetic: "/ˈspɔːti/", vietnamese: "dáng thể thao / yêu thể thao", type: "vocabulary" },
+          { english: "He looks very sporty in his new shoes.", vietnamese: "Anh ấy trông rất khỏe khoắn trong đôi giày mới.", type: "example" },
+          { english: "Are you a sporty person?", vietnamese: "Bạn có phải là một người yêu thích thể thao không?", type: "example" },
+          { english: "She always wears sporty clothes.", vietnamese: "Cô ấy luôn mặc quần áo phong cách thể thao.", type: "example" },
+          { english: "The girls in my class are very sporty.", vietnamese: "Các bạn nữ trong lớp mình rất yêu thể thao.", type: "example" },
+
+          // 19. Fantastic
+          { english: "fantastic", phonetic: "/fænˈtæstɪk/", vietnamese: "tuyệt vời", type: "vocabulary" },
+          { english: "The football match was fantastic!", vietnamese: "Trận bóng đá thật tuyệt vời!", type: "example" },
+          { english: "You did a fantastic job.", vietnamese: "Bạn đã làm một công việc tuyệt vời.", type: "example" },
+          { english: "The weather is fantastic for cycling.", vietnamese: "Thời tiết thật tuyệt để đạp xe.", type: "example" },
+          { english: "What a fantastic goal!", vietnamese: "Thật là một bàn thắng tuyệt diệu!", type: "example" },
+
+          // 20. Take place
+          { english: "take place", phonetic: "/teɪk pleɪs/", vietnamese: "diễn ra / tổ chức", type: "vocabulary" },
+          { english: "The Olympic Games take place every four years.", vietnamese: "Thế vận hội Olympic diễn ra bốn năm một lần.", type: "example" },
+          { english: "Where did the match take place?", vietnamese: "Trận đấu đã diễn ra ở đâu?", type: "example" },
+          { english: "The ceremony will take place tomorrow.", vietnamese: "Buổi lễ sẽ diễn ra vào ngày mai.", type: "example" },
+          { english: "The competition takes place at the stadium.", vietnamese: "Cuộc thi diễn ra tại sân vận động.", type: "example" },
+
+          // === NGỮ PHÁP (GRAMMAR) ===
+
+          // === 1. THÌ QUÁ KHỨ ĐƠN (PAST SIMPLE) ===
+          { english: "Past Simple", phonetic: "", vietnamese: "Thì Quá khứ đơn (Hành động đã kết thúc)", type: "grammar" },
+
+          // === 1. THÌ QUÁ KHỨ ĐƠN (PAST SIMPLE) - CÂU KHẲNG ĐỊNH ===
+          { english: "Past Simple", phonetic: "", vietnamese: "Thì Quá khứ đơn (Câu khẳng định)", type: "grammar" },
+
+          // Mức độ 1: Cực dễ (Chủ ngữ + Động từ -ed ngắn)
+          { english: "I played.", vietnamese: "Tôi đã chơi.", type: "example" },
+          { english: "They cheered.", vietnamese: "Họ đã cổ vũ.", type: "example" },
+          { english: "We started.", vietnamese: "Chúng tôi đã bắt đầu.", type: "example" },
+
+          // Mức độ 2: Dễ (Thêm tân ngữ trực tiếp)
+          { english: "I played football.", vietnamese: "Tôi đã chơi bóng đá.", type: "example" },
+          { english: "We watched TV.", vietnamese: "Chúng tôi đã xem TV.", type: "example" },
+          { english: "She kicked the ball.", vietnamese: "Cô ấy đã đá quả bóng.", type: "example" },
+
+          // Mức độ 3: Trung bình (Thêm trạng ngữ thời gian: yesterday, last night...)
+          { english: "I played football yesterday.", vietnamese: "Tôi đã chơi bóng đá ngày hôm qua.", type: "example" },
+          { english: "We watched TV last night.", vietnamese: "Chúng tôi đã xem TV tối qua.", type: "example" },
+          { english: "They visited their grandparents last weekend.", vietnamese: "Họ đã thăm ông bà vào cuối tuần trước.", type: "example" },
+          { english: "It rained all day yesterday.", vietnamese: "Trời đã mưa cả ngày hôm qua.", type: "example" },
+
+          // Mức độ 4: Khá (Động từ bất quy tắc phổ biến: go -> went, see -> saw)
+          { english: "I went to school yesterday.", vietnamese: "Tôi đã đi học ngày hôm qua.", type: "example" },
+          { english: "We saw a great match on TV.", vietnamese: "Chúng tôi đã xem một trận đấu tuyệt vời trên TV.", type: "example" },
+          { english: "He won a gold medal.", vietnamese: "Anh ấy đã giành được huy chương vàng.", type: "example" },
+          { english: "They had a lot of fun at the playground.", vietnamese: "Họ đã có rất nhiều niềm vui tại sân chơi.", type: "example" },
+
+          // Mức độ 5: Nâng cao (Câu dài, nhiều thông tin, trạng ngữ phức tạp)
+          { english: "My dad played a lot of tennis some years ago.", vietnamese: "Bố tôi đã chơi tennis rất nhiều vài năm trước.", type: "example" },
+          { english: "Last summer, my family traveled to Da Nang by plane.", vietnamese: "Mùa hè năm ngoái, gia đình tôi đã đi du lịch Đà Nẵng bằng máy bay.", type: "example" },
+          { english: "The students finished their project before the deadline.", vietnamese: "Các học sinh đã hoàn thành dự án của họ trước hạn chót.", type: "example" },
+          { english: "He scored a fantastic goal in the final minute of the match.", vietnamese: "Anh ấy đã ghi một bàn thắng tuyệt vời vào phút cuối cùng của trận đấu.", type: "example" },
+
+          // === 1. THÌ QUÁ KHỨ ĐƠN (PAST SIMPLE) - TIẾP THEO ===
+
+          // --- CÂU PHỦ ĐỊNH (Negative) ---
+          // Mức độ 1: Cực dễ (Chủ ngữ + didn't + Động từ ngắn)
+          { english: "I didn't play.", vietnamese: "Tôi đã không chơi.", type: "example" },
+          { english: "They didn't win.", vietnamese: "Họ đã không thắng.", type: "example" },
+          { english: "He didn't go.", vietnamese: "Anh ấy đã không đi.", type: "example" },
+
+          // Mức độ 2: Dễ (Cấu trúc đầy đủ với tân ngữ)
+          { english: "I didn't play badminton.", vietnamese: "Tôi đã không chơi cầu lông.", type: "example" },
+          { english: "She didn't watch the match.", vietnamese: "Cô ấy đã không xem trận đấu.", type: "example" },
+          { english: "We didn't use the gym.", vietnamese: "Chúng tôi đã không sử dụng phòng tập.", type: "example" },
+
+          // Mức độ 3: Trung bình (Thêm trạng ngữ thời gian)
+          { english: "I didn't play badminton last Sunday.", vietnamese: "Tôi đã không chơi cầu lông Chủ nhật tuần trước.", type: "example" },
+          { english: "She didn't watch the match on TV last night.", vietnamese: "Cô ấy đã không xem trận đấu trên TV tối qua.", type: "example" },
+          { english: "We didn't go to the stadium yesterday.", vietnamese: "Hôm qua chúng tôi đã không đến sân vận động.", type: "example" },
+
+          // Mức độ 4: Nâng cao (Câu dài, tình huống cụ thể)
+          { english: "The teacher didn't ask us about our homework this morning.", vietnamese: "Giáo viên đã không hỏi chúng tôi về bài tập về nhà sáng nay.", type: "example" },
+          { english: "They didn't score any goals although they played well.", vietnamese: "Họ đã không ghi được bàn thắng nào mặc dù họ chơi tốt.", type: "example" },
+
+          // --- CÂU HỎI (Interrogative) ---
+          // Mức độ 1: Cực dễ (Did + S + V?)
+          { english: "Did you play?", vietnamese: "Bạn có chơi không?", type: "example" },
+          { english: "Did they win?", vietnamese: "Họ có thắng không?", type: "example" },
+          { english: "Did it rain?", vietnamese: "Trời có mưa không?", type: "example" },
+
+          // Mức độ 2: Dễ (Câu hỏi về hoạt động thể thao)
+          { english: "Did you play football?", vietnamese: "Bạn có chơi bóng đá không?", type: "example" },
+          { english: "Did they score a goal?", vietnamese: "Họ có ghi bàn không?", type: "example" },
+          { english: "Did you go swimming?", vietnamese: "Bạn có đi bơi không?", type: "example" },
+
+          // Mức độ 3: Trung bình (Câu hỏi có thời gian cụ thể)
+          { english: "Did you sleep well last night?", vietnamese: "Tối qua bạn ngủ ngon không?", type: "example" },
+          { english: "Did you join the sports competition last week?", vietnamese: "Bạn có tham gia cuộc thi thể thao tuần trước không?", type: "example" },
+          { english: "Did you go swimming yesterday morning?", vietnamese: "Sáng qua bạn có đi bơi không?", type: "example" },
+
+          // Mức độ 4: Nâng cao (Câu hỏi dài / Wh-questions trong quá khứ)
+          { english: "Where did you go last weekend?", vietnamese: "Bạn đã đi đâu vào cuối tuần trước?", type: "example" },
+          { english: "Who did you play badminton with yesterday?", vietnamese: "Hôm qua bạn đã chơi cầu lông với ai?", type: "example" },
+
+          // --- ĐỘNG TỪ BẤT QUY TẮC (Irregular Verbs) ---
+          // Mức độ 1: Các động từ di chuyển/hành động đơn giản
+          { english: "I went to the gym.", vietnamese: "Tôi đã đến phòng tập.", type: "example" },
+          { english: "We saw the referee.", vietnamese: "Chúng tôi đã thấy trọng tài.", type: "example" },
+          { english: "He ran a marathon.", vietnamese: "Anh ấy đã chạy một cuộc đua marathon.", type: "example" },
+
+          // Mức độ 2: Kết quả và thành tựu (Win, Become, Do)
+          { english: "We won the football match!", vietnamese: "Chúng tôi đã thắng trận bóng đá rồi!", type: "example" },
+          { english: "He did karate last weekend.", vietnamese: "Anh ấy đã tập karate vào cuối tuần trước.", type: "example" },
+          { english: "She became the champion in 2023.", vietnamese: "Cô ấy đã trở thành nhà vô địch vào năm 2023.", type: "example" },
+
+          // Mức độ 3: Sở hữu và cảm xúc (Have, Feel, Think)
+          { english: "I had a new racket last week.", vietnamese: "Tôi đã có một chiếc vợt mới vào tuần trước.", type: "example" },
+          { english: "We felt very tired after the match.", vietnamese: "Chúng tôi đã cảm thấy rất mệt sau trận đấu.", type: "example" },
+          { english: "I thought the game was fantastic.", vietnamese: "Tôi đã nghĩ rằng trận đấu thật tuyệt vời.", type: "example" },
+
+          // Mức độ 4: Chuỗi hành động và sự kiện lịch sử (Take place, Teach...)
+          { english: "My uncle taught me how to swim.", vietnamese: "Chú tôi đã dạy tôi cách bơi.", type: "example" },
+          { english: "The first Olympic Games took place in Greece.", vietnamese: "Thế vận hội Olympic đầu tiên đã diễn ra tại Hy Lạp.", type: "example" },
+
+          // Mức độ 5: Diễn tả sự kiện lịch sử hoặc chuỗi hành động - NÂNG CAO
+          { english: "The first Olympic Games took place in Greece in 776 BC.", vietnamese: "Thế vận hội Olympic đầu tiên đã diễn ra tại Hy Lạp vào năm 776 TCN.", type: "example" },
+          { english: "Pelé began his career at the age of 15.", vietnamese: "Pelé đã bắt đầu sự nghiệp của mình vào năm 15 tuổi.", type: "example" },
+          { english: "Last Sunday, I went to the gym, did karate, and played table tennis.", vietnamese: "Chủ nhật tuần trước, tôi đã đến phòng tập, tập karate và chơi bóng bàn.", type: "example" },
+
+
+
+          // 2. Imperatives (Câu mệnh lệnh)
+          { english: "Imperatives", phonetic: "", vietnamese: "Câu mệnh lệnh (Ra lệnh / Yêu cầu)", type: "grammar" },
+          { english: "Chew it.", vietnamese: "Hãy nhai nó.", type: "example" },
+          { english: "Don't swallow it.", vietnamese: "Đừng nuốt nó.", type: "example" },
+          { english: "Open the window. It's windy outside.", vietnamese: "Hãy mở cửa sổ ra. Ngoài trời đang có gió.", type: "example" },
+          { english: "Don't park here.", vietnamese: "Đừng đỗ xe ở đây.", type: "example" },
+          { english: "Don't use the lift when there is a fire.", vietnamese: "Đừng sử dụng thang máy khi có hỏa hoạn.", type: "example" },
+          { english: "Please, stop making noise.", vietnamese: "Làm ơn hãy ngừng làm ồn.", type: "example" },
+          { english: "Change your clothes before entering the gym.", vietnamese: "Hãy thay quần áo trước khi vào phòng tập.", type: "example" },
+          { english: "Don't speak loudly in the library.", vietnamese: "Đừng nói chuyện lớn tiếng trong thư viện.", type: "example" },
+          // === 2. CÂU MỆNH LỆNH (IMPERATIVES) ===
+          { english: "Imperatives", phonetic: "", vietnamese: "Câu mệnh lệnh (Ra lệnh / Yêu cầu)", type: "grammar" },
+
+          // Mức độ 1: Khẳng định và phủ định ngắn - DỄ
+          { english: "Chew it.", vietnamese: "Hãy nhai nó.", type: "example" },
+          { english: "Don't swallow it.", vietnamese: "Đừng nuốt nó.", type: "example" },
+          { english: "Listen to the referee.", vietnamese: "Hãy lắng nghe trọng tài.", type: "example" },
+          { english: "Sit down, please.", vietnamese: "Làm ơn hãy ngồi xuống.", type: "example" },
+
+          // Mức độ 2: Mệnh lệnh trong tình huống cụ thể - TRUNG BÌNH
+          { english: "Open the window. It's hot.", vietnamese: "Hãy mở cửa sổ ra. Trời nóng quá.", type: "example" },
+          { english: "Don't park your bike here.", vietnamese: "Đừng đỗ xe đạp của bạn ở đây.", type: "example" },
+          { english: "Don't use the lift when there is a fire.", vietnamese: "Đừng sử dụng thang máy khi có hỏa hoạn.", type: "example" },
+          { english: "Pass the ball to me!", vietnamese: "Chuyền bóng cho tôi đi!", type: "example" },
+
+          // Mức độ 3: Mệnh lệnh lịch sự hoặc nội quy dài - NÂNG CAO
+          { english: "Please, stop making noise in the library.", vietnamese: "Làm ơn hãy ngừng làm ồn trong thư viện.", type: "example" },
+          { english: "Change your clothes and don't speak loudly in the gym.", vietnamese: "Hãy thay quần áo và đừng nói chuyện lớn tiếng trong phòng tập.", type: "example" },
+          { english: "Put on your sports shoes before playing tennis.", vietnamese: "Hãy xỏ giày thể thao vào trước khi chơi quần vợt.", type: "example" }
+        ]
+      },
+      {
+        id: 9, name: "Cities of the World", emoji: "🌆",
+        grammar: "Possessive adjectives, Possessive pronouns, Exclamations with What",
+        words: [
+          // === TỪ VỰNG (VOCABULARY) ===
+
+          // 1. Population
+          { english: "population", phonetic: "/ˌpɒpjuˈleɪʃn/", vietnamese: "dân số", type: "vocabulary" },
+          { english: "The population of Tokyo is very large.", vietnamese: "Dân số của Tokyo rất lớn.", type: "example" },
+          { english: "What is the population of your city?", vietnamese: "Dân số thành phố của bạn là bao nhiêu?", type: "example" },
+          { english: "China has the largest population in the world.", vietnamese: "Trung Quốc có dân số lớn nhất thế giới.", type: "example" },
+
+          // 2. Capital
+          { english: "capital", phonetic: "/ˈkæpɪtl/", vietnamese: "thủ đô", type: "vocabulary" },
+          { english: "Hanoi is the capital of Vietnam.", vietnamese: "Hà Nội là thủ đô của Việt Nam.", type: "example" },
+          { english: "Paris is the capital city of France.", vietnamese: "Paris là thành phố thủ đô của Pháp.", type: "example" },
+          { english: "Which city is the capital of Thailand?", vietnamese: "Thành phố nào là thủ đô của Thái Lan?", type: "example" },
+
+          // 3. Landmark
+          { english: "landmark", phonetic: "/ˈlændmɑːrk/", vietnamese: "địa danh / công trình nổi tiếng", type: "vocabulary" },
+          { english: "The Eiffel Tower is a famous landmark.", vietnamese: "Tháp Eiffel là một địa danh nổi tiếng.", type: "example" },
+          { english: "What landmark is in your city?", vietnamese: "Công trình nổi tiếng nào ở thành phố của bạn?", type: "example" },
+          { english: "Big Ben is a historical landmark in London.", vietnamese: "Big Ben là một địa danh lịch sử ở Luân Đôn.", type: "example" },
+
+          // 4. Skyscraper
+          { english: "skyscraper", phonetic: "/ˈskaɪskreɪpər/", vietnamese: "tòa nhà chọc trời", type: "vocabulary" },
+          { english: "New York has many tall skyscrapers.", vietnamese: "New York có nhiều tòa nhà chọc trời cao.", type: "example" },
+          { english: "The skyscrapers in Dubai are very impressive.", vietnamese: "Những tòa nhà chọc trời ở Dubai rất ấn tượng.", type: "example" },
+          { english: "I want to visit a city with many skyscrapers.", vietnamese: "Tôi muốn thăm một thành phố có nhiều tòa nhà chọc trời.", type: "example" },
+
+          // 5. Palace
+          { english: "palace", phonetic: "/ˈpæləs/", vietnamese: "cung điện", type: "vocabulary" },
+          { english: "The Royal Palace is very beautiful.", vietnamese: "Cung điện Hoàng gia rất đẹp.", type: "example" },
+          { english: "The King lives in a large palace.", vietnamese: "Vị vua sống trong một cung điện rộng lớn.", type: "example" },
+          { english: "Many tourists visit the palace every day.", vietnamese: "Nhiều du khách đến thăm cung điện mỗi ngày.", type: "example" },
+
+          // 6. Floating market
+          { english: "floating market", phonetic: "/ˈfloʊtɪŋ ˈmɑːrkɪt/", vietnamese: "chợ nổi", type: "vocabulary" },
+          { english: "I visited a floating market in Can Tho.", vietnamese: "Tôi đã đi thăm một chợ nổi ở Cần Thơ.", type: "example" },
+          { english: "You can buy fruits at the floating market.", vietnamese: "Bạn có thể mua trái cây tại chợ nổi.", type: "example" },
+          { english: "The floating market is a unique landmark.", vietnamese: "Chợ nổi là một địa danh độc đáo.", type: "example" },
+
+          // 7. Postcard
+          { english: "postcard", phonetic: "/ˈpoʊstkɑːrd/", vietnamese: "bưu thiếp", type: "vocabulary" },
+          { english: "She sent me a postcard from Paris.", vietnamese: "Cô ấy đã gửi cho tôi một tấm bưu thiếp từ Paris.", type: "example" },
+          { english: "I love collecting postcards from different cities.", vietnamese: "Tôi thích sưu tầm bưu thiếp từ các thành phố khác nhau.", type: "example" },
+          { english: "Write a postcard to your parents.", vietnamese: "Hãy viết một tấm bưu thiếp cho bố mẹ bạn.", type: "example" },
+
+          // 8. Street food
+          { english: "street food", phonetic: "/striːt fuːd/", vietnamese: "đồ ăn đường phố", type: "vocabulary" },
+          { english: "The street food in Bangkok is delicious.", vietnamese: "Đồ ăn đường phố ở Bangkok rất ngon.", type: "example" },
+          { english: "We tried some street food in the night market.", vietnamese: "Chúng tôi đã thử vài món ăn đường phố ở chợ đêm.", type: "example" },
+          { english: "Street food is cheap and tasty.", vietnamese: "Đồ ăn đường phố vừa rẻ vừa ngon.", type: "example" },
+
+          // 9. Crowded
+          { english: "crowded", phonetic: "/ˈkraʊdɪd/", vietnamese: "đông đúc", type: "vocabulary" },
+          { english: "The streets are very crowded in the morning.", vietnamese: "Đường phố rất đông đúc vào buổi sáng.", type: "example" },
+          { english: "London is a crowded city.", vietnamese: "Luân Đôn là một thành phố đông đúc.", type: "example" },
+          { english: "I don't like crowded places.", vietnamese: "Tôi không thích những nơi đông đúc.", type: "example" },
+
+          // 10. Tasty / Delicious
+          { english: "tasty", phonetic: "/ˈteɪsti/", vietnamese: "ngon / có vị ngon", type: "vocabulary" },
+          { english: "The food here is very tasty.", vietnamese: "Thức ăn ở đây rất ngon.", type: "example" },
+          { english: "This cake is more delicious than that one.", vietnamese: "Cái bánh này ngon hơn cái kia.", type: "example" },
+          { english: "Vietnamese noodles are delicious.", vietnamese: "Phở Việt Nam rất ngon.", type: "example" },
+
+          // === NGỮ PHÁP (GRAMMAR) ===
+
+          // --- 1. TÍNH TỪ SỞ HỮU (POSSESSIVE ADJECTIVES) ---
+          { english: "Possessive Adjectives", phonetic: "", vietnamese: "Tính từ sở hữu (Đứng trước danh từ)", type: "grammar" },
+          // Mức độ 1: Dễ (Cấu trúc cơ bản My/Your)
+          { english: "This is my pen.", vietnamese: "Đây là chiếc bút của tôi.", type: "example" },
+          { english: "What is your city like?", vietnamese: "Thành phố của bạn trông như thế nào?", type: "example" },
+          // Mức độ 2: Trung bình (Sự hòa hợp chủ ngữ Her/Their)
+          { english: "Sue doesn't like her new dress.", vietnamese: "Sue không thích chiếc váy mới của cô ấy.", type: "example" },
+          { english: "They are painting their room pink.", vietnamese: "Họ đang sơn căn phòng của họ màu hồng.", type: "example" },
+          // Mức độ 3: Nâng cao (Dùng cho vật/quốc gia - Its)
+          { english: "Australia is a strange country. All of its big cities are along the coast.", vietnamese: "Úc là một đất nước lạ lùng. Tất cả những thành phố lớn của nó đều nằm dọc theo đường bờ biển.", type: "example" },
+
+          // --- 2. ĐẠI TỪ SỞ HỮU (POSSESSIVE PRONOUNS) ---
+          { english: "Possessive Pronouns", phonetic: "", vietnamese: "Đại từ sở hữu (Đứng một mình)", type: "grammar" },
+          // Mức độ 1: Dễ (Thay thế trực tiếp)
+          { english: "The bike is mine.", vietnamese: "Chiếc xe đạp đó là của tôi.", type: "example" },
+          { english: "This postcard is hers.", vietnamese: "Tấm bưu thiếp này là của cô ấy.", type: "example" },
+          // Mức độ 2: Trung bình (Dùng để đối chiếu/so sánh)
+          { english: "This book is mine, not yours.", vietnamese: "Cuốn sách này là của tôi, không phải của bạn.", type: "example" },
+          { english: "Your house is big, but ours is small.", vietnamese: "Nhà của bạn thì to, nhưng của chúng tôi thì nhỏ.", type: "example" },
+          // Mức độ 3: Nâng cao (Trong câu ghép phức tạp)
+          { english: "Venice is your city and Jakarta is ours.", vietnamese: "Venice là thành phố của bạn còn Jakarta là của chúng tôi.", type: "example" },
+
+          // --- 3. CÂU CẢM THÁN VỚI WHAT (EXCLAMATIONS) ---
+          { english: "Exclamations with What", phonetic: "", vietnamese: "Câu cảm thán với What (Thể hiện cảm xúc)", type: "grammar" },
+          // Mức độ 1: Dễ (Danh từ số ít có a/an)
+          { english: "What a nice city!", vietnamese: "Thật là một thành phố đẹp!", type: "example" },
+          { english: "What a big tower!", vietnamese: "Thật là một tòa tháp lớn!", type: "example" },
+          // Mức độ 2: Trung bình (Thời tiết/Danh từ không đếm được)
+          { english: "What a clear sky!", vietnamese: "Bầu trời thật trong xanh!", type: "example" },
+          { english: "What delicious street food!", vietnamese: "Đồ ăn đường phố thật là ngon!", type: "example" },
+          // Mức độ 3: Nâng cao (Danh từ số nhiều - không dùng a/an)
+          { english: "What tall buildings!", vietnamese: "Những tòa nhà thật cao lớn!", type: "example" },
+          { english: "What friendly people they are!", vietnamese: "Họ thật là những người thân thiện!", type: "example" }
+        ]
+      },
+      {
+        id: 10, name: "Our Houses in the Future", emoji: "🏠",
+        grammar: "Future Simple (will), Might for possibility",
+        words: [
+          { english: "solar panel", phonetic: "/ˈsoʊlər ˈpænl/", vietnamese: "tấm pin năng lượng mặt trời", type: "vocabulary" },
+          { english: "Our house will have solar panels on the roof.", phonetic: "", vietnamese: "Ngôi nhà của chúng tôi sẽ có tấm pin năng lượng mặt trời trên mái.", type: "example" },
+          { english: "Solar panels can save electricity.", phonetic: "", vietnamese: "Tấm pin năng lượng mặt trời có thể tiết kiệm điện.", type: "example" },
+          { english: "smart home", phonetic: "/smɑːrt hoʊm/", vietnamese: "nhà thông minh", type: "vocabulary" },
+          { english: "I will live in a smart home one day.", phonetic: "", vietnamese: "Một ngày nào đó tôi sẽ sống trong một ngôi nhà thông minh.", type: "example" },
+          { english: "Smart homes can control lights automatically.", phonetic: "", vietnamese: "Nhà thông minh có thể tự động điều khiển đèn.", type: "example" },
+          { english: "appliance", phonetic: "/əˈplaɪəns/", vietnamese: "thiết bị điện gia dụng", type: "vocabulary" },
+          { english: "We have many appliances in our kitchen.", phonetic: "", vietnamese: "Chúng tôi có nhiều thiết bị điện trong bếp.", type: "example" },
+          { english: "Future appliances will be more energy-efficient.", phonetic: "", vietnamese: "Các thiết bị trong tương lai sẽ tiết kiệm năng lượng hơn.", type: "example" },
+          { english: "underground", phonetic: "/ˌʌndərˈɡraʊnd/", vietnamese: "dưới lòng đất", type: "vocabulary" },
+          { english: "Houses might be built underground in the future.", phonetic: "", vietnamese: "Nhà ở có thể được xây dựng dưới lòng đất trong tương lai.", type: "example" },
+          { english: "There are underground cities in some science fiction stories.", phonetic: "", vietnamese: "Có những thành phố dưới lòng đất trong một số truyện khoa học viễn tưởng.", type: "example" },
+          { english: "recycle", phonetic: "/ˌriːˈsaɪkl/", vietnamese: "tái chế", type: "vocabulary" },
+          { english: "Future houses will recycle water and waste.", phonetic: "", vietnamese: "Những ngôi nhà trong tương lai sẽ tái chế nước và rác.", type: "example" },
+          { english: "We should recycle paper and plastic.", phonetic: "", vietnamese: "Chúng ta nên tái chế giấy và nhựa.", type: "example" },
+          { english: "technology", phonetic: "/tekˈnɒlədʒi/", vietnamese: "công nghệ", type: "vocabulary" },
+          { english: "Technology will make our homes smarter.", phonetic: "", vietnamese: "Công nghệ sẽ làm cho ngôi nhà của chúng ta thông minh hơn.", type: "example" },
+          { english: "New technology might change the way we live.", phonetic: "", vietnamese: "Công nghệ mới có thể thay đổi cách chúng ta sống.", type: "example" },
+          { english: "eco-friendly", phonetic: "/ˌiːkoʊ ˈfrendli/", vietnamese: "thân thiện với môi trường", type: "vocabulary" },
+          { english: "Our future house will be eco-friendly.", phonetic: "", vietnamese: "Ngôi nhà tương lai của chúng tôi sẽ thân thiện với môi trường.", type: "example" },
+          { english: "Eco-friendly homes use less energy.", phonetic: "", vietnamese: "Những ngôi nhà thân thiện với môi trường sử dụng ít năng lượng hơn.", type: "example" },
+        ]
+      },
+      {
+        id: 11, name: "Our Greener World", emoji: "🌱",
+        grammar: "Articles (a, an, the), First Conditional",
+        words: [
+          { english: "pollution", phonetic: "/pəˈluːʃn/", vietnamese: "ô nhiễm", type: "vocabulary" },
+          { english: "Air pollution is a serious problem in big cities.", phonetic: "", vietnamese: "Ô nhiễm không khí là vấn đề nghiêm trọng ở các thành phố lớn.", type: "example" },
+          { english: "If we reduce pollution, the air will be cleaner.", phonetic: "", vietnamese: "Nếu chúng ta giảm ô nhiễm, không khí sẽ trong sạch hơn.", type: "example" },
+          { english: "deforestation", phonetic: "/dɪˌfɒrɪˈsteɪʃn/", vietnamese: "nạn phá rừng", type: "vocabulary" },
+          { english: "Deforestation destroys the homes of many animals.", phonetic: "", vietnamese: "Nạn phá rừng phá hủy nơi sinh sống của nhiều loài động vật.", type: "example" },
+          { english: "If we stop deforestation, forests will grow back.", phonetic: "", vietnamese: "Nếu chúng ta ngừng phá rừng, các khu rừng sẽ phục hồi.", type: "example" },
+          { english: "renewable energy", phonetic: "/rɪˈnjuːəbl ˈenədʒi/", vietnamese: "năng lượng tái tạo", type: "vocabulary" },
+          { english: "Solar power is a type of renewable energy.", phonetic: "", vietnamese: "Năng lượng mặt trời là một loại năng lượng tái tạo.", type: "example" },
+          { english: "If we use renewable energy, we will reduce pollution.", phonetic: "", vietnamese: "Nếu chúng ta dùng năng lượng tái tạo, chúng ta sẽ giảm ô nhiễm.", type: "example" },
+          { english: "reduce", phonetic: "/rɪˈdjuːs/", vietnamese: "giảm thiểu", type: "vocabulary" },
+          { english: "We should reduce the amount of plastic we use.", phonetic: "", vietnamese: "Chúng ta nên giảm lượng nhựa mình sử dụng.", type: "example" },
+          { english: "If you reduce waste, the environment will be cleaner.", phonetic: "", vietnamese: "Nếu bạn giảm rác thải, môi trường sẽ sạch hơn.", type: "example" },
+          { english: "reuse", phonetic: "/ˌriːˈjuːz/", vietnamese: "tái sử dụng", type: "vocabulary" },
+          { english: "We can reuse shopping bags many times.", phonetic: "", vietnamese: "Chúng ta có thể tái sử dụng túi mua hàng nhiều lần.", type: "example" },
+          { english: "Reuse bottles instead of throwing them away.", phonetic: "", vietnamese: "Hãy tái sử dụng chai lọ thay vì vứt chúng đi.", type: "example" },
+          { english: "endangered species", phonetic: "/ɪnˈdeɪndʒərd ˈspiːʃiːz/", vietnamese: "loài có nguy cơ tuyệt chủng", type: "vocabulary" },
+          { english: "The tiger is an endangered species.", phonetic: "", vietnamese: "Hổ là một loài có nguy cơ tuyệt chủng.", type: "example" },
+          { english: "If we protect nature, endangered species will survive.", phonetic: "", vietnamese: "Nếu chúng ta bảo vệ thiên nhiên, các loài có nguy cơ tuyệt chủng sẽ tồn tại.", type: "example" },
+          { english: "greenhouse effect", phonetic: "/ˈɡriːnhaʊs ɪˈfekt/", vietnamese: "hiệu ứng nhà kính", type: "vocabulary" },
+          { english: "The greenhouse effect causes global warming.", phonetic: "", vietnamese: "Hiệu ứng nhà kính gây ra sự nóng lên toàn cầu.", type: "example" },
+          { english: "If we use less fossil fuel, the greenhouse effect will decrease.", phonetic: "", vietnamese: "Nếu chúng ta dùng ít nhiên liệu hóa thạch hơn, hiệu ứng nhà kính sẽ giảm.", type: "example" },
+        ]
+      },
+      {
+        id: 12, name: "Robots", emoji: "🤖",
+        grammar: "Superlative adjectives",
+        words: [
+          { english: "artificial intelligence", phonetic: "/ˌɑːrtɪˈfɪʃl ɪnˈtelɪdʒəns/", vietnamese: "trí tuệ nhân tạo", type: "vocabulary" },
+          { english: "Artificial intelligence helps robots learn and think.", phonetic: "", vietnamese: "Trí tuệ nhân tạo giúp robot học và suy nghĩ.", type: "example" },
+          { english: "The most advanced robots use artificial intelligence.", phonetic: "", vietnamese: "Những robot tiên tiến nhất sử dụng trí tuệ nhân tạo.", type: "example" },
+          { english: "household chores", phonetic: "/ˈhaʊshəʊld tʃɔːrz/", vietnamese: "việc nhà", type: "vocabulary" },
+          { english: "Some robots can do household chores.", phonetic: "", vietnamese: "Một số robot có thể làm việc nhà.", type: "example" },
+          { english: "The most helpful robot does all the household chores.", phonetic: "", vietnamese: "Robot hữu ích nhất làm tất cả việc nhà.", type: "example" },
+          { english: "factory", phonetic: "/ˈfæktri/", vietnamese: "nhà máy", type: "vocabulary" },
+          { english: "Robots work in factories to make products.", phonetic: "", vietnamese: "Robot làm việc trong các nhà máy để sản xuất hàng hóa.", type: "example" },
+          { english: "This is the largest robot factory in the world.", phonetic: "", vietnamese: "Đây là nhà máy robot lớn nhất thế giới.", type: "example" },
+          { english: "advanced", phonetic: "/ədˈvɑːnst/", vietnamese: "tiên tiến / nâng cao", type: "vocabulary" },
+          { english: "Japan has the most advanced robots.", phonetic: "", vietnamese: "Nhật Bản có những robot tiên tiến nhất.", type: "example" },
+          { english: "The most advanced technology can be found in robots.", phonetic: "", vietnamese: "Công nghệ tiên tiến nhất có thể được tìm thấy trong robot.", type: "example" },
+          { english: "programme", phonetic: "/ˈproʊɡræm/", vietnamese: "lập trình / chương trình", type: "vocabulary" },
+          { english: "Scientists programme robots to do many tasks.", phonetic: "", vietnamese: "Các nhà khoa học lập trình robot để thực hiện nhiều nhiệm vụ.", type: "example" },
+          { english: "Which robot has the most complex programme?", phonetic: "", vietnamese: "Robot nào có chương trình phức tạp nhất?", type: "example" },
+          { english: "emotion", phonetic: "/ɪˈmoʊʃn/", vietnamese: "cảm xúc", type: "vocabulary" },
+          { english: "Some scientists want robots to understand human emotions.", phonetic: "", vietnamese: "Một số nhà khoa học muốn robot hiểu cảm xúc của con người.", type: "example" },
+          { english: "The most human-like robot can show basic emotions.", phonetic: "", vietnamese: "Robot giống người nhất có thể thể hiện các cảm xúc cơ bản.", type: "example" },
+          { english: "explore", phonetic: "/ɪkˈsplɔːr/", vietnamese: "khám phá", type: "vocabulary" },
+          { english: "Robots can explore dangerous places that humans cannot.", phonetic: "", vietnamese: "Robot có thể khám phá những nơi nguy hiểm mà con người không thể.", type: "example" },
+          { english: "The fastest robot can explore the ocean floor.", phonetic: "", vietnamese: "Robot nhanh nhất có thể khám phá đáy đại dương.", type: "example" },
+        ]
+      }
+    ];
+
+    // ═══════════════════════════════════════════════════════
+    // STATE
+    // ═══════════════════════════════════════════════════════
+    let state = {
+      unitId: null,
+      cards: [],
+      index: 0,
+      flipped: false,
+      showPhonetic: true,
+      showVietnamese: true,
+      audioSpeed: 1,
+      shuffled: false
+    };
+
+    const LS_KEY = 'eng6_v2';
+    function loadState() {
+      try { return JSON.parse(localStorage.getItem(LS_KEY)) || {}; } catch { return {}; }
+    }
+    function saveState() {
+      try { localStorage.setItem(LS_KEY, JSON.stringify({ unitId: state.unitId, index: state.index, showPhonetic: state.showPhonetic, showVietnamese: state.showVietnamese, audioSpeed: state.audioSpeed })); } catch { }
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // DOM REFS
+    // ═══════════════════════════════════════════════════════
+    const homeScreen = document.getElementById('homeScreen');
+    const learnScreen = document.getElementById('learnScreen');
+    const unitGrid = document.getElementById('unitGrid');
+    const cardScene = document.getElementById('cardScene');
+    const cardInner = document.getElementById('cardInner');
+    const cardEnglish = document.getElementById('cardEnglish');
+    const cardPhonetic = document.getElementById('cardPhonetic');
+    const cardVietnamese = document.getElementById('cardVietnamese');
+    const cardGrammar = document.getElementById('cardGrammar');
+    const frontBadge = document.getElementById('frontBadge');
+    const backBadge = document.getElementById('backBadge');
+    const progressFill = document.getElementById('progressFill');
+    const progressLabel = document.getElementById('progressLabel');
+    const topbarTitle = document.getElementById('topbarTitle');
+    const audioBtn = document.getElementById('audioBtn');
+    const audioIcon = document.getElementById('audioIcon');
+    const audioWaves = document.getElementById('audioWaves');
+    const settingsOverlay = document.getElementById('settingsOverlay');
+    const settingsUnitList = document.getElementById('settingsUnitList');
+    const togglePhonetic = document.getElementById('togglePhonetic');
+    const toggleVietnamese = document.getElementById('toggleVietnamese');
+    const completionScreen = document.getElementById('completionScreen');
+    const completionSub = document.getElementById('completionSub');
+
+    // ═══════════════════════════════════════════════════════
+    // HOME SCREEN
+    // ═══════════════════════════════════════════════════════
+    function renderHome() {
+      const saved = loadState();
+      unitGrid.innerHTML = '';
+
+      UNITS.forEach(unit => {
+        const total = unit.words.length;
+        const savedIdx = (saved.unitId === unit.id) ? (saved.index || 0) : 0;
+        const pct = total > 0 ? Math.round((savedIdx / total) * 100) : 0;
+
+        const card = document.createElement('div');
+        card.className = 'unit-card';
+        card.innerHTML = `
       <span class="unit-emoji">${unit.emoji}</span>
       <div class="unit-number">Unit ${unit.id}</div>
       <div class="unit-name">${unit.name}</div>
@@ -955,352 +1928,353 @@ function renderHome() {
         <div class="unit-progress-bar"><div class="unit-progress-fill" style="width:${pct}%"></div></div>
         <div class="unit-arrow"><svg viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg></div>
       </div>`;
-    card.addEventListener('click', () => startUnit(unit.id));
-    unitGrid.appendChild(card);
-  });
-}
-
-// ═══════════════════════════════════════════════════════
-// LEARN SCREEN
-// ═══════════════════════════════════════════════════════
-function startUnit(unitId, resumeIdx) {
-  const unit = UNITS.find(u => u.id === unitId);
-  if (!unit) return;
-
-  const saved = loadState();
-  state.unitId = unitId;
-  state.cards = [...unit.words];
-  state.shuffled = false;
-  state.flipped = false;
-  state.showPhonetic = saved.showPhonetic !== undefined ? saved.showPhonetic : true;
-  state.showVietnamese = saved.showVietnamese !== undefined ? saved.showVietnamese : true;
-  state.audioSpeed = saved.audioSpeed || 1;
-
-  if (resumeIdx !== undefined) {
-    state.index = resumeIdx;
-  } else if (saved.unitId === unitId && saved.index !== undefined) {
-    state.index = Math.min(saved.index, state.cards.length - 1);
-  } else {
-    state.index = 0;
-  }
-
-  topbarTitle.textContent = `${unit.emoji} ${unit.name}`;
-  togglePhonetic.className = 'toggle' + (state.showPhonetic ? ' on' : '');
-  toggleVietnamese.className = 'toggle' + (state.showVietnamese ? ' on' : '');
-
-  document.querySelectorAll('.speed-btn').forEach(b => {
-    b.classList.toggle('active', parseFloat(b.dataset.speed) === state.audioSpeed);
-  });
-
-  renderSettingsUnits();
-  showScreen('learn');
-  renderCard(false);
-}
-
-function showScreen(name) {
-  homeScreen.classList.toggle('hidden', name !== 'home');
-  learnScreen.classList.toggle('hidden', name !== 'learn');
-}
-
-function renderCard(animate, direction) {
-  const card = state.cards[state.index];
-  if (!card) return;
-
-  // Reset flip
-  state.flipped = false;
-  cardInner.classList.remove('flipped');
-
-  // Badges
-  const badgeClass = card.type === 'vocabulary' ? 'badge-vocabulary' : 'badge-example';
-  const badgeLabel = card.type === 'vocabulary' ? 'Vocabulary' : 'Example';
-  frontBadge.className = 'card-type-badge ' + badgeClass;
-  frontBadge.textContent = badgeLabel;
-  backBadge.className = 'card-type-badge ' + badgeClass;
-  backBadge.textContent = badgeLabel;
-
-  // Front
-  cardEnglish.textContent = card.english;
-  cardPhonetic.textContent = card.phonetic;
-  cardPhonetic.style.display = (state.showPhonetic && card.phonetic) ? 'block' : 'none';
-
-  // Back
-  cardVietnamese.textContent = card.vietnamese;
-  cardVietnamese.style.display = state.showVietnamese ? 'block' : 'none';
-
-  // Grammar note for vocabulary cards
-  const unit = UNITS.find(u => u.id === state.unitId);
-  if (card.type === 'vocabulary' && unit) {
-    cardGrammar.textContent = '📝 ' + unit.grammar;
-    cardGrammar.style.display = 'block';
-  } else {
-    cardGrammar.style.display = 'none';
-  }
-
-  // Progress
-  const total = state.cards.length;
-  const pct = total > 1 ? ((state.index + 1) / total) * 100 : 100;
-  progressFill.style.width = pct + '%';
-  progressLabel.textContent = `${state.index + 1} / ${total}`;
-
-  saveState();
-
-  // Animate
-  if (animate && direction) {
-    const inClass = direction === 'left' ? 'swipe-in-left' : 'swipe-in-right';
-    cardScene.classList.add(inClass);
-    cardScene.addEventListener('animationend', () => cardScene.classList.remove(inClass), { once: true });
-  }
-
-  // Auto-speak
-  setTimeout(() => speakCard(), 300);
-}
-
-function flipCard() {
-  state.flipped = !state.flipped;
-  cardInner.classList.toggle('flipped', state.flipped);
-}
-
-function nextCard() {
-  if (state.index >= state.cards.length - 1) {
-    showCompletion();
-    return;
-  }
-  animateSwipe('left', () => {
-    state.index++;
-    renderCard(true, 'left');
-  });
-}
-
-function prevCard() {
-  if (state.index <= 0) return;
-  animateSwipe('right', () => {
-    state.index--;
-    renderCard(true, 'right');
-  });
-}
-
-function animateSwipe(dir, cb) {
-  const outClass = dir === 'left' ? 'swipe-left' : 'swipe-right';
-  cardScene.classList.add(outClass);
-  cardScene.addEventListener('animationend', () => {
-    cardScene.classList.remove(outClass);
-    cb();
-  }, { once: true });
-}
-
-// ═══════════════════════════════════════════════════════
-// AUDIO
-// ═══════════════════════════════════════════════════════
-let synth = window.speechSynthesis;
-let speaking = false;
-
-function speakCard() {
-  const card = state.cards[state.index];
-  if (!card || !synth) return;
-  speak(card.english);
-}
-
-function speak(text) {
-  if (!synth) return;
-  synth.cancel();
-  const utt = new SpeechSynthesisUtterance(text);
-  utt.lang = 'en-US';
-  utt.rate = state.audioSpeed;
-
-  utt.onstart = () => {
-    speaking = true;
-    audioIcon.classList.add('speaking');
-    audioWaves.classList.remove('idle');
-  };
-  utt.onend = utt.onerror = () => {
-    speaking = false;
-    audioIcon.classList.remove('speaking');
-    audioWaves.classList.add('idle');
-  };
-
-  synth.speak(utt);
-}
-
-// ═══════════════════════════════════════════════════════
-// SETTINGS
-// ═══════════════════════════════════════════════════════
-function renderSettingsUnits() {
-  settingsUnitList.innerHTML = '';
-  UNITS.forEach(u => {
-    const pill = document.createElement('div');
-    pill.className = 'unit-pill' + (u.id === state.unitId ? ' active' : '');
-    pill.textContent = `${u.emoji} U${u.id}`;
-    pill.addEventListener('click', () => {
-      closeSettings();
-      startUnit(u.id, 0);
-    });
-    settingsUnitList.appendChild(pill);
-  });
-}
-
-function openSettings() {
-  renderSettingsUnits();
-  settingsOverlay.classList.add('open');
-  document.getElementById('gearBtn').classList.add('active');
-}
-
-function closeSettings() {
-  settingsOverlay.classList.remove('open');
-  document.getElementById('gearBtn').classList.remove('active');
-}
-
-// ═══════════════════════════════════════════════════════
-// COMPLETION
-// ═══════════════════════════════════════════════════════
-function showCompletion() {
-  const unit = UNITS.find(u => u.id === state.unitId);
-  completionSub.textContent = `Bạn đã hoàn thành ${state.cards.length} thẻ trong "${unit.name}"`;
-  completionScreen.classList.remove('hidden');
-  completionScreen.classList.add('visible');
-}
-
-// ═══════════════════════════════════════════════════════
-// TOUCH / SWIPE
-// ═══════════════════════════════════════════════════════
-let touchStartX = 0, touchStartY = 0, touchStartTime = 0;
-
-cardScene.addEventListener('touchstart', e => {
-  touchStartX = e.touches[0].clientX;
-  touchStartY = e.touches[0].clientY;
-  touchStartTime = Date.now();
-}, { passive: true });
-
-cardScene.addEventListener('touchend', e => {
-  const dx = e.changedTouches[0].clientX - touchStartX;
-  const dy = e.changedTouches[0].clientY - touchStartY;
-  const dt = Date.now() - touchStartTime;
-  const absDx = Math.abs(dx), absDy = Math.abs(dy);
-
-  if (absDx < 10 && absDy < 10 && dt < 400) {
-    flipCard();
-  } else if (absDx > 50 && absDx > absDy * 1.5) {
-    if (dx < 0) nextCard(); else prevCard();
-  }
-}, { passive: true });
-
-// Mouse swipe
-let mouseStartX = 0, mouseStartTime = 0, isDragging = false;
-
-cardScene.addEventListener('mousedown', e => {
-  mouseStartX = e.clientX;
-  mouseStartTime = Date.now();
-  isDragging = false;
-});
-
-cardScene.addEventListener('mousemove', e => {
-  if (Math.abs(e.clientX - mouseStartX) > 5) isDragging = true;
-});
-
-cardScene.addEventListener('mouseup', e => {
-  const dx = e.clientX - mouseStartX;
-  const dt = Date.now() - mouseStartTime;
-  if (!isDragging && dt < 300) { flipCard(); return; }
-  if (Math.abs(dx) > 60) { if (dx < 0) nextCard(); else prevCard(); }
-  isDragging = false;
-});
-
-// ═══════════════════════════════════════════════════════
-// KEYBOARD
-// ═══════════════════════════════════════════════════════
-document.addEventListener('keydown', e => {
-  if (learnScreen.classList.contains('hidden')) return;
-  if (e.key === 'ArrowRight') nextCard();
-  else if (e.key === 'ArrowLeft') prevCard();
-  else if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flipCard(); }
-  else if (e.key === 's' || e.key === 'S') speakCard();
-});
-
-// ═══════════════════════════════════════════════════════
-// EVENTS
-// ═══════════════════════════════════════════════════════
-document.getElementById('backBtn').addEventListener('click', () => {
-  synth && synth.cancel();
-  closeSettings();
-  showScreen('home');
-  renderHome();
-});
-
-document.getElementById('gearBtn').addEventListener('click', () => {
-  settingsOverlay.classList.contains('open') ? closeSettings() : openSettings();
-});
-
-settingsOverlay.addEventListener('click', e => {
-  if (e.target === settingsOverlay) closeSettings();
-});
-
-audioBtn.addEventListener('click', speakCard);
-
-togglePhonetic.addEventListener('click', () => {
-  state.showPhonetic = !state.showPhonetic;
-  togglePhonetic.classList.toggle('on', state.showPhonetic);
-  cardPhonetic.style.display = (state.showPhonetic && state.cards[state.index]?.phonetic) ? 'block' : 'none';
-  saveState();
-});
-
-toggleVietnamese.addEventListener('click', () => {
-  state.showVietnamese = !state.showVietnamese;
-  toggleVietnamese.classList.toggle('on', state.showVietnamese);
-  if (state.flipped) cardVietnamese.style.display = state.showVietnamese ? 'block' : 'none';
-  saveState();
-});
-
-document.querySelectorAll('.speed-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    state.audioSpeed = parseFloat(btn.dataset.speed);
-    document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    saveState();
-  });
-});
-
-document.getElementById('shuffleBtn').addEventListener('click', () => {
-  state.cards = [...state.cards].sort(() => Math.random() - 0.5);
-  state.index = 0;
-  state.shuffled = true;
-  closeSettings();
-  renderCard(false);
-});
-
-document.getElementById('resetBtn').addEventListener('click', () => {
-  state.index = 0;
-  const unit = UNITS.find(u => u.id === state.unitId);
-  state.cards = unit ? [...unit.words] : state.cards;
-  closeSettings();
-  renderCard(false);
-  saveState();
-});
-
-document.getElementById('completionBtn').addEventListener('click', () => {
-  completionScreen.classList.add('hidden');
-  completionScreen.classList.remove('visible');
-  state.index = 0;
-  const unit = UNITS.find(u => u.id === state.unitId);
-  if (unit) state.cards = [...unit.words];
-  renderCard(false);
-});
-
-// ═══════════════════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════════════════
-(function init() {
-  renderHome();
-  showScreen('home');
-
-  // Resume session
-  const saved = loadState();
-  if (saved.unitId) {
-    const unit = UNITS.find(u => u.id === saved.unitId);
-    if (unit) {
-      // Start with saved position but don't auto-navigate to learn screen
-      // User can tap the unit card to resume
+        card.addEventListener('click', () => startUnit(unit.id));
+        unitGrid.appendChild(card);
+      });
     }
-  }
-})();
-</script>
+
+    // ═══════════════════════════════════════════════════════
+    // LEARN SCREEN
+    // ═══════════════════════════════════════════════════════
+    function startUnit(unitId, resumeIdx) {
+      const unit = UNITS.find(u => u.id === unitId);
+      if (!unit) return;
+
+      const saved = loadState();
+      state.unitId = unitId;
+      state.cards = [...unit.words];
+      state.shuffled = false;
+      state.flipped = false;
+      state.showPhonetic = saved.showPhonetic !== undefined ? saved.showPhonetic : true;
+      state.showVietnamese = saved.showVietnamese !== undefined ? saved.showVietnamese : true;
+      state.audioSpeed = saved.audioSpeed || 1;
+
+      if (resumeIdx !== undefined) {
+        state.index = resumeIdx;
+      } else if (saved.unitId === unitId && saved.index !== undefined) {
+        state.index = Math.min(saved.index, state.cards.length - 1);
+      } else {
+        state.index = 0;
+      }
+
+      topbarTitle.textContent = `${unit.emoji} ${unit.name}`;
+      togglePhonetic.className = 'toggle' + (state.showPhonetic ? ' on' : '');
+      toggleVietnamese.className = 'toggle' + (state.showVietnamese ? ' on' : '');
+
+      document.querySelectorAll('.speed-btn').forEach(b => {
+        b.classList.toggle('active', parseFloat(b.dataset.speed) === state.audioSpeed);
+      });
+
+      renderSettingsUnits();
+      showScreen('learn');
+      renderCard(false);
+    }
+
+    function showScreen(name) {
+      homeScreen.classList.toggle('hidden', name !== 'home');
+      learnScreen.classList.toggle('hidden', name !== 'learn');
+    }
+
+    function renderCard(animate, direction) {
+      const card = state.cards[state.index];
+      if (!card) return;
+
+      // Reset flip
+      state.flipped = false;
+      cardInner.classList.remove('flipped');
+
+      // Badges
+      const badgeClass = card.type === 'vocabulary' ? 'badge-vocabulary' : 'badge-example';
+      const badgeLabel = card.type === 'vocabulary' ? 'Vocabulary' : 'Example';
+      frontBadge.className = 'card-type-badge ' + badgeClass;
+      frontBadge.textContent = badgeLabel;
+      backBadge.className = 'card-type-badge ' + badgeClass;
+      backBadge.textContent = badgeLabel;
+
+      // Front
+      cardEnglish.textContent = card.english;
+      cardPhonetic.textContent = card.phonetic;
+      cardPhonetic.style.display = (state.showPhonetic && card.phonetic) ? 'block' : 'none';
+
+      // Back
+      cardVietnamese.textContent = card.vietnamese;
+      cardVietnamese.style.display = state.showVietnamese ? 'block' : 'none';
+
+      // Grammar note for vocabulary cards
+      const unit = UNITS.find(u => u.id === state.unitId);
+      if (card.type === 'vocabulary' && unit) {
+        cardGrammar.textContent = '📝 ' + unit.grammar;
+        cardGrammar.style.display = 'block';
+      } else {
+        cardGrammar.style.display = 'none';
+      }
+
+      // Progress
+      const total = state.cards.length;
+      const pct = total > 1 ? ((state.index + 1) / total) * 100 : 100;
+      progressFill.style.width = pct + '%';
+      progressLabel.textContent = `${state.index + 1} / ${total}`;
+
+      saveState();
+
+      // Animate
+      if (animate && direction) {
+        const inClass = direction === 'left' ? 'swipe-in-left' : 'swipe-in-right';
+        cardScene.classList.add(inClass);
+        cardScene.addEventListener('animationend', () => cardScene.classList.remove(inClass), { once: true });
+      }
+
+      // Auto-speak
+      setTimeout(() => speakCard(), 300);
+    }
+
+    function flipCard() {
+      state.flipped = !state.flipped;
+      cardInner.classList.toggle('flipped', state.flipped);
+    }
+
+    function nextCard() {
+      if (state.index >= state.cards.length - 1) {
+        showCompletion();
+        return;
+      }
+      animateSwipe('left', () => {
+        state.index++;
+        renderCard(true, 'left');
+      });
+    }
+
+    function prevCard() {
+      if (state.index <= 0) return;
+      animateSwipe('right', () => {
+        state.index--;
+        renderCard(true, 'right');
+      });
+    }
+
+    function animateSwipe(dir, cb) {
+      const outClass = dir === 'left' ? 'swipe-left' : 'swipe-right';
+      cardScene.classList.add(outClass);
+      cardScene.addEventListener('animationend', () => {
+        cardScene.classList.remove(outClass);
+        cb();
+      }, { once: true });
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // AUDIO
+    // ═══════════════════════════════════════════════════════
+    let synth = window.speechSynthesis;
+    let speaking = false;
+
+    function speakCard() {
+      const card = state.cards[state.index];
+      if (!card || !synth) return;
+      speak(card.english);
+    }
+
+    function speak(text) {
+      if (!synth) return;
+      synth.cancel();
+      const utt = new SpeechSynthesisUtterance(text);
+      utt.lang = 'en-US';
+      utt.rate = state.audioSpeed;
+
+      utt.onstart = () => {
+        speaking = true;
+        audioIcon.classList.add('speaking');
+        audioWaves.classList.remove('idle');
+      };
+      utt.onend = utt.onerror = () => {
+        speaking = false;
+        audioIcon.classList.remove('speaking');
+        audioWaves.classList.add('idle');
+      };
+
+      synth.speak(utt);
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // SETTINGS
+    // ═══════════════════════════════════════════════════════
+    function renderSettingsUnits() {
+      settingsUnitList.innerHTML = '';
+      UNITS.forEach(u => {
+        const pill = document.createElement('div');
+        pill.className = 'unit-pill' + (u.id === state.unitId ? ' active' : '');
+        pill.textContent = `${u.emoji} U${u.id}`;
+        pill.addEventListener('click', () => {
+          closeSettings();
+          startUnit(u.id, 0);
+        });
+        settingsUnitList.appendChild(pill);
+      });
+    }
+
+    function openSettings() {
+      renderSettingsUnits();
+      settingsOverlay.classList.add('open');
+      document.getElementById('gearBtn').classList.add('active');
+    }
+
+    function closeSettings() {
+      settingsOverlay.classList.remove('open');
+      document.getElementById('gearBtn').classList.remove('active');
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // COMPLETION
+    // ═══════════════════════════════════════════════════════
+    function showCompletion() {
+      const unit = UNITS.find(u => u.id === state.unitId);
+      completionSub.textContent = `Bạn đã hoàn thành ${state.cards.length} thẻ trong "${unit.name}"`;
+      completionScreen.classList.remove('hidden');
+      completionScreen.classList.add('visible');
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // TOUCH / SWIPE
+    // ═══════════════════════════════════════════════════════
+    let touchStartX = 0, touchStartY = 0, touchStartTime = 0;
+
+    cardScene.addEventListener('touchstart', e => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      touchStartTime = Date.now();
+    }, { passive: true });
+
+    cardScene.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const dy = e.changedTouches[0].clientY - touchStartY;
+      const dt = Date.now() - touchStartTime;
+      const absDx = Math.abs(dx), absDy = Math.abs(dy);
+
+      if (absDx < 10 && absDy < 10 && dt < 400) {
+        flipCard();
+      } else if (absDx > 50 && absDx > absDy * 1.5) {
+        if (dx < 0) nextCard(); else prevCard();
+      }
+    }, { passive: true });
+
+    // Mouse swipe
+    let mouseStartX = 0, mouseStartTime = 0, isDragging = false;
+
+    cardScene.addEventListener('mousedown', e => {
+      mouseStartX = e.clientX;
+      mouseStartTime = Date.now();
+      isDragging = false;
+    });
+
+    cardScene.addEventListener('mousemove', e => {
+      if (Math.abs(e.clientX - mouseStartX) > 5) isDragging = true;
+    });
+
+    cardScene.addEventListener('mouseup', e => {
+      const dx = e.clientX - mouseStartX;
+      const dt = Date.now() - mouseStartTime;
+      if (!isDragging && dt < 300) { flipCard(); return; }
+      if (Math.abs(dx) > 60) { if (dx < 0) nextCard(); else prevCard(); }
+      isDragging = false;
+    });
+
+    // ═══════════════════════════════════════════════════════
+    // KEYBOARD
+    // ═══════════════════════════════════════════════════════
+    document.addEventListener('keydown', e => {
+      if (learnScreen.classList.contains('hidden')) return;
+      if (e.key === 'ArrowRight') nextCard();
+      else if (e.key === 'ArrowLeft') prevCard();
+      else if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flipCard(); }
+      else if (e.key === 's' || e.key === 'S') speakCard();
+    });
+
+    // ═══════════════════════════════════════════════════════
+    // EVENTS
+    // ═══════════════════════════════════════════════════════
+    document.getElementById('backBtn').addEventListener('click', () => {
+      synth && synth.cancel();
+      closeSettings();
+      showScreen('home');
+      renderHome();
+    });
+
+    document.getElementById('gearBtn').addEventListener('click', () => {
+      settingsOverlay.classList.contains('open') ? closeSettings() : openSettings();
+    });
+
+    settingsOverlay.addEventListener('click', e => {
+      if (e.target === settingsOverlay) closeSettings();
+    });
+
+    audioBtn.addEventListener('click', speakCard);
+
+    togglePhonetic.addEventListener('click', () => {
+      state.showPhonetic = !state.showPhonetic;
+      togglePhonetic.classList.toggle('on', state.showPhonetic);
+      cardPhonetic.style.display = (state.showPhonetic && state.cards[state.index]?.phonetic) ? 'block' : 'none';
+      saveState();
+    });
+
+    toggleVietnamese.addEventListener('click', () => {
+      state.showVietnamese = !state.showVietnamese;
+      toggleVietnamese.classList.toggle('on', state.showVietnamese);
+      if (state.flipped) cardVietnamese.style.display = state.showVietnamese ? 'block' : 'none';
+      saveState();
+    });
+
+    document.querySelectorAll('.speed-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.audioSpeed = parseFloat(btn.dataset.speed);
+        document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        saveState();
+      });
+    });
+
+    document.getElementById('shuffleBtn').addEventListener('click', () => {
+      state.cards = [...state.cards].sort(() => Math.random() - 0.5);
+      state.index = 0;
+      state.shuffled = true;
+      closeSettings();
+      renderCard(false);
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      state.index = 0;
+      const unit = UNITS.find(u => u.id === state.unitId);
+      state.cards = unit ? [...unit.words] : state.cards;
+      closeSettings();
+      renderCard(false);
+      saveState();
+    });
+
+    document.getElementById('completionBtn').addEventListener('click', () => {
+      completionScreen.classList.add('hidden');
+      completionScreen.classList.remove('visible');
+      state.index = 0;
+      const unit = UNITS.find(u => u.id === state.unitId);
+      if (unit) state.cards = [...unit.words];
+      renderCard(false);
+    });
+
+    // ═══════════════════════════════════════════════════════
+    // INIT
+    // ═══════════════════════════════════════════════════════
+    (function init() {
+      renderHome();
+      showScreen('home');
+
+      // Resume session
+      const saved = loadState();
+      if (saved.unitId) {
+        const unit = UNITS.find(u => u.id === saved.unitId);
+        if (unit) {
+          // Start with saved position but don't auto-navigate to learn screen
+          // User can tap the unit card to resume
+        }
+      }
+    })();
+  </script>
 </body>
+
 </html>
