@@ -1575,7 +1575,7 @@
             <div class="quiz-progress-fill" id="quizProgressFill"></div>
           </div>
           <div class="quiz-card" id="quizCard">
-            <div class="quiz-q-label">Từ vựng tiếng Anh</div>
+            <div class="quiz-q-label" id="quizQ_label">Nghĩa tiếng Việt là gì?</div>
             <div class="quiz-question" id="quizQuestion"></div>
             <div class="quiz-phonetic" id="quizPhonetic"></div>
             <span class="quiz-type-badge" id="quizTypeBadge"></span>
@@ -3774,10 +3774,10 @@
       // Default: all units if none selected
       const ids = quiz.selectedUnits.length > 0 ? quiz.selectedUnits : UNITS.map(u => u.id);
 
-      // Collect vocabulary-only items from selected units
+      // Pool: cả vocabulary lẫn example từ các unit được chọn
       let pool = [];
       UNITS.filter(u => ids.includes(u.id)).forEach(u => {
-        u.words.filter(w => w.type === 'vocabulary').forEach(w => {
+        u.words.forEach(w => {
           pool.push({ ...w, unitName: u.name });
         });
       });
@@ -3786,21 +3786,34 @@
         alert('Chọn thêm unit để có đủ từ vựng!'); return;
       }
 
-      // Shuffle pool and take up to questionCount
+      // Shuffle pool và lấy đủ số câu
       pool = pool.sort(() => Math.random() - 0.5);
       const total = Math.min(quiz.questionCount, pool.length);
       const selected = pool.slice(0, total);
 
-      // Build questions: each question picks 3 wrong answers from remaining pool
+      // Build questions với mode ngẫu nhiên A/B
       quiz.questions = selected.map(item => {
-        const wrongs = pool
-          .filter(w => w.english !== item.english)
-          .sort(() => Math.random() - 0.5)
-          .slice(0, 3)
-          .map(w => w.vietnamese);
+        const mode = Math.random() < 0.5 ? 'A' : 'B'; // A: EN→VI, B: VI→EN
 
-        const options = [...wrongs, item.vietnamese].sort(() => Math.random() - 0.5);
-        return { item, options, answer: item.vietnamese };
+        if (mode === 'A') {
+          // Hiện tiếng Anh → chọn nghĩa tiếng Việt
+          const wrongs = pool
+            .filter(w => w.english !== item.english)
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 3)
+            .map(w => w.vietnamese);
+          const options = [...wrongs, item.vietnamese].sort(() => Math.random() - 0.5);
+          return { item, mode, options, answer: item.vietnamese };
+        } else {
+          // Hiện tiếng Việt → chọn câu/từ tiếng Anh đúng
+          const wrongs = pool
+            .filter(w => w.vietnamese !== item.vietnamese)
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 3)
+            .map(w => w.english);
+          const options = [...wrongs, item.english].sort(() => Math.random() - 0.5);
+          return { item, mode, options, answer: item.english };
+        }
       });
 
       quiz.current = 0;
@@ -3819,14 +3832,26 @@
       // Topbar
       document.getElementById('quizCounter').textContent = `Câu ${quiz.current + 1} / ${total}`;
       document.getElementById('quizScoreBadge').textContent = `✓ ${quiz.correct}`;
-      document.getElementById('quizProgressFill').style.width = `${((quiz.current) / total) * 100}%`;
+      document.getElementById('quizProgressFill').style.width = `${(quiz.current / total) * 100}%`;
 
-      // Question card
-      document.getElementById('quizQuestion').textContent = q.item.english;
+      // Badge: Vocabulary hoặc Example
+      document.getElementById('quizTypeBadge').textContent =
+        q.item.type === 'vocabulary' ? 'Vocabulary' : 'Example';
+
+      // Mode A: hiện tiếng Anh; Mode B: hiện tiếng Việt
+      const isEnglishShown = q.mode === 'A';
+      document.getElementById('quizQuestion').textContent = isEnglishShown ? q.item.english : q.item.vietnamese;
+
+      // Nhãn câu hỏi
+      document.getElementById('quizQ_label') && (
+        document.getElementById('quizQ_label').textContent =
+        isEnglishShown ? 'Nghĩa tiếng Việt là gì?' : 'Từ / câu tiếng Anh đúng là gì?'
+      );
+
+      // Phonetic: chỉ hiện khi Mode A (đang hiện tiếng Anh) và có phonetic
       const ph = document.getElementById('quizPhonetic');
       ph.textContent = q.item.phonetic || '';
-      ph.style.display = q.item.phonetic ? 'block' : 'none';
-      document.getElementById('quizTypeBadge').textContent = 'Vocabulary';
+      ph.style.display = (isEnglishShown && q.item.phonetic) ? 'block' : 'none';
 
       // Options
       const optEl = document.getElementById('quizOptions');
@@ -3840,17 +3865,17 @@
         optEl.appendChild(btn);
       });
 
-      // Hide explain + next
+      // Reset explain + next
       document.getElementById('quizExplain').style.display = 'none';
       document.getElementById('quizNextBtn').style.display = 'none';
 
       // Animate card
       const card = document.getElementById('quizCard');
       card.style.animation = 'none';
-      card.offsetHeight; // reflow
+      card.offsetHeight;
       card.style.animation = 'fade-in 0.35s ease';
 
-      // Tự động đọc từ tiếng Anh
+      // Luôn đọc tiếng Anh, bất kể mode nào
       setTimeout(() => speak(q.item.english), 400);
     }
 
@@ -3862,17 +3887,17 @@
       if (isCorrect) quiz.correct++;
 
       // Style all options
-      document.querySelectorAll('.quiz-option').forEach(b => {
+      document.querySelectorAll('#quizOptions .quiz-option').forEach(b => {
         b.classList.add('disabled');
         const txt = b.querySelector('span:last-child').textContent;
         if (txt === q.answer) b.classList.add(isCorrect && txt === chosen ? 'correct' : 'reveal');
       });
       if (!isCorrect) btn.classList.add('wrong');
 
-      // Explain
+      // Explain — luôn hiện cặp EN↔VI
       const explain = document.getElementById('quizExplain');
       explain.textContent = isCorrect
-        ? `✅ Chính xác! "${q.item.english}" nghĩa là "${q.answer}".`
+        ? `✅ Chính xác! "${q.item.english}" = "${q.item.vietnamese}".`
         : `❌ Sai rồi. Đáp án đúng: "${q.answer}"`;
       explain.style.display = 'block';
 
